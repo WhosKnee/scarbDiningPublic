@@ -5,3 +5,4 @@ All of our write-ups for the course will be available on this website.
 
 At the moment, the website contains content pertaining to:
 * Deliverable 1 [June 1st, 2020]
+* Deliverable 2 [June 12th, 2020]
