@@ -2,12 +2,16 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
 
 // use bodyparser when fetching input data from a form
 app.use(bodyParser.urlencoded({extended: true}));
+
+// connect mongoose to a local database
+mongoose.connect('mongodb://localhost:27017/scarb_dining', { useNewUrlParser: true });
 
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))

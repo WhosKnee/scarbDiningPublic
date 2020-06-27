@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 // create restaurant schema
 var restaurantSchema = mongoose.Schema({
     name: String,
+    password: String,
     phoneNumber: Number,
     rating: Number,
     address: String,
