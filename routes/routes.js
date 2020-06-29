@@ -16,7 +16,7 @@ router.get("/restuarantProfile/:restaurant", function(req, res){
 })
 
 // Post request to create restaurant
-router.post("", function(req,res){
+router.post("/makeRestaurant/", function(req,res){
     // create object to hold new restaurant's info
     // trim whitespace from fields
     var restaurantContent= new Restaurant({
