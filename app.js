@@ -36,6 +36,7 @@ db.once('open', function () {
         let newRestaurant = new Restaurant ({
             _id: mongoose.Types.ObjectId(),
             name: req.body.name,
+            password: req.body.password,
             phone: req.body.phoneNumber,
             address: req.body.address,
             ownerFirstName: req.body.ownerFirstName,
