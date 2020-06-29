@@ -11,6 +11,9 @@ var Restaurant = require("../models/restaurant.js");
 router.get("/", function(req, res){
     res.render("./landing.ejs");
 })
+router.get("/restuarantProfile/:restaurant", function(req, res){
+    res.render("./restaurant.ejs",{people: {id:1, name: "bob"}});
+})
 
 // Post request to create restaurant
 router.post("", function(req,res){
