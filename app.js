@@ -29,7 +29,7 @@ app.use(routes);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-    console.log("('we're in)");
+    console.log("we're in");
 
     // add restaurant to db
     app.post('/api/restaurants/', function (req, res, next) {
@@ -54,7 +54,7 @@ db.once('open', function () {
     // run app locally on server
     app.listen(3000, 'localhost', function(){
         console.log("The Notepad server has started on port 3000");
-    })
+    });
 });
 
 
