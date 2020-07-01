@@ -35,3 +35,28 @@
        -d {"name": "test restaurant", "phoneNumber": "416 571 2723", "password": 12345, "address": "123 Nowhere Road", "ownerFirstName": "John", "ownerLastName": "Smith", "ownerTitle": "Mr.", "ownerEmail": "johnsmith@gmail.com", "ownerPhoneNumber": "647 571 4269"}
        http://localhost:3000/api/restaurants/'
 ```
+
+## Read
+
+## Update
+
+- description: Add a story to a restaurant
+- request: `PATCH /api/restaurants/stories/`
+    - content-type: `application/json`
+    - body: object
+      - id: (string) the restaurant id
+      - storyText: (string) the text for the story
+      - mediaLink: (string) the media link for the story
+- response: 200
+    - content-type: `application/json`
+    - body: object
+      - id: (string) the restaurant id
+      - storyText: (string) the text for the story
+      - mediaLink: (string) the media link for the story
+
+``` 
+    $ curl -X POST 
+       -H "Content-Type: `application/json`" 
+       -d {"_id": "5efa626149cfedd33f0b3cb4", "storyText": "this is a test", "mediaLink": "this is a test link"}
+       http://localhost:3000/api/restaurants/stories/'
+```
