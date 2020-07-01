@@ -11,6 +11,13 @@ var Restaurant = require("../models/restaurant.js");
 router.get("/", function(req, res){
     res.render("./landing.ejs");
 })
+
+// go to restaurant signup
+router.get("/restaurantSignup/", function(req, res){
+    res.render("./Registration_Form.ejs");
+})
+
+// go to a restarant's homepage
 router.get("/restuarantProfile/:restaurant", function(req, res){
     res.render("./restaurant.ejs",{people: {id:1, name: "bob"}});
 })
