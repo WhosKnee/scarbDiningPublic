@@ -1,8 +1,9 @@
 // collect dependencies so that that can be used in the project
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const multer = require("multer");
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -14,7 +15,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // connect mongoose to a local database
-mongoose.connect('mongodb://localhost:27017/scarb_dining', {
+mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd.mongodb.net/ScarboroughDiningMain?retryWrites=true&w=majority', {
     useNewUrlParser: true
 });
 
@@ -55,7 +56,7 @@ db.once('open', function () {
         });
     });
 
-    // add restaurant to db
+    // add story to db
     app.patch('/api/restaurants/stories/', function (req, res, next) {
         let newStory = {
             text: req.body.storyText,
@@ -67,6 +68,8 @@ db.once('open', function () {
             return res.json(result);
         });
     });
+
+    // upload image
 
     // run app locally on server
     app.listen(3000, 'localhost', function () {
