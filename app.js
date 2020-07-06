@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const fs = require('fs')
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -19,8 +20,32 @@ mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd
     useNewUrlParser: true
 });
 
+// Mongoose ObjectId type
+const ObjectId = require('mongoose').Types.ObjectId;
+
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))
+
+// create folder for multer to use
+// check if directory exists
+if (!fs.existsSync('./uploads/')) {
+    // if not create directory
+    fs.mkdirSync('./uploads/');
+}
+
+// multer for image upload
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({
+    storage: storage
+});
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
@@ -62,14 +87,27 @@ db.once('open', function () {
             text: req.body.storyText,
             mediaLink: req.body.mediaLink
         };
-        
-        Restaurant.findOneAndUpdate({_id: req.body._id}, {$push: {stories: newStory}}, function (err, result) {
-            if (err) return res.json("error");
+
+        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {stories: newStory}}, function (err, result) {
+            if (err) return res.json(err);
             return res.json(result);
         });
     });
 
-    // upload image
+    // upload food item
+    app.patch('/api/restaurants/fooditems', upload.single('picture'), function (req, res, next) {
+        let newFoodItem = {
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description,
+            imageLink: req.file.path
+        };
+
+        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {foodItems: newFoodItem}}, function (err, result) {
+            if (err) return res.json(err);
+            return res.json(result);
+        });
+    });
 
     // run app locally on server
     app.listen(3000, 'localhost', function () {
