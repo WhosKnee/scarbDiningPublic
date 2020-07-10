@@ -3,7 +3,7 @@
 
         <head>
 
-            <title>restaurant</title>
+            <title><%= restaurant.name %></title>
             <!-- JS, Popper.js, and jQuery (Bootstrap files) -->
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -15,7 +15,7 @@
         <body>
         <div class="jumbotron">
             <div class = "container d-flex flex-column justify-content-start">
-                <h1 class="display-10 text-center">Restaurant Page </h1>
+                <h1 class="display-10 text-center"> <%= restaurant.name %> </h1>
                 <hr class="my-10" color="black" >
                 <div class =" d-flex flex-row align-items-start justify-content-around ">
                     <div class = "d-flex flex-column justify-content-between border">
@@ -33,21 +33,10 @@
                             <p > More</p>
                             <hr width = 250 color=#666;>
                         </div>
-                        <h2> BASING</h2>
-                        <p> 123123 street </p>
-                        <p> Earth 2020 </p>
-                        <div class =" d-flex flex-row align-items-baseline ">
-                            <p > Location</p>
-                            <hr class="my-10" width = 250 color=#666;>
-                        </div>
-                        <h2> BASING</h2>
-                        <p> 123123 street </p>
-                        <p> Earth 2020 </p>
                     </div>
                         <div class = "d-flex flex-column">
-                            <h1> Restaurant : <%= people.name %> </h1>
-                            <p> Email:</p>
-                             <p> phone:</p>
+                            <h1> Restaurant : <%= restaurant.name %> </h1>
+                             <p> Phone: <%= restaurant.phoneNumber %></p>
                              <p> Website: </p>
                              <div class = "d-flex flex-row align-items-center ">
                                 <h1>Star Rating </h1>
@@ -59,19 +48,19 @@
                         </div>
                         <div class = "d-flex flex-column justify-content-between">
                             <div class = "d-flex flex-row align-items-center justify-content-start">
-                                <a class="btn btn-primary btn-lg" href="#" role="button">About </a>
-                                <a class="btn btn-primary btn-lg" href="#" role="button">More</a>
+                                <a class="btn btn-primary btn" href="#" role="button">About </a>
+                                <a class="btn btn-primary btn" href="#" role="button">More</a>
                              </div>
                         </div>
                         <hr class="my-10" width = 500px color=#666;>
                         <div class = "d-flex flex-row align-items-center justify-content-between">
                             <h1> History </h1>
-                            <a class="btn btn-primary btn-lg" href="#" role="button">Edit </a>
+                            <a class="btn btn-primary btn" href="#" role="button">Edit </a>
                         </div>
                          <hr class="my-10" width = 500px color=#666;>
                 <div class = "d-flex flex-row align-items-center justify-content-between">
                     <h1> Stories </h1>
-                    <a class="btn btn-primary btn-lg" href="#" role="button">Edit </a>
+                    <a class="btn btn-primary btn" href="#" role="button">Edit </a>
                 </div>
             </div>
         </div>

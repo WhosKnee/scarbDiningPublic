@@ -19,11 +19,25 @@ router.get("/restaurantSignup/", function(req, res){
 
 // go to a restarant's homepage
 router.get("/restuarantProfile/:restaurant", function(req, res){
-    res.render("./restaurant.ejs",{people: {id:1, name: "bob"}});
+    restaurantName = req.param("restaurant").replace(/-/g, ' ');
+    Restaurant.find({name: restaurantName})
+    .populate("stories")
+    .populate("foodItems")
+    .populate("reviews")
+    .exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // the query returns a list so we need the first item which is our restaurant
+            currRestaurant = Restaurants[0];
+            console.log(currRestaurant["name"]);
+            res.render("./restaurant.ejs", {restaurant: currRestaurant});
+        }
+    })
 })
 
 // Post request to create restaurant
-router.post("/makeRestaurant/", function(req,res){
+router.post("/makeRestaurant", function(req,res){
     // create object to hold new restaurant's info
     // trim whitespace from fields
     var restaurantContent= new Restaurant({
@@ -50,7 +64,7 @@ router.post("/makeRestaurant/", function(req,res){
         else{
             newRestaurant.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/restaurant/" + newRestaurant.name.replace(/ /g, "-"));
+            res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
         }
     })
 })
