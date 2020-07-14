@@ -18,8 +18,11 @@ router.get("/restaurantSignup/", function(req, res){
 })
 
 // go to a restarant's homepage
-router.get("/restuarantProfile/:restaurant", function(req, res){
-    res.render("./restaurant.ejs",{people: {id:1, name: "bob"}});
+router.get("/restuarantProfile/:restaurantName", function(req, res){
+     Restaurant.find({name:req.params.restaurantName}, (err, restaurant) => {
+            if (err) return res.json(err);
+            res.render("./restaurant.ejs",{restaurantInfo:restaurant[0]});
+        });
 })
 
 // Post request to create restaurant

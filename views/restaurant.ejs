@@ -24,17 +24,17 @@
                             <div class="card-body">
                                 <h5 class="card-title">Contact Us </h5>
                                 <p class="card-text">Phone: </p>
-                                <p class="card-text">Email: </p>
+                                <p class="card-text">Email:<%= restaurantInfo.ownerEmail %> </p>
                                 <p class="card-text">Website: </p>
                                 <a href="#" class="btn btn-primary">order Now</a>
                             </div>
                         </div>
                         <div class =" d-flex flex-row align-items-baseline justify-content-start ">
-                            <p > More</p>
+                            <p > Owner Information</p>
                             <hr width = 250 color=#666;>
                         </div>
                         <h2> BASING</h2>
-                        <p> 123123 street </p>
+                        <p> <%= restaurantInfo.address %> </p>
                         <p> Earth 2020 </p>
                         <div class =" d-flex flex-row align-items-baseline ">
                             <p > Location</p>
@@ -45,9 +45,9 @@
                         <p> Earth 2020 </p>
                     </div>
                         <div class = "d-flex flex-column">
-                            <h1> Restaurant : <%= people.name %> </h1>
-                            <p> Email:</p>
-                             <p> phone:</p>
+                            <h1> <%= restaurantInfo.name %> </h1>
+                            <p> Email:<%= restaurantInfo.ownerEmail%> </p>
+                             <p> Phone:</p>
                              <p> Website: </p>
                              <div class = "d-flex flex-row align-items-center ">
                                 <h1>Star Rating </h1>
