@@ -10,3 +10,12 @@
     background-color: #3C3D3F;
     border-radius: 7px 7px 0px 0px;
 }
+
+.restaurantInfo {
+    margin-bottom: 2%;
+}
+
+.restaurantInfoTitle {
+    text-decoration: underline;
+    font-weight: 500;
+}

@@ -18,7 +18,8 @@ router.get("/restaurantSignup/", function(req, res){
 })
 
 // go to a restarant's homepage
-router.get("/restuarantProfile/:restaurant", function(req, res){
+router.get("/restaurantProfile/:restaurant", function(req, res){
+    console.log("made it");
     restaurantName = req.param("restaurant").replace(/-/g, ' ');
     Restaurant.find({name: restaurantName})
     .populate("stories")
@@ -39,18 +40,19 @@ router.get("/restuarantProfile/:restaurant", function(req, res){
 // Post request to create restaurant
 router.post("/makeRestaurant", function(req,res){
     // create object to hold new restaurant's info
-    // trim whitespace from fields
+    // trim whitespace from fields and format correctly
     var restaurantContent= new Restaurant({
         name: req.body.name.trim(),
         password: req.body.password,
-        phoneNumber: req.body.phoneNumber.trim(),
+        phoneNumber: req.body.phoneNumber.trim().replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
         rating: 0,
+        pricing: req.body.pricing, 
         address: req.body.address.trim(),
         ownerFirstName: req.body.ownerFirstName.trim(),
         ownerLastName: req.body.ownerLastName.trim(),
         ownerTitle: req.body.ownerTitle.trim(),
         ownerEmail: req.body.ownerEmail.trim(),
-        ownerPhoneNumber: req.body.ownerPhoneNumber.trim(),
+        ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),
         stories: [],
         foodItems: [],
         reviews: []

@@ -4,8 +4,9 @@ var mongoose = require("mongoose");
 var restaurantSchema = mongoose.Schema({
     name: String,
     password: String,
-    phoneNumber: Number,
+    phoneNumber: String,
     rating: Number,
+    pricing: Number, // either '$', '$$', '$$$', '$$$$' 
     address: String,
     ownerFirstName: String,
     ownerLastName: String,

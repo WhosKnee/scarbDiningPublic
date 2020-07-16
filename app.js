@@ -82,10 +82,10 @@ db.once('open', function () {
     });
 
     // add story to db
-    app.patch('/api/restaurants/stories/', function (req, res, next) {
+    app.patch('/api/restaurants/stories/', upload.single('picture'), function (req, res, next) {
         let newStory = {
             text: req.body.storyText,
-            mediaLink: req.body.mediaLink
+            mediaLink: req.file.path
         };
 
         Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {stories: newStory}}, function (err, result) {
