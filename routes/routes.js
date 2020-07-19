@@ -108,7 +108,7 @@ function bubbleSort(list, param){
                     console.log(list[i].nameSpaced)
                     temp = list[i];
                     list[i] = list[i+1];
-                    list[i+1] = temp; 
+                    list[i+1] = temp;
                     swap = true;
                     console.log(list[i].nameSpaced) 
             }
