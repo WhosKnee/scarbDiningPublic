@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // connect mongoose to a local database
-mongoose.connect('mongodb://localhost:27017/scarb_dining', { useNewUrlParser: true });
+mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd.mongodb.net/ScarboroughDiningMain?retryWrites=true&w=majority', {
+    useNewUrlParser: true
+});
 
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))

@@ -34,14 +34,14 @@
 				<div id="ui">
 					<h1 class="text-center">Personal Stories</h1>
 					<br>
-					<form action="/makeRestaurant/" class="form-group">
+					<form action="/uploadStory/" method="POST" class="form-group">
 
+						<input class="hidden" type="text" name="restaurantName" value=<%=restaurant%> > </input>
 						<br>
-
 						<label>Input any stories or personal anecdotes you want displayed </label>
 						<br>
 						<br>
-						<textarea name="ownerEmail" rows="10" cols="155"></textarea>
+						<textarea name="storyText" rows="10" cols="155"></textarea>
 						<br>
 						<br>
 

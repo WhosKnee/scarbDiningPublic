@@ -15,6 +15,10 @@ router.get("/restuarantProfile/:restaurant", function(req, res){
     res.render("./restaurant.ejs",{people: {id:1, name: "bob"}});
 })
 
+router.get("/storyUploader/:restaurant", function(req, res){
+    res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
+})
+
 // Post request to create restaurant
 router.post("/makeRestaurant/", function(req,res){
     // create object to hold new restaurant's info
@@ -46,6 +50,19 @@ router.post("/makeRestaurant/", function(req,res){
             res.redirect("/restaurant/" + newRestaurant.name.replace(/ /g, "-"));
         }
     })
+})
+
+// Post request to create restaurant
+router.post("/uploadStory/", function(req,res){
+    var newStory = {
+        text: req.body.storyText,
+        mediaLink: "N/A"
+    };
+
+    Restaurant.findOneAndUpdate({name: req.body.restaurantName}, {$push: {stories: newStory}}, function (err, result) {
+        if (err) return res.json(err);
+        return res.json(result);
+    });
 })
 
 module.exports = router;
