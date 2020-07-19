@@ -103,7 +103,7 @@ function bubbleSort(list, param){
                 (param == "priceLH" && list[i].pricing > list[i+1].pricing) ||
                 (param == "priceHL" && list[i].pricing < list[i+1].pricing) ||
                 (param == "rating" && parseFloat(list[i].rating.toString()) < parseFloat(list[i + 1].rating.toString()))
-            ){
+            ){ 
                     //console.log(list[i].nameSpaced + " swap with " + list[i+1].nameSpaced);
                     console.log(list[i].nameSpaced)
                     temp = list[i];
