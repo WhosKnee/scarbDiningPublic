@@ -25,6 +25,23 @@ router.get("/restuarantProfile/:restaurantName", function(req, res){
         });
 })
 
+// go to a restarant's homepage
+router.get("/menu/:restaurant", function(req, res){
+    restaurantName = req.param("restaurant").replace(/-/g, ' ');
+    Restaurant.find({name: restaurantName})
+    .populate("foodItems")
+    .exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // the query returns a list so we need the first item which is our restaurant
+            currRestaurant = Restaurants[0];
+            console.log(currRestaurant["name"]);
+            res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
+        }
+    })
+})
+
 // Post request to create restaurant
 router.post("/makeRestaurant/", function(req,res){
     // create object to hold new restaurant's info

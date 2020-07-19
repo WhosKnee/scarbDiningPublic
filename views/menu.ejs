@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title><%= restaurant.name %> Menu</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/stylesheets/menu.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1 class="display-4 mt-2 mb-5">You are ordering from: <b><%= restaurant.name %></b></h1>
+            <div class="row justify-content-end">
+                <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)-1%>">Last Page</a>
+                <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
+                <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)+1%>">Next Page</a>
+            </div>
+            <ul class="list-unstyled">
+                <% for(var i=0; i < 10; i++) { var food = restaurant.foodItems[10 * (page-1) + i];%>
+                    <% if (food != undefined) { %>
+                        <li class="media mt-1 food-item">
+                            <img class="mr-3" src=<%=food.imageLink%> alt="Tmp Img" style="height:8em">
+                            <div class="media-body">
+                                <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>
+                                <%=food.description%>
+                            </div>
+                        </li>
+                <% }}; %>
+            </ul>
+            <div class="row justify-content-end">
+            <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)-1%>">Last Page</a>
+                <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
+                <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)+1%>">Next Page</a>
+            </div>
+        </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    </body>
