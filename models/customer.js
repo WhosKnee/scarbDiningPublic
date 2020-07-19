@@ -2,17 +2,23 @@ var mongoose = require("mongoose");
 
 // create restaurant schema
 var customerSchema = mongoose.Schema({
-    customerFirstsName: String,
+    customerFirstName: String,
     customerLastName: String,
     password: String,
-    customerPhoneNumber: Number,
+    customerAddress: String,
+    customerBio: String,
+    customerPhoneNumber: String,
     facebookUrl: {
         type : String,
         required: false},
     twitterUrl: {
         type:String,
         required: false
-    }
+    },
+    linkedinUrl: {
+            type:String,
+            required: false
+        }
 })
 
 // create restaurant model to export

@@ -15,32 +15,30 @@
     <div class = "container d-flex flex-column justify-content-start">
       <div class="view bg d-flex flex-row align-self-center">
          <div class="d-flex align-self-end">
-            <img src="https://www.w3schools.com/images/w3schools_green.jpg" alt="W3Schools.com" style=height:300%>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Person_icon_BLACK-01.svg/1200px-Person_icon_BLACK-01.svg.png" alt="W3Schools.com" style=height:300%>
          </div>
         </div>
       </div>
       <div class = "d-flex flew-row" >
         <div class="card mt-3" style = "width: 19rem;">
                       <div class = "card-body">
-                      <h5 class="card-title">Card title</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                       <p>bio</p>
-                        <p>Address</p>
-                         <p>Phone </p>
+                      <h5 class="card-title"><%= customerInfo.customerFirstName%> <%= customerInfo.customerLastName%></h5>
+                       <p><%= customerInfo.customerBio%></p>
+                        <p>Address : <%= customerInfo.customerAddress%></p>
+                        <p>Contact : <%= customerInfo.customerPhoneNumber%> </p>
                        <div class = "d-flex flex-row align-self-start justify-content-around">
-                       <a href="#"><i class="fa fa-dribbble "></i></a>
-                       <a href="#"><i class="fa fa-twitter"></i></a>
-                       <a href="#"><i class="fa fa-linkedin"></i></a>
-                       <a href="#"><i class="fa fa-facebook"></i></a>
+                       <a href=<%= customerInfo.facebookUrl%>><i class="fa fa-twitter"></i></a>
+                       <a href=<%= customerInfo.twitterUrl%>><i class="fa fa-facebook"></i></a>
+                       <a href=<%= customerInfo.linkedinUrl%>><i class="fa fa-linkedin"></i></a>
+
                        </div>
 
                     </div>
             </div>
       <form class="complex_form" id="create_message_form">
             <div class="form_title">Post a message</div>
-            <input type="text" class="form_element" placeholder="Enter your name" name="user_name" required/>
             <textarea  class="form_element" name="user_message" placeholder="Enter your message"></textarea>
-         <button class = "btn" onClick="window.location.href=window.location.href">Post your message</button>
+         <button class ="button"> Post your message</button>
           </form>
     </div>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

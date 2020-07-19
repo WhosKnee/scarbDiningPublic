@@ -33,7 +33,10 @@ router.get("/restuarantProfile/:restaurantName", function(req, res){
 })
 // go to a customer homepage
 router.get("/customerProfile/:customerId", function(req, res){
-            res.render("./customerProfile.ejs");
+               Customer.find({customerFirstName:req.params.customerId}, (err, customer) => {
+                        if (err) return res.json(err);
+                        res.render("./customerProfile.ejs",{customerInfo:customer[0]});
+                    });
 })
 
 
@@ -75,15 +78,16 @@ router.post("/makeCustomer/", function(req,res){
     // trim whitespace from fields
     var customerContent= new Customer({
         customerFirstName: req.body.customerFirstName.trim(),
-        customerLastName: req.body.customerFirstName.trim(),
+        customerLastName: req.body.customerLastName.trim(),
+        customerBio: req.body.customerBio.trim(),
+        customerAddress: req.body.customerAddress.trim(),
         password: req.body.password,
         customerPhoneNumber: req.body.customerPhoneNumber.trim(),
         facebookUrl:req.body.facebookUrl.trim(),
         twitterUrl:req.body.twitterUrl.trim(),
+        linkedinUrl:req.body.linkedinUrl.trim()
 
     });
-
-
      //push object to the Restaurant collection in the database
     Customer.create(customerContent, function(err, newCustomer){
         if(err){
@@ -92,7 +96,8 @@ router.post("/makeCustomer/", function(req,res){
         else{
             newCustomer.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/");
+            res.redirect("/customerProfile/" + newCustomer.customerFirstName);
+
         }
     })
 })
