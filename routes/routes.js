@@ -1,4 +1,5 @@
 var express = require("express");
+var mongoose = require("mongoose");
 // we load up the routes to a router which we export to the app.js file
 var router = express.Router({mergeParams: true});
 
@@ -20,7 +21,6 @@ router.get("/restaurantSignup/", function(req, res){
 
 // go to a restarant's homepage
 router.get("/restaurantProfile/:restaurant", function(req, res){
-    console.log("made it");
     var restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
     .populate("stories")
@@ -42,6 +42,7 @@ router.post("/searchRestaurants/", function(req,res){
     // collect the search field and create object to pass into ejs
     var searchContent = req.body.searchContent.trim().replace(/\s/g, '');
     var searchTags = req.body.searchContent.trim().split(" ");
+    var sortParam = req.body.sortBy;
     var collectedRests = []
     var collectedRestNames = []
     // check if search contains a restaurant or any restaurants that contain at least 1 tags
@@ -67,10 +68,59 @@ router.post("/searchRestaurants/", function(req,res){
                         collectedRestNames.push(Restaurants[i]["name"]);
                     }
             }
-            res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim()});
+            // check for sorting param
+            var param
+            if(sortParam != "rel"){
+                collectedRests = bubbleSort(collectedRests, sortParam);
+                switch(sortParam) {
+                    case "priceLH": param = "Price (Low to High)"; break;
+                    case "priceHL": param = "Price (High to Low)"; break;
+                    case "rating": param = "Rating";
+                }
+                console.log(collectedRests[0].rating.toString());
+                console.log(collectedRests[1].rating.toString());
+                console.log(collectedRests[2].rating.toString());
+            } else {
+                param = "Relevance"
+            }
+            res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param});
         }
     })
 })
+
+// simple bubblesort algo to sort search query based on specified param
+function bubbleSort(list, param){
+    console.log("sorting:")
+    console.log(list);
+    // iterate through list n times tightening the bound each time
+    var temp;
+    var swap;
+    var n = list.length-1;
+    do{
+        swap = false;
+        for(var i = 0; i < n; i++){
+            if(
+                (param == "priceLH" && list[i].pricing > list[i+1].pricing) ||
+                (param == "priceHL" && list[i].pricing < list[i+1].pricing) ||
+                (param == "rating" && parseFloat(list[i].rating.toString()) < parseFloat(list[i + 1].rating.toString()))
+            ){
+                    //console.log(list[i].nameSpaced + " swap with " + list[i+1].nameSpaced);
+                    console.log(list[i].nameSpaced)
+                    temp = list[i];
+                    list[i] = list[i+1];
+                    list[i+1] = temp; 
+                    swap = true;
+                    console.log(list[i].nameSpaced) 
+            }
+        }
+        n--;
+    }while(swap)
+    console.log(parseFloat(list[0].rating.toString()));
+    console.log(parseFloat(list[1].rating.toString()));
+    console.log(parseFloat(list[2].rating.toString()));
+    console.log("---------");
+    return list;
+}
 
 // Post request to create restaurant
 router.post("/makeRestaurant", function(req,res){

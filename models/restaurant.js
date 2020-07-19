@@ -6,7 +6,8 @@ var restaurantSchema = mongoose.Schema({
     nameSpaced: String,
     password: String,
     phoneNumber: String,
-    rating: Number,
+    rating: mongoose.Types.Decimal128,
+    numOfRatings: Number,
     pricing: Number, // either '$', '$$', '$$$', '$$$$' 
     address: String,
     ownerFirstName: String,
