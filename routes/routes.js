@@ -77,9 +77,6 @@ router.post("/searchRestaurants/", function(req,res){
                     case "priceHL": param = "Price (High to Low)"; break;
                     case "rating": param = "Rating";
                 }
-                console.log(collectedRests[0].rating.toString());
-                console.log(collectedRests[1].rating.toString());
-                console.log(collectedRests[2].rating.toString());
             } else {
                 param = "Relevance"
             }
@@ -90,35 +87,28 @@ router.post("/searchRestaurants/", function(req,res){
 
 // simple bubblesort algo to sort search query based on specified param
 function bubbleSort(list, param){
-    console.log("sorting:")
-    console.log(list);
     // iterate through list n times tightening the bound each time
     var temp;
     var swap;
     var n = list.length-1;
+    // perform swaps until either an iteration with no swpas or end of list
     do{
         swap = false;
         for(var i = 0; i < n; i++){
+            // 3 possible sorting params
             if(
                 (param == "priceLH" && list[i].pricing > list[i+1].pricing) ||
                 (param == "priceHL" && list[i].pricing < list[i+1].pricing) ||
                 (param == "rating" && parseFloat(list[i].rating.toString()) < parseFloat(list[i + 1].rating.toString()))
             ){ 
-                    //console.log(list[i].nameSpaced + " swap with " + list[i+1].nameSpaced);
-                    console.log(list[i].nameSpaced)
                     temp = list[i];
                     list[i] = list[i+1];
                     list[i+1] = temp; 
                     swap = true;
-                    console.log(list[i].nameSpaced) 
             }
         }
         n--;
     }while(swap)
-    console.log(parseFloat(list[0].rating.toString()));
-    console.log(parseFloat(list[1].rating.toString()));
-    console.log(parseFloat(list[2].rating.toString()));
-    console.log("---------");
     return list;
 }
 
