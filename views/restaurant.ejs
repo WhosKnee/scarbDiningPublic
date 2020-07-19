@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title><%= restaurant.name %></title>
+        <title><%= restaurant.nameSpaced %></title>
         <!-- JS, Popper.js, and jQuery (Bootstrap files) -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
     <div style="width:100%;" >
         <div class = "container d-flex flex-column justify-content-start">
             <br><br>
-            <h1 class="display-10 text-center" style="margin-bottom: 1%;"> <%= restaurant.name %> </h1>
+            <h1 class="display-10 text-center" style="margin-bottom: 1%;"> <%= restaurant.nameSpaced %> </h1>
             <h4 class="display-10 text-center" style="margin-bottom: 3%; font-weight: 350;"> 
                 <% if (restaurant.rating == 0) { %>
                     No Ratings Yet (0) &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4 &nbsp;&nbsp;|&nbsp;&nbsp; 

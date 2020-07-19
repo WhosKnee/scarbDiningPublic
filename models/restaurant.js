@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 // create restaurant schema
 var restaurantSchema = mongoose.Schema({
     name: String,
+    nameSpaced: String,
     password: String,
     phoneNumber: String,
     rating: Number,
@@ -19,6 +20,8 @@ var restaurantSchema = mongoose.Schema({
         text: String,
         mediaLink: String
     }],
+
+    tags: [String],
 
     // each food item will have a name, price, description, and imageLink
     foodItems: [{

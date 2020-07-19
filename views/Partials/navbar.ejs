@@ -10,14 +10,14 @@
           <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
         </li>
       </ul>
-      <form style="width:37%; float: right;" class="form-inline my-2 my-lg-0">
-        <input name="searchContent" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="Search For Restaurant" aria-label="Search">
+      <form action="/searchRestaurants/" method="POST" style="width:50%; float: right;" class="form-inline my-2 my-lg-0">
+        <input name="searchContent" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="What Are You Craving?" aria-label="Search">
         <select name="sortBy"  style="width: 30%; float: left;" class="form-control mr-sm-2">
             <option value="priceLH">Price (Low to High)</option>
-            <option value="priceLH">Price (High to Low)</option>
+            <option value="priceHL">Price (High to Low)</option>
             <option value="rating">Rating</option>
         </select>
-        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+        <button style="width: 15%; float: left;" class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
   </nav>
