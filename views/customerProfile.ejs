@@ -23,14 +23,25 @@
         <div class="card mt-3" style = "width: 19rem;">
                       <div class = "card-body">
                       <h5 class="card-title"><%= customerInfo.customerFirstName%> <%= customerInfo.customerLastName%></h5>
-                       <p><%= customerInfo.customerBio%></p>
+                        <div class="card-header ">
+                                             Info
+                                               </div>
+                        <p>Bio : <%= customerInfo.customerBio%></p>
                         <p>Address : <%= customerInfo.customerAddress%></p>
                         <p>Contact : <%= customerInfo.customerPhoneNumber%> </p>
-                       <div class = "d-flex flex-row align-self-start justify-content-around">
-                       <a href=<%= customerInfo.facebookUrl%>><i class="fa fa-twitter"></i></a>
-                       <a href=<%= customerInfo.twitterUrl%>><i class="fa fa-facebook"></i></a>
-                       <a href=<%= customerInfo.linkedinUrl%>><i class="fa fa-linkedin"></i></a>
 
+                      <div class="card-header ">
+                                  Activity
+                                    </div>
+                       <p class="mt-3">Last Seen: </p>
+                        <p>Sessions</p>
+                        <div class="card-header">
+                        Socials
+                        </div>
+                         <div class = " mt-3 d-flex flex-row align-self-start justify-content-around">
+                          <a href=<%= customerInfo.facebookUrl%>><i class="fa fa-twitter"></i></a>
+                           <a href=<%= customerInfo.twitterUrl%>><i class="fa fa-facebook"></i></a>
+                            <a href=<%= customerInfo.linkedinUrl%>><i class="fa fa-linkedin"></i></a>
                        </div>
 
                     </div>
