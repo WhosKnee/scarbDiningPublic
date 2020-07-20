@@ -21,7 +21,7 @@
                 <% } else { %> 
                     Rating: <%= restaurant.rating %>/5  &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <% } %>
-                <a class="btn btn-outline-primary" href="#" role="button">Order Now</a>
+                <a class="btn btn-outline-primary" href="/menu/<%=restaurant.nameSpaced.replace(/ /g, "-")%>?p=1" role="button">Order Now</a>
             </h4>
             <div class =" d-flex flex-row align-items-start justify-content-around ">
                     <div class="card" style="width: 18rem;">

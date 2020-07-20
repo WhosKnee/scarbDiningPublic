@@ -28,11 +28,14 @@ router.get("/customerSignup/", function(req, res){
 // go to a restarant's homepage
 router.get("/restuarantProfile/:restaurantName", function(req, res){
      Restaurant.find({name:req.params.restaurantName}, (err, restaurant) => {
-            if (err) return res.json(err);
+        if (err) return res.json(err);
+        res.render("./restaurant.ejs",{restaurantInfo:restaurant[0]});
+    });
+})
 
-            res.render("./restaurant.ejs",{restaurantInfo:restaurant[0]});
-        });
-        })
+router.get("/storyUploader/:restaurant", function(req, res){
+    res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
+})
 
 router.get("/restaurantProfile/:restaurant", function(req, res){
     var restaurantName = req.param("restaurant").replace(/-/g, '');
@@ -53,7 +56,7 @@ router.get("/restaurantProfile/:restaurant", function(req, res){
 
 // go to a restarant's homepage
 router.get("/menu/:restaurant", function(req, res){
-    restaurantName = req.param("restaurant").replace(/-/g, ' ');
+    restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
     .populate("foodItems")
     .exec(function(err, Restaurants){
@@ -215,6 +218,20 @@ router.post("/makeCustomer/", function(req,res){
 
         }
     })
+})
+
+// Post request to create restaurant
+router.post("/uploadStory/", function(req,res){
+    var newStory = {
+        text: req.body.storyText,
+        mediaLink: "N/A"
+    };
+
+    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
+        if (err) return res.json(err);
+        // redirect the owner to the public restaurant page
+        res.redirect("/restaurantProfile/" + req.body.restaurantName);
+    });
 })
 
 module.exports = router;
