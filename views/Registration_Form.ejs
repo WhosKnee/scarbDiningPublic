@@ -2,12 +2,13 @@
 <html>
 <head>
 	<title>Registration</title>
-	<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 <style type="text/css">
 	#ui{
@@ -24,47 +25,51 @@
 
 </head>
 <body>
-
+	<%- include('./partials/navbar.ejs') %>
 	<div class="container">
 
 		<div class="row">
-
-			<div class="col-lrg-3"></div>
-			<div class="col-lrg-6">
+			<div style="width: 100%">
 				<div id="ui">
 					<h1 class="text-center">REGISTRATION FORM</h1>
 					<br>
-					<form action="/makeRestaurant/" class="form-group">
+					<form action="/makeRestaurant" method="POST" class="form-group">
 
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Restaurant:</label>
-								<input type="text" name="name" class="form-control" placeholder="Enter your restaurant name">
+								<input  required="required" type="text" name="name" class="form-control" placeholder="Enter your restaurant name">
 							</div>
 
 							<div class="col-lg-6">
 								<label>Business phone:</label>
-								<input type="text" name="phoneNumber" class="form-control" placeholder="Enter your business phone">
+								<input required="required" type="text" name="phoneNumber" class="form-control" placeholder="Enter your business phone">
 							</div>
 							
 						</div>
 						<br>
 
-						<label>Address</label>
-						<input type="text" name="address" class="form-control" placeholder="Enter your address">
+						<label>Address:</label>
+						<input required="required" type="text" name="address" class="form-control" placeholder="Enter your address">
 						<br>
-						<h3 class="text-center">Owner Information</h3>
+						<label>Pricing (On a scale from 1-4, where 1 is very affordable, and 4 is fine dining):</label>
+						<input required="required" type="number" name="pricing" class="form-control" value="1" min="1" max="4">
+						<br>
+						<label>Restaurant Tags (e.g "Burgers", "Chinese", etc. ). Separate tags using a comma:</label>
+						<input type="text" name="tags" class="form-control">
+						<br>
+						<h2 style="color: white;">Owner Information</h2>
 						<br>
 
 						<div class="row">
 							<div class="col-lg-6">
 								<label>First name:</label>
-								<input type="text" name="ownerFirstName" class="form-control" placeholder="Enter your first name">
+								<input required="required" type="text" name="ownerFirstName" class="form-control" placeholder="Enter your first name">
 							</div>
 
 							<div class="col-lg-6">
 								<label>Last name:</label>
-								<input type="text" name="ownerLastName" class="form-control" placeholder="Enter your last name">
+								<input required="required" type="text" name="ownerLastName" class="form-control" placeholder="Enter your last name">
 							</div>
 							
 						</div>
@@ -72,12 +77,12 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Title:</label>
-								<input type="text" name="ownerTitle" class="form-control" placeholder="Enter your title">
+								<input required="required" type="text" name="ownerTitle" class="form-control" placeholder="Enter your title">
 							</div>
 
 							<div class="col-lg-6">
 								<label>E-mail:</label>
-								<input type="text" name="ownerEmail" class="form-control" placeholder="Enter your E-mail">
+								<input required="required" type="text" name="ownerEmail" class="form-control" placeholder="Enter your E-mail">
 							</div>
 							
 						</div>
@@ -86,12 +91,12 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Phone number:</label>
-								<input type="text" name="ownerPhoneNumber" class="form-control" placeholder="Enter your phone number">
+								<input required="required" type="text" name="ownerPhoneNumber" class="form-control" placeholder="Enter your phone number">
 							</div>
 
 							<div class="col-lg-6">
 								<label>Password:</label>
-								<input type="password" name="password" class="form-control" placeholder="Enter your password">
+								<input required="required" type="password" name="password" class="form-control" placeholder="Enter your password">
 							</div>
 
 							
@@ -99,7 +104,7 @@
 						<br>
 						<br>
 
-						<input type="submit" name="submit" value="submit" class="btn btn-primary btn-block btn-lg">
+						<input required="required" type="submit" name="submit" value="Submit" class="btn btn-primary btn-block btn-lg">
 
 						
 					</form>

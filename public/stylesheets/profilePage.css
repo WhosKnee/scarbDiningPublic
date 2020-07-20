@@ -59,3 +59,11 @@ body, html {
  margin-top: 20px;
 }
 
+.restaurantInfo {
+    margin-bottom: 2%;
+}
+
+.restaurantInfoTitle {
+    text-decoration: underline;
+    font-weight: 500;
+}s
