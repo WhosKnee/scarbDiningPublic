@@ -40,8 +40,11 @@
                     <div class = "d-flex flex-column" style="width: 70%;">
                     <div class = "d-flex flex-row align-items-center justify-content-between" style=" padding: 2% 0 2% 0; border-bottom: black solid 1px;">
                         <h3> Stories </h3>
-                        <a class="btn btn-outline-success" href="#" role="button">Add New </a>
+                        <a class="btn btn-outline-success" href="/storyUploader/<%=restaurant.nameSpaced.replace(/ /g, "-")%>" role="button">Add New </a>
                     </div>
+                    <% restaurant.stories.forEach(story => {%>
+                        <p><%=story.text%></p>
+                    <% }); %>
                     <div class = "d-flex flex-row align-items-center justify-content-between" style=" padding: 2% 0 2% 0; border-bottom: black solid 1px;">
                         <h3> Posts </h3>
                         <a class="btn btn-outline-success" href="#" role="button">Add New</a>

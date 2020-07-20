@@ -10,14 +10,15 @@ var customerSchema = mongoose.Schema({
     customerPhoneNumber: String,
     facebookUrl: {
         type : String,
-        required: false},
+        required: false
+        },
     twitterUrl: {
         type:String,
         required: false
-    },
+        },
     linkedinUrl: {
-            type:String,
-            required: false
+        type:String,
+        required: false
         }
 })
 
