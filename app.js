@@ -44,6 +44,9 @@ const upload = multer({
     storage: storage
 });
 
+// include uploads directory in project, subsitute for multer destination atm
+app.use(express.static(__dirname + "/uploads"))
+
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
 
