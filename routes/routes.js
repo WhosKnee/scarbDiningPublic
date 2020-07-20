@@ -5,6 +5,7 @@ var router = express.Router({mergeParams: true});
 
 // fetch models 
 var Restaurant = require("../models/restaurant.js");
+var Customer= require("../models/customer.js");
 const e = require("express");
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
@@ -19,7 +20,20 @@ router.get("/restaurantSignup/", function(req, res){
     res.render("./Registration_Form.ejs");
 })
 
+// go to customer signup
+router.get("/customerSignup/", function(req, res){
+    res.render("./Customer_Form.ejs");
+})
+
 // go to a restarant's homepage
+router.get("/restuarantProfile/:restaurantName", function(req, res){
+     Restaurant.find({name:req.params.restaurantName}, (err, restaurant) => {
+            if (err) return res.json(err);
+
+            res.render("./restaurant.ejs",{restaurantInfo:restaurant[0]});
+        });
+        })
+
 router.get("/restaurantProfile/:restaurant", function(req, res){
     var restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
@@ -83,7 +97,16 @@ router.post("/searchRestaurants/", function(req,res){
             res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param});
         }
     })
+
 })
+// go to a customer homepage
+router.get("/customerProfile/:customerFirstName/:customerLastName", function(req, res){
+               Customer.find({customerFirstName:req.params.customerFirstName,customerLastName:req.params.customerLastName}, (err, customer) => {
+                        if (err) return res.json(err);
+                        res.render("./customerProfile.ejs",{customerInfo:customer[0]});
+                    });
+})
+
 
 // simple bubblesort algo to sort search query based on specified param
 function bubbleSort(list, param){
@@ -100,10 +123,10 @@ function bubbleSort(list, param){
                 (param == "priceLH" && list[i].pricing > list[i+1].pricing) ||
                 (param == "priceHL" && list[i].pricing < list[i+1].pricing) ||
                 (param == "rating" && parseFloat(list[i].rating.toString()) < parseFloat(list[i + 1].rating.toString()))
-            ){ 
+            ){
                     temp = list[i];
                     list[i] = list[i+1];
-                    list[i+1] = temp; 
+                    list[i+1] = temp;
                     swap = true;
             }
         }
@@ -111,10 +134,6 @@ function bubbleSort(list, param){
     }while(swap)
     return list;
 }
-
-router.get("/storyUploader/:restaurant", function(req, res){
-    res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
-})
 
 // Post request to create restaurant
 router.post("/makeRestaurant", function(req,res){
@@ -126,7 +145,7 @@ router.post("/makeRestaurant", function(req,res){
         password: req.body.password,
         phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
         rating: 0,
-        pricing: req.body.pricing, 
+        pricing: req.body.pricing,
         address: req.body.address.trim(),
         ownerFirstName: req.body.ownerFirstName.trim(),
         ownerLastName: req.body.ownerLastName.trim(),
@@ -134,7 +153,7 @@ router.post("/makeRestaurant", function(req,res){
         ownerEmail: req.body.ownerEmail.trim(),
         ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),
         stories: [],
-        tags: req.body.tags.trim().replace(/\s/g, '').split(","), 
+        tags: req.body.tags.trim().replace(/\s/g, '').split(","),
         foodItems: [],
         reviews: []
     });
@@ -152,18 +171,33 @@ router.post("/makeRestaurant", function(req,res){
     })
 })
 
-// Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
-    var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
-    };
+router.post("/makeCustomer/", function(req,res){
+    // create object to hold new restaurant's info
+    // trim whitespace from fields
+    var customerContent= new Customer({
+        customerFirstName: req.body.customerFirstName.trim(),
+        customerLastName: req.body.customerLastName.trim(),
+        customerBio: req.body.customerBio.trim(),
+        customerAddress: req.body.customerAddress.trim(),
+        password: req.body.password,
+        customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+        facebookUrl:req.body.facebookUrl.trim(),
+        twitterUrl:req.body.twitterUrl.trim(),
+        linkedinUrl:req.body.linkedinUrl.trim()
 
-    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
-        if (err) return res.json(err);
-        // redirect the owner to the public restaurant page
-        res.redirect("/restaurantProfile/" + req.body.restaurantName);
     });
+     //push object to the Restaurant collection in the database
+    Customer.create(customerContent, function(err, newCustomer){
+        if(err){
+            console.log(err);
+        }
+        else{
+            newCustomer.save();
+            // redirect the owner to the public restaurant page
+            res.redirect("/customerProfile/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName);
+
+        }
+    })
 })
 
 module.exports = router;
