@@ -20,9 +20,6 @@ mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd
     useNewUrlParser: true
 });
 
-// Mongoose ObjectId type
-const ObjectId = require('mongoose').Types.ObjectId;
-
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))
 

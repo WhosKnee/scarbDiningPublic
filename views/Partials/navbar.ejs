@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Scarborough Dining</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <form action="/searchRestaurants/" method="POST" style="width:50%; float: right;" class="form-inline my-2 my-lg-0">
+        <input name="searchContent" required="required" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="What Are You Craving?" aria-label="Search">
+        <select name="sortBy"  style="width: 30%; float: left;" class="form-control mr-sm-2">
+            <option value="rel" selected hidden>Sort By</option>
+            <option value="priceLH">$ (Low to High)</option>
+            <option value="priceHL">$ (High to Low)</option>
+            <option value="rating">Rating</option>
+        </select>
+        <button style="width: 15%; float: left;" class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
