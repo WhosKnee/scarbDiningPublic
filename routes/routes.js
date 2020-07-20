@@ -26,6 +26,13 @@ router.get("/customerSignup/", function(req, res){
 })
 
 // go to a restarant's homepage
+router.get("/restuarantProfile/:restaurantName", function(req, res){
+     Restaurant.find({name:req.params.restaurantName}, (err, restaurant) => {
+            if (err) return res.json(err);
+
+            res.render("./restaurant.ejs",{restaurantInfo:restaurant[0]});
+        });
+        })
 
 router.get("/restaurantProfile/:restaurant", function(req, res){
     var restaurantName = req.param("restaurant").replace(/-/g, '');
@@ -90,10 +97,11 @@ router.post("/searchRestaurants/", function(req,res){
             res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param});
         }
     })
+
 })
 // go to a customer homepage
-router.get("/customerProfile/:customerId", function(req, res){
-               Customer.find({customerFirstName:req.params.customerId}, (err, customer) => {
+router.get("/customerProfile/:customerFirstName/:customerLastName", function(req, res){
+               Customer.find({customerFirstName:req.params.customerFirstName,customerLastName:req.params.customerLastName}, (err, customer) => {
                         if (err) return res.json(err);
                         res.render("./customerProfile.ejs",{customerInfo:customer[0]});
                     });
@@ -115,10 +123,10 @@ function bubbleSort(list, param){
                 (param == "priceLH" && list[i].pricing > list[i+1].pricing) ||
                 (param == "priceHL" && list[i].pricing < list[i+1].pricing) ||
                 (param == "rating" && parseFloat(list[i].rating.toString()) < parseFloat(list[i + 1].rating.toString()))
-            ){ 
+            ){
                     temp = list[i];
                     list[i] = list[i+1];
-                    list[i+1] = temp; 
+                    list[i+1] = temp;
                     swap = true;
             }
         }
@@ -126,10 +134,6 @@ function bubbleSort(list, param){
     }while(swap)
     return list;
 }
-
-router.get("/storyUploader/:restaurant", function(req, res){
-    res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
-})
 
 // Post request to create restaurant
 router.post("/makeRestaurant", function(req,res){
@@ -141,7 +145,7 @@ router.post("/makeRestaurant", function(req,res){
         password: req.body.password,
         phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
         rating: 0,
-        pricing: req.body.pricing, 
+        pricing: req.body.pricing,
         address: req.body.address.trim(),
         ownerFirstName: req.body.ownerFirstName.trim(),
         ownerLastName: req.body.ownerLastName.trim(),
@@ -149,7 +153,7 @@ router.post("/makeRestaurant", function(req,res){
         ownerEmail: req.body.ownerEmail.trim(),
         ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),
         stories: [],
-        tags: req.body.tags.trim().replace(/\s/g, '').split(","), 
+        tags: req.body.tags.trim().replace(/\s/g, '').split(","),
         foodItems: [],
         reviews: []
     });
@@ -190,22 +194,10 @@ router.post("/makeCustomer/", function(req,res){
         else{
             newCustomer.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/customerProfile/" + newCustomer.customerFirstName);
+            res.redirect("/customerProfile/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName);
 
         }
     })
-// Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
-    var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
-    };
-
-    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
-        if (err) return res.json(err);
-        // redirect the owner to the public restaurant page
-        res.redirect("/restaurantProfile/" + req.body.restaurantName);
-    });
 })
 
 module.exports = router;
