@@ -112,6 +112,10 @@ function bubbleSort(list, param){
     return list;
 }
 
+router.get("/storyUploader/:restaurant", function(req, res){
+    res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
+})
+
 // Post request to create restaurant
 router.post("/makeRestaurant", function(req,res){
     // create object to hold new restaurant's info
@@ -146,6 +150,20 @@ router.post("/makeRestaurant", function(req,res){
             res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
         }
     })
+})
+
+// Post request to create restaurant
+router.post("/uploadStory/", function(req,res){
+    var newStory = {
+        text: req.body.storyText,
+        mediaLink: "N/A"
+    };
+
+    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
+        if (err) return res.json(err);
+        // redirect the owner to the public restaurant page
+        res.redirect("/restaurantProfile/" + req.body.restaurantName);
+    });
 })
 
 module.exports = router;
