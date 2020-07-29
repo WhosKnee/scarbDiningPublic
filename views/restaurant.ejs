@@ -21,7 +21,7 @@
                 <% } else { %> 
                     Rating: <%= restaurant.rating %>/5  &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <% } %>
-                <a class="btn btn-outline-primary" href="/menu/<%=restaurant.nameSpaced.replace(/ /g, "-")%>?p=1" role="button">Order Now</a>
+                <a class="btn btn-outline-primary" href="/<%=restaurant.nameSpaced.replace(/ /g, "-")%>/menu?p=1" role="button">Order Now</a>
             </h4>
             <div class =" d-flex flex-row align-items-start justify-content-around ">
                     <div class="card" style="width: 18rem;">
@@ -40,7 +40,7 @@
                     <div class = "d-flex flex-column" style="width: 70%;">
                     <div class = "d-flex flex-row align-items-center justify-content-between" style=" padding: 2% 0 2% 0; border-bottom: black solid 1px;">
                         <h3> Stories </h3>
-                        <a class="btn btn-outline-success" href="/storyUploader/<%=restaurant.nameSpaced.replace(/ /g, "-")%>" role="button">Add New </a>
+                        <a class="btn btn-outline-success" href="/<%=restaurant.nameSpaced.replace(/ /g, "-")%>/storyUploader" role="button">Add New </a>
                     </div>
                     <% restaurant.stories.forEach(story => {%>
                         <p><%=story.text%></p>

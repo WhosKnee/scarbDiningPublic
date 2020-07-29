@@ -23,15 +23,15 @@
         <div class="container">
             <h1 class="display-4 mt-2 mb-5">You are ordering from: <b><%= restaurant.name %></b></h1>
             <div class="row justify-content-end">
-                <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)-1%>">Last Page</a>
+                <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/<%=restaurant.name%>/menu?p=<%=Number(page)-1%>">Last Page</a>
                 <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
-                <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)+1%>">Next Page</a>
+                <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/<%=restaurant.name%>/menu?p=<%=Number(page)+1%>">Next Page</a>
             </div>
             <ul class="list-unstyled">
                 <% for(var i=0; i < 10; i++) { var food = restaurant.foodItems[10 * (page-1) + i];%>
                     <% if (food != undefined) { %>
                         <li class="media mt-1 food-item">
-                            <img class="mr-3" src=<%=food.imageLink%> alt="Tmp Img" style="height:8em">
+                            <img class="mr-3" src=<%=food.imageLink%> alt="Tmp Img" height="80em" width="60em">
                             <div class="media-body">
                                 <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>
                                 <%=food.description%>
@@ -40,9 +40,9 @@
                 <% }}; %>
             </ul>
             <div class="row justify-content-end">
-            <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)-1%>">Last Page</a>
+                <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/<%=restaurant.name%>/menu?p=<%=Number(page)-1%>">Last Page</a>
                 <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
-                <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/menu/<%=restaurant.name%>?p=<%=Number(page)+1%>">Next Page</a>
+                <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/<%=restaurant.name%>/menu?p=<%=Number(page)+1%>">Next Page</a>
             </div>
         </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
