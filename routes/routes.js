@@ -5,7 +5,8 @@ var router = express.Router({mergeParams: true});
 
 // fetch models 
 var Restaurant = require("../models/restaurant.js");
-var Customer= require("../models/customer.js");
+var Customer = require("../models/customer.js");
+var Cart = require("../models/cart.js");
 const e = require("express");
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT

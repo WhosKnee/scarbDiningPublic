@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require('fs')
+const cookieSession = require('cookie-session')
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -46,6 +47,15 @@ const upload = multer({
 
 // include uploads directory in project, subsitute for multer destination atm
 app.use(express.static(__dirname + "/uploads"))
+
+// configure user session
+// TODO: need to use encryption library to sign/verify cookies
+app.use(cookieSession({secret:"temp", maxAge:60*60*1000}))
+app.use(function(req, res, next){
+     // make cart variable accessible to all ejs templates
+    res.locals.cart = req.session.cart;
+    next();
+})
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
