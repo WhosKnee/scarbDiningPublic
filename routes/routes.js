@@ -1,5 +1,6 @@
 var express = require("express");
 var mongoose = require("mongoose");
+const passport = require("passport");
 // we load up the routes to a router which we export to the app.js file
 var router = express.Router({mergeParams: true});
 
@@ -7,6 +8,7 @@ var router = express.Router({mergeParams: true});
 var Restaurant = require("../models/restaurant.js");
 var Customer= require("../models/customer.js");
 const e = require("express");
+const { Passport } = require("passport");
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
 
@@ -147,12 +149,32 @@ function bubbleSort(list, param){
 }
 
 // Post request to create restaurant
+router.post("/uploadStory/", function(req,res){
+    var newStory = {
+        text: req.body.storyText,
+        mediaLink: "N/A"
+    };
+
+    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
+        if (err) return res.json(err);
+        // redirect the owner to the public restaurant page
+        res.redirect("/restaurantProfile/" + req.body.restaurantName);
+    });
+})
+
+module.exports = router;
+
+// ===================
+// AUTH ROUTES
+// ===================
+// Post request to create restaurant
 router.post("/makeRestaurant", function(req,res){
     // create object to hold new restaurant's info
     // trim whitespace from fields and format correctly
     var restaurantContent= new Restaurant({
         name: req.body.name.trim().replace(/\s/g, ''),
         nameSpaced: req.body.name.trim(),
+        username: req.body.ownerEmail.trim(),
         password: req.body.password,
         phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
         rating: 0,
@@ -177,7 +199,7 @@ router.post("/makeRestaurant", function(req,res){
         else{
             newRestaurant.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile");
+            res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
         }
     })
 })
@@ -210,19 +232,3 @@ router.post("/makeCustomer/", function(req,res){
         }
     })
 })
-
-// Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
-    var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
-    };
-
-    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
-        if (err) return res.json(err);
-        // redirect the owner to the public restaurant page
-        res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
-    });
-})
-
-module.exports = router;
