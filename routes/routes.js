@@ -25,19 +25,11 @@ router.get("/customerSignup/", function(req, res){
     res.render("./Customer_Form.ejs");
 })
 
-// go to a restarant's homepage
-router.get("/restuarantProfile/:restaurantName", function(req, res){
-     Restaurant.find({name:req.params.restaurantName}, (err, restaurant) => {
-        if (err) return res.json(err);
-        res.render("./restaurant.ejs",{restaurantInfo:restaurant[0]});
-    });
-})
-
-router.get("/storyUploader/:restaurant", function(req, res){
+router.get("/:restaurant/storyUploader", function(req, res){
     res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
 })
 
-router.get("/restaurantProfile/:restaurant", function(req, res){
+router.get("/:restaurant/restaurantProfile", function(req, res){
     var restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
     .populate("stories")
@@ -55,8 +47,8 @@ router.get("/restaurantProfile/:restaurant", function(req, res){
 })
 
 // go to a restarant's homepage
-router.get("/menu/:restaurant", function(req, res){
-    restaurantName = req.param("restaurant").replace(/-/g, '');
+router.get("/:restaurant/menu", function(req, res){
+    var restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
     .populate("foodItems")
     .exec(function(err, Restaurants){
@@ -65,7 +57,6 @@ router.get("/menu/:restaurant", function(req, res){
         } else {
             // the query returns a list so we need the first item which is our restaurant
             currRestaurant = Restaurants[0];
-            console.log(currRestaurant["name"]);
             res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
     })
@@ -120,11 +111,11 @@ router.post("/searchRestaurants/", function(req,res){
 
 })
 // go to a customer homepage
-router.get("/customerProfile/:customerFirstName/:customerLastName", function(req, res){
-               Customer.find({customerFirstName:req.params.customerFirstName,customerLastName:req.params.customerLastName}, (err, customer) => {
-                        if (err) return res.json(err);
-                        res.render("./customerProfile.ejs",{customerInfo:customer[0]});
-                    });
+router.get("/:customerFirstName/:customerLastName/customerProfile", function(req, res){
+    Customer.find({customerFirstName:req.params.customerFirstName,customerLastName:req.params.customerLastName}, (err, customer) => {
+            if (err) return res.json(err);
+            res.render("./customerProfile.ejs",{customerInfo:customer[0]});
+        });
 })
 
 
@@ -186,7 +177,7 @@ router.post("/makeRestaurant", function(req,res){
         else{
             newRestaurant.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
+            res.redirect("/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile");
         }
     })
 })
@@ -214,7 +205,7 @@ router.post("/makeCustomer/", function(req,res){
         else{
             newCustomer.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/customerProfile/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName);
+            res.redirect("/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName + "/customerProfile");
 
         }
     })
@@ -230,7 +221,7 @@ router.post("/uploadStory/", function(req,res){
     Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
         if (err) return res.json(err);
         // redirect the owner to the public restaurant page
-        res.redirect("/restaurantProfile/" + req.body.restaurantName);
+        res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
     });
 })
 
