@@ -194,7 +194,6 @@ router.post("/makeRestaurant", function(req,res){
     // register restaurant to the Restaurant collection in the database
     Restaurant.register(restaurantContent, req.body.password, function(err, restaurant){
         if(err){
-<<<<<<< HEAD
             console.log(err)
             res.direct("/restaurantSignup/");
         } else {
@@ -202,14 +201,6 @@ router.post("/makeRestaurant", function(req,res){
             passport.authenticate("ownerLocal")(req, res, function(){
                 res.redirect("/restaurantProfile/" + restaurant.name.replace(/ /g, "-"));
             });
-=======
-            console.log(err);
-        }
-        else{
-            newRestaurant.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile");
->>>>>>> 3e723b7cc27b308fe1e69c78ae42894b79fc17c9
         }
     });
 
@@ -253,24 +244,4 @@ router.post("/makeCustomer/", function(req,res){
 
         }
     })
-<<<<<<< HEAD
 })
-=======
-})
-
-// Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
-    var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
-    };
-
-    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
-        if (err) return res.json(err);
-        // redirect the owner to the public restaurant page
-        res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
-    });
-})
-
-module.exports = router;
->>>>>>> 3e723b7cc27b308fe1e69c78ae42894b79fc17c9
