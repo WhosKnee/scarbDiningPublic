@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require('fs')
+const passport = require("passport");
+const LocalStrategy = require("passport-local")
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -49,6 +51,29 @@ app.use(express.static(__dirname + "/uploads"))
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
+var Customer= require("./models/customer.js")
+
+
+// configure passport
+app.use(require("express-session")({
+    secret: "can be anything",
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use('customerLocal', new LocalStrategy(Customer.authenticate()));
+passport.use('ownerLocal', new LocalStrategy(Restaurant.authenticate()));
+
+passport.serializeUser(function(user, done) { 
+    done(null, user);
+  });
+
+passport.deserializeUser(function(user, done) {
+    if(user!=null)
+      done(null,user);
+  });
 
 // fetch routes
 var routes = require("./routes/routes.js");

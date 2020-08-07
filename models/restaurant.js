@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var passportLocalMongoose = require("passport-local-mongoose");
 
 // create restaurant schema
 var restaurantSchema = mongoose.Schema({
@@ -39,6 +40,8 @@ var restaurantSchema = mongoose.Schema({
         rating: Number
     }]
 })
+
+restaurantSchema.plugin(passportLocalMongoose);
 
 // create restaurant model to export
 var Restaurant = mongoose.model("Node", restaurantSchema);

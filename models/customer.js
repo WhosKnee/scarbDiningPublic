@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var passportLocalMongoose = require("passport-local-mongoose");
 
 // create restaurant schema
 var customerSchema = mongoose.Schema({
@@ -21,6 +22,8 @@ var customerSchema = mongoose.Schema({
         required: false
         }
 })
+
+customerSchema.plugin(passportLocalMongoose);
 
 // create restaurant model to export
 var Customer = mongoose.model("Customer", customerSchema);
