@@ -27,9 +27,14 @@ router.get("/customerSignup/", function(req, res){
 })
 
 router.get("/:restaurant/storyUploader", function(req, res){
+    // Prevent unauthorized user from accessing this page
+    if(!req.user || req.user.name != req.param("restaurant").replace(/-/g, '')){
+        return res.redirect("/");
+    }
     res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
 })
 
+// go to a restarant's homepage
 router.get("/:restaurant/restaurantProfile", function(req, res){
     var restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
@@ -47,8 +52,11 @@ router.get("/:restaurant/restaurantProfile", function(req, res){
     })
 })
 
-// go to a restarant's homepage
+// go to a restaurant's menu
 router.get("/:restaurant/menu", function(req, res){
+    if (!req.user || req.usedStrategy != "customerLocal"){
+        return res.redirect("/customerLogin");
+    }
     var restaurantName = req.param("restaurant").replace(/-/g, '');
     Restaurant.find({name: restaurantName})
     .populate("foodItems")

@@ -77,9 +77,12 @@ passport.deserializeUser(function(user, done) {
   });
 
 app.use(flash());
+
 app.use(function(req, res, next){
     // make flash messages accessible from ejs
     res.locals.message = req.flash();
+    // make authenticated user accessible from ejs
+    res.locals.user = req.user;
     next();
 })
 
