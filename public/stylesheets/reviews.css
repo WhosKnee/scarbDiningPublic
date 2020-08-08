@@ -1,0 +1,43 @@
+/* this css styling was adapted from https://stackoverflow.com/questions/8118266/integrating-css-star-rating-into-an-html-form */
+
+.checked {
+    color: orange;
+}
+
+.rating {
+    direction: rtl;
+    padding-bottom: 1em;
+}
+
+.rating span input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0;
+}
+
+.rating span img {
+    height: 2em;
+    width: 2em;
+}
+
+.rating span:hover~span label + img,
+.rating span:hover label + img,
+.rating span.checked label + img,
+.rating span.checked~span label + img {
+    content: url('/images/star-solid-checked.svg');
+}
+
+#review-comment-div {
+    width: 80vw;
+}
+
+#review-text {
+    width: 80%;
+    height: 10em;
+    text-align: center;
+}
+
+#review-text-submit-div {
+    width: 90%;
+}

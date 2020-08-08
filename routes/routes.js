@@ -57,8 +57,40 @@ router.get("/:restaurant/menu", function(req, res){
         } else {
             // the query returns a list so we need the first item which is our restaurant
             currRestaurant = Restaurants[0];
-            res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
+            res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.page});
         }
+    })
+})
+
+// go to a restarant's review page
+router.get("/restaurants/:restaurantId/reviews/", function (req, res) {
+    var restaurantId = req.param("restaurantId");
+
+    Customer
+        .find({})
+        .exec(function (err, customers) {
+            var customerMap = {};
+
+            customers.forEach(function (customer) {
+                customerMap[customer._id] = customer.customerFirstName + ' ' + customer.customerLastName;
+            });
+
+            Restaurant.find({
+                    _id: restaurantId
+                })
+                .exec(function (err, Restaurants) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // the query returns a list so we need the first item which is our restaurant
+                        currRestaurant = Restaurants[0];
+                        res.render("./reviews.ejs", {
+                            restaurant: currRestaurant,
+                            page: 1,
+                            customerMap: JSON.stringify(customerMap)
+                        });
+                    }
+        })
     })
 })
 
@@ -211,6 +243,20 @@ router.post("/makeCustomer/", function(req,res){
     })
 })
 
+// upload review
+router.patch('/restaurants/:restaurantId/reviews', function (req, res, next) {
+    let newReview = {
+        user_id: req.body.user_id,
+        comment: req.body.comment,
+        rating: req.body.rating
+    };
+
+    Restaurant.findOneAndUpdate({_id: req.params.restaurantId}, {$push: {reviews: newReview}}, function (err, result) {
+        if (err) return res.json(err);
+        return res.json(newReview);
+    });
+});
+
 // Post request to create restaurant
 router.post("/uploadStory/", function(req,res){
     var newStory = {
@@ -223,6 +269,6 @@ router.post("/uploadStory/", function(req,res){
         // redirect the owner to the public restaurant page
         res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
     });
-})
+});
 
 module.exports = router;

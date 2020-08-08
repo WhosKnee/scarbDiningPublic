@@ -59,27 +59,7 @@ app.use(routes);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-    console.log("('we're in)");
-
-    // add restaurant to db
-    app.post('/api/restaurants/', function (req, res, next) {
-        let newRestaurant = new Restaurant({
-            _id: mongoose.Types.ObjectId(),
-            name: req.body.name,
-            phone: req.body.phoneNumber,
-            address: req.body.address,
-            ownerFirstName: req.body.ownerFirstName,
-            ownerLastName: req.body.ownerLastName,
-            ownerTitle: req.body.ownerTitle,
-            ownerEmail: req.body.ownerEmail,
-            ownerPhone: req.body.ownerPhoneNumber
-        });
-
-        newRestaurant.save(function (err, result) {
-            if (err) console.log('error');
-            return res.json('Success');
-        });
-    });
+    console.log("Database running");
 
     // add story to db
     app.patch('/api/restaurants/stories/', upload.single('picture'), function (req, res, next) {
