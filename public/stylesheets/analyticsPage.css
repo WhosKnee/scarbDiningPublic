@@ -1,0 +1,45 @@
+
+.card-group {
+    width: 90%; 
+    margin-left: 5%; 
+    margin-right: 5%;
+}
+
+.card {
+    margin: 1%;
+    height: 20%;
+}
+
+.numberText {
+    font-weight: 500;
+    font-size: 2em;
+}
+
+.resultsMeaning {
+    font-size: 1.2em;
+}
+
+.event {
+    margin: 2% 5% 2% 0%;
+    padding: 1%;
+    font-size: 1em;
+    font-weight: 400;
+    border-radius: 3%;
+}
+
+.event:hover {
+    background-color: rgb(172, 245, 255);
+}
+
+.name {
+    font-weight: 700;
+}
+
+.scrollable{
+    border-top: 1px solid black;
+    overflow-y: auto;
+    margin-top: 1%;
+    height: 80%;
+    width: 100%;
+    align-items: center;
+}

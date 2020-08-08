@@ -112,6 +112,20 @@ router.post("/searchRestaurants/", function(req,res){
     })
 
 })
+
+// get request to analytical dashboard
+router.get("/:restaurantName/analytics", function(req, res){
+    var restaurantName = req.param("restaurantName").replace(/-/g, '');
+    Restaurant.find({name: restaurantName}).exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // the query returns a list so we need the first item which is our restaurant
+            res.render("./analytics.ejs", {restaurant: Restaurants[0]});
+        }
+    })
+})
+
 // go to a customer homepage
 router.get("/:customerFirstName/:customerLastName/customerProfile", function(req, res){
     Customer.find({customerFirstName:req.params.customerFirstName,customerLastName:req.params.customerLastName}, (err, customer) => {
