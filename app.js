@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require('fs')
 const passport = require("passport");
-const LocalStrategy = require("passport-local")
+const LocalStrategy = require("passport-local");
+const flash = require("connect-flash");
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -74,6 +75,13 @@ passport.deserializeUser(function(user, done) {
     if(user!=null)
       done(null,user);
   });
+
+app.use(flash());
+app.use(function(req, res, next){
+    // make flash messages accessible from ejs
+    res.locals.message = req.flash();
+    next();
+})
 
 // fetch routes
 var routes = require("./routes/routes.js");

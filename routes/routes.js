@@ -8,7 +8,6 @@ var router = express.Router({mergeParams: true});
 var Restaurant = require("../models/restaurant.js");
 var Customer= require("../models/customer.js");
 const e = require("express");
-const { Passport } = require("passport");
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
 
@@ -195,53 +194,48 @@ router.post("/makeRestaurant", function(req,res){
     Restaurant.register(restaurantContent, req.body.password, function(err, restaurant){
         if(err){
             console.log(err)
-            res.direct("/restaurantSignup/");
+            res.redirect("/restaurantSignup/");
         } else {
-            console.log("All kosher :)")
-            passport.authenticate("ownerLocal")(req, res, function(){
-                res.redirect("/restaurantProfile/" + restaurant.name.replace(/ /g, "-"));
-            });
+            console.log("Successful registration.");
+            res.redirect("/loginRestaurant");
         }
     });
-
-    // push object to the Restaurant collection in the database
-    // Restaurant.create(restaurantContent, function(err, newRestaurant){
-    //     if(err){
-    //         console.log(err);
-    //     }
-    //     else{
-    //         newRestaurant.save();
-    //         // redirect the owner to the public restaurant page
-    //         res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
-    //     }
-    // })
 })
 
+router.post('/loginRestaurant', passport.authenticate('ownerLocal', {failureRedirect: '/loginRestaurant', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user.nameSpaced.replace(/ /g, "-")+"/restaurantProfile");
+});
+
 router.post("/makeCustomer/", function(req,res){
-    // create object to hold new restaurant's info
+    // create object to hold new customer's info
     // trim whitespace from fields
     var customerContent= new Customer({
         customerFirstName: req.body.customerFirstName.trim(),
         customerLastName: req.body.customerLastName.trim(),
         customerBio: req.body.customerBio.trim(),
         customerAddress: req.body.customerAddress.trim(),
+        username: req.body.customerEmail.trim(),
         password: req.body.password,
+        customerEmail: req.body.customerEmail.trim(),
         customerPhoneNumber: req.body.customerPhoneNumber.trim(),
         facebookUrl:req.body.facebookUrl.trim(),
         twitterUrl:req.body.twitterUrl.trim(),
         linkedinUrl:req.body.linkedinUrl.trim()
 
     });
-     //push object to the Restaurant collection in the database
-    Customer.create(customerContent, function(err, newCustomer){
-        if(err){
-            console.log(err);
-        }
-        else{
-            newCustomer.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName + "/customerProfile");
 
+    // register customer to the Customer collection in the database
+    Customer.register(customerContent, req.body.password, function(err, customer){
+        if(err){
+            console.log(err)
+            res.redirect("/customerSignup/");
+        } else {
+            console.log("Successful registration.");
+            res.redirect("/loginCustomer");
         }
-    })
+    });
 })
+
+router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user.customerFirstName+"/"+req.user.customerLastName+"/customerProfile");
+});
