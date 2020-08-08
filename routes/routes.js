@@ -57,13 +57,13 @@ router.get("/:restaurant/menu", function(req, res){
         } else {
             // the query returns a list so we need the first item which is our restaurant
             currRestaurant = Restaurants[0];
-            res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.page});
+            res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
     })
 })
 
 // go to a restarant's review page
-router.get("/restaurants/:restaurantId/reviews/", function (req, res) {
+router.get("/restaurants/:restaurantId/reviews", function (req, res) {
     var restaurantId = req.param("restaurantId");
 
     Customer
@@ -86,7 +86,7 @@ router.get("/restaurants/:restaurantId/reviews/", function (req, res) {
                         currRestaurant = Restaurants[0];
                         res.render("./reviews.ejs", {
                             restaurant: currRestaurant,
-                            page: 1,
+                            page: req.query.p,
                             customerMap: JSON.stringify(customerMap)
                         });
                     }
@@ -244,7 +244,7 @@ router.post("/makeCustomer/", function(req,res){
 })
 
 // upload review
-router.patch('/restaurants/:restaurantId/reviews', function (req, res, next) {
+router.patch('/restaurants/:restaurantId/reviews/', function (req, res, next) {
     let newReview = {
         user_id: req.body.user_id,
         comment: req.body.comment,

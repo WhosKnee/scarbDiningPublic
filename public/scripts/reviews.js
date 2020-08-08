@@ -1,6 +1,15 @@
 $(document).ready(function () {
     const DUMMY_USER = "5f1b2c758ccd610017ad85db";
     let userRating;
+    let url = window.location.pathname;
+    let restaurantId = url.substring(url.indexOf('/restaurants/') + '/restaurants/'.length, url.indexOf('/reviews'));
+
+    let pageNumber = window.location.href.split("?")[1];
+
+    // adding page 1 if not there
+    if (!pageNumber) {
+        window.location.href = window.location.href + '?p=1';
+    }
 
     function send(method, url, data, callback) {
         let xhr = new XMLHttpRequest();
@@ -26,14 +35,12 @@ $(document).ready(function () {
     });
 
     $('#review-text-submit-btn').click(() => {
-       let url = window.location.pathname;
-       let restaurantId = url.substring(url.indexOf('/restaurants/') + '/restaurants/'.length, url.indexOf('/reviews/'));
        let reviewComment = $('#review-text').val();
 
        console.log('hello');
 
        if (userRating) {
-           console.log('hello2');
+           console.log(restaurantId);
 
            send("PATCH", `/restaurants/${restaurantId}/reviews/`, {
                user_id: DUMMY_USER,
