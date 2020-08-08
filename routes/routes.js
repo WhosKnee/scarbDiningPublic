@@ -63,23 +63,68 @@ router.get("/:restaurant/menu", function(req, res){
     })
 })
 
-router.post("/:restaurant/updateCart", function(req, res){
-    req.session.cart = req.session.cart || new Cart({
-        restaurant: req.param("restaurant"),
-        cartItems:[]
-    })
-    for(i = 0; i < req.session.cart.cartItems.length; i++){
-        cartItem = req.session.cart.cartItems[i]
-        if (cartItem.foodItemId == req.body.food_id){
-            cartItem.quantity++
-            return res.redirect(req.headers.referer)
-        }
+// update shopping cart by adding or removing items, and/or replacing one restaurant's cart for another's
+router.post("/updateCart", function(req, res){
+    console.log(req.session.cart);
+    if (req.body.replace == "true" || !req.session.cart){
+        req.session.cart = new Cart({
+            restaurant: req.body.restaurant,
+            cartItems:[]
+        })
     }
-    req.session.cart.cartItems.push({
-        foodItemId:req.body.food_id,
-        quantity:1
-    })
-    return res.redirect(req.headers.referer);
+    if (req.body.action == "add"){
+        for(i = 0; i < req.session.cart.cartItems.length; i++){
+            cartItem = req.session.cart.cartItems[i]
+            if (cartItem.foodItemId == req.body.food_id){
+                cartItem.quantity++
+                return res.redirect(req.headers.referer)
+            }
+        }
+        req.session.cart.cartItems.push({
+            foodItemId:req.body.food_id,
+            quantity:1
+        })
+        return res.redirect(req.headers.referer);
+    } else if (req.body.action == "remove"){
+        for(i = 0; i < req.session.cart.cartItems.length; i++){
+            cartItem = req.session.cart.cartItems[i]
+            if (cartItem.foodItemId == req.body.food_id){
+                cartItem.quantity--
+                if (cartItem.quantity <= 0){
+                    req.session.cart.cartItems.splice(i, 1)
+                }
+                if (req.session.cart.cartItems.length <= 0){
+                    req.session.cart = undefined;
+                    return res.redirect("/")
+                }
+                return res.redirect(req.headers.referer)
+            }
+        }
+        console.log("Nothing to remove")
+        return res.redirect(req.headers.referer)
+    }
+    console.log("Bad Action")
+    return res.redirect(req.headers.referer)
+})
+
+// go to cart page
+router.get("/myCart", function(req, res){
+    if (req.session.cart){
+        Restaurant.find({name: req.session.cart.restaurant})
+        .populate("foodItems")
+        .exec(function(err, Restaurants){
+            if(err){
+                console.log(err)
+            } else {
+                // the query returns a list so we need the first item which is our restaurant
+                currRestaurant = Restaurants[0];
+                res.render("./cart.ejs", {restaurant: currRestaurant});
+            }
+        })
+    }else{
+        // should not be able to go to cart page with an empty cart
+        res.redirect("/")
+    }
 })
 
 // Post to query search results

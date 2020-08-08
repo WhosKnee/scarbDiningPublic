@@ -21,7 +21,7 @@
     <body>
         <%- include('./partials/navbar.ejs') %>
         <div class="container">
-            <h1 class="display-4 mt-2 mb-5">You are ordering from: <b><%= restaurant.name %></b></h1>
+            <h1 class="display-4 mt-2 mb-5">You are ordering from: <a href="/<%=restaurant.name%>/restaurantProfile" style="color:black; text-decoration:none;"><b><%= restaurant.name %></b></a></h1>
             <div class="row justify-content-end">
                 <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/<%=restaurant.name%>/menu?p=<%=Number(page)-1%>">Last Page</a>
                 <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
@@ -32,7 +32,10 @@
                     <% if (food != undefined) { %>
                         <li class="media mt-1 food-item">
                             <img class="mr-3 align-self-start" src=<%=food.imageLink%> alt="Tmp Img" height="80em" width="60em">
-                            <form id="wrapper-form-<%=i%>" method="POST" action="/<%=restaurant.name%>/updateCart">
+                            <form id="wrapper-form-<%=i%>" method="POST" action="/updateCart">
+                                <input type="hidden" name="restaurant" value="<%=restaurant.name%>">
+                                <input type="hidden" name="action" value="add">
+                                <input type="hidden" name="replace" value="<%=!cart || cart.restaurant != restaurant.name ? "true" : "false"%>">
                                 <input type="hidden" name="food_id" value="<%=food._id%>">
                                 <div class="media-body" onclick="document.getElementById('wrapper-form-<%=i%>').submit();">
                                     <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>

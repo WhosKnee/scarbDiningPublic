@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>My Cart</title>
+        
+        <!-- CSS only -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+        <!-- JS, Popper.js, and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/stylesheets/cart.css">
+    </head>
+
+    <body>
+        <%- include('./partials/navbar.ejs') %>
+        <div class="container">
+            <h1 class="display-4 mt-2 mb-5">You are ordering from: <a href="/<%=restaurant.name%>/restaurantProfile" style="color:black; text-decoration:none;"><b><%= cart.restaurant %></b></a></h1>
+            <h3> Your cart contains the following items:</h3>
+            <ul class="list-unstyled">
+                <% for(var i=0; i < cart.cartItems.length; i++) { %>
+                    <% for(var j=0; j < restaurant.foodItems.length; j++) { %>
+                        <% if(restaurant.foodItems[j]._id == cart.cartItems[i].foodItemId){ %>
+                            <% var food = restaurant.foodItems[j]; %>
+                            <li class="media mt-1 food-item container justify-content-start" style="height:6em;">
+                                <img class="mr-3 row align-self-start h-100" src=<%=food.imageLink%> alt="Tmp Img" width="70em">
+                                <div class="media-body row justify-content-between align-items-center h-100 no-gutters">
+                                    <div class="col-9">
+                                        <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>
+                                        <%=food.description%>
+                                    </div>
+                                    <div class="col-1">
+                                        <h5>Quantity:</h5>    
+                                    </div>
+                                    <div class="col-1" style="text-align: center;">
+                                        <form id="wrapper-form-<%=i%>" method="POST" action="/updateCart">
+                                            <input type="hidden" name="restaurant" value="<%=restaurant.name%>">
+                                            <input type="hidden" name="action" value="add">
+                                            <input type="hidden" name="replace" value="false">
+                                            <input type="hidden" name="food_id" value="<%=food._id%>">
+                                            <button class="btn btn-sm btn-outline-secondary" type="submit"> Add </button>
+                                        </form>
+                                        <h5><%=cart.cartItems[i].quantity%></h5>
+                                        <form id="wrapper-form-<%=i%>" method="POST" action="/updateCart">
+                                            <input type="hidden" name="restaurant" value="<%=restaurant.name%>">
+                                            <input type="hidden" name="action" value="remove">
+                                            <input type="hidden" name="replace" value="false">
+                                            <input type="hidden" name="food_id" value="<%=food._id%>">
+                                            <button class="btn btn-sm btn-outline-secondary" type="submit"> Remove </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                <% }}}; %>
+            </ul>
+            <button class="btn btn-lg btn-success float-right">Checkout</button>
+        </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    </body>
+</html>
