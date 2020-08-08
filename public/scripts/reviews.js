@@ -4,13 +4,6 @@ $(document).ready(function () {
     let url = window.location.pathname;
     let restaurantId = url.substring(url.indexOf('/restaurants/') + '/restaurants/'.length, url.indexOf('/reviews'));
 
-    let pageNumber = window.location.href.split("?")[1];
-
-    // adding page 1 if not there
-    if (!pageNumber) {
-        window.location.href = window.location.href + '?p=1';
-    }
-
     function send(method, url, data, callback) {
         let xhr = new XMLHttpRequest();
         xhr.onload = function () {

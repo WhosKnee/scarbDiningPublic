@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title><%= restaurant.name %> Reviews</title>
+    <title> <%= restaurant.name %> Reviews</title>
 
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -29,8 +29,11 @@
 
 <body>
     <%- include('./partials/navbar.ejs') %>
+    <a id="back-btn" class="btn btn-outline-secondary btn-md float-right m-2" href="/<%=restaurant._id%>/restaurantProfile" role="button">Back to profile page</a>
+    
     <div class="container">
         <h1 class="display-4 mt-2 mb-5 text-center">Reviews for <b><%= restaurant.name %></b></h1>
+
 
         <div id="leave-review-div" class="p-3 m-4 border-bottom mb-5">
             <form id="review-form" class="text-center">
