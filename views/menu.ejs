@@ -31,11 +31,17 @@
                 <% for(var i=0; i < 10; i++) { var food = restaurant.foodItems[10 * (page-1) + i];%>
                     <% if (food != undefined) { %>
                         <li class="media mt-1 food-item">
-                            <img class="mr-3" src=<%=food.imageLink%> alt="Tmp Img" height="80em" width="60em">
-                            <div class="media-body">
-                                <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>
-                                <%=food.description%>
-                            </div>
+                            <img class="mr-3 align-self-start" src=<%=food.imageLink%> alt="Tmp Img" height="80em" width="60em">
+                            <form id="wrapper-form-<%=i%>" method="POST" action="/<%=restaurant.name%>/updateCart">
+                                <input type="hidden" name="food_id" value="<%=food._id%>">
+                                <div class="media-body" onclick="document.getElementById('wrapper-form-<%=i%>').submit();">
+                                    <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>
+                                    <%=food.description%>
+                                    <div class="food-item-wrapper">
+                                        <h1 class="food-item-text">Add to Cart</h1>
+                                    </div>
+                                </div>
+                            </form>
                         </li>
                 <% }}; %>
             </ul>

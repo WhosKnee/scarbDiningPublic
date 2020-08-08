@@ -63,6 +63,25 @@ router.get("/:restaurant/menu", function(req, res){
     })
 })
 
+router.post("/:restaurant/updateCart", function(req, res){
+    req.session.cart = req.session.cart || new Cart({
+        restaurant: req.param("restaurant"),
+        cartItems:[]
+    })
+    for(i = 0; i < req.session.cart.cartItems.length; i++){
+        cartItem = req.session.cart.cartItems[i]
+        if (cartItem.foodItemId == req.body.food_id){
+            cartItem.quantity++
+            return res.redirect(req.headers.referer)
+        }
+    }
+    req.session.cart.cartItems.push({
+        foodItemId:req.body.food_id,
+        quantity:1
+    })
+    return res.redirect(req.headers.referer);
+})
+
 // Post to query search results
 router.post("/searchRestaurants/", function(req,res){
     // collect the search field and create object to pass into ejs
