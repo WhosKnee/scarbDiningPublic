@@ -65,7 +65,6 @@ router.get("/:restaurant/menu", function(req, res){
 
 // update shopping cart by adding or removing items, and/or replacing one restaurant's cart for another's
 router.post("/updateCart", function(req, res){
-    console.log(req.session.cart);
     if (req.body.replace == "true" || !req.session.cart){
         req.session.cart = new Cart({
             restaurant: req.body.restaurant,
@@ -288,6 +287,11 @@ router.post("/uploadStory/", function(req,res){
         // redirect the owner to the public restaurant page
         res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
     });
+})
+
+// go to under construction page
+router.get("/construction", function(req, res){
+    res.render("./construction.ejs");
 })
 
 module.exports = router;
