@@ -171,7 +171,21 @@ router.post("/makeRestaurant", function(req,res){
         foodItems: [],
         reviews: []
     });
-
+     if(req.body.restaurantFirstName =="check")
+     {
+     console.log("ere8");
+     Restaurant.findOneAndUpdate({customerLastName:req.body.customerLastName.trim()},{name: req.body.name.trim().replace(/\s/g, ''),nameSpaced: req.body.name.trim(),password: req.body.password,phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),rating: 0,pricing: req.body.pricing,address: req.body.address.trim(),ownerFirstName: req.body.ownerFirstName.trim(),ownerLastName: req.body.ownerLastName.trim(),ownerTitle: req.body.ownerTitle.trim(),ownerEmail: req.body.ownerEmail.trim(),ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),stories: [],tags: req.body.tags.trim().replace(/\s/g, '').split(","),foodItems: [],reviews: []
+        },function (err, customer) {
+       if(err){
+          console.log(err);
+       }
+       else
+       {            res.redirect("/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile");
+}
+       });
+       }
+       else
+       {
     // push object to the Restaurant collection in the database
     Restaurant.create(restaurantContent, function(err, newRestaurant){
         if(err){
@@ -182,7 +196,7 @@ router.post("/makeRestaurant", function(req,res){
             // redirect the owner to the public restaurant page
             res.redirect("/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile");
         }
-    })
+    })}
 })
 
 router.post("/makeCustomer/", function(req,res){
@@ -200,40 +214,46 @@ router.post("/makeCustomer/", function(req,res){
         linkedinUrl:req.body.linkedinUrl.trim()
 
     });
-     //push object to the Restaurant collection in the database
-    Customer.create(customerContent, function(err, newCustomer){
-        if(err){
-            console.log(err);
-        }
-        else{
-            newCustomer.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName + "/customerProfile");
+     console.log("ere1");
+     if(req.body.customerFirstName =="check")
+     {
+     console.log("ere8");
+     Customer.findOneAndUpdate({customerLastName:req.body.customerLastName.trim()},{customerFirstName: req.body.customerFirstName.trim(),customerLastName: req.body.customerLastName.trim(),customerBio: req.body.customerBio.trim(),customerAddress: req.body.customerAddress.trim(),password: req.body.password,customerPhoneNumber: req.body.customerPhoneNumber.trim(),facebookUrl:req.body.facebookUrl.trim(),twitterUrl:req.body.twitterUrl.trim(),linkedinUrl:req.body.linkedinUrl.trim()
+        },function (err, customer) {
+       if(err){
+          console.log(err);
+       }
+       else
+       {
+             res.redirect("/" + customerContent.customerFirstName + "/" + customerContent.customerLastName + "/customerProfile");
+}
+       });
+       }
+       else
+       {
+       console.log("ere9");
+        Customer.create(customerContent, function(err2, newCustomer){
+                       if(err2){
+                           console.log(err);
+                            console.log("ere4");
+                       }
+                       else{
+                           console.log("ere3");
+                           newCustomer.save();
+      res.redirect("/" + customerContent.customerFirstName + "/" + customerContent.customerLastName + "/customerProfile");
+                       }
+                   })
+      }
 
-        }
-    })
+     //push object to the Restaurant collection in the database
+
 })
 router.post("/updateCustomer/", function(req,res){
     // create object to hold new restaurant's info
-    // trim whitespace from fields
-    console.log(2);
-    var customerContent= new Customer({
-            customerFirstName: req.body.customerFirstName.trim(),
-            customerLastName: req.body.customerLastName.trim(),
-            customerBio: req.body.customerBio.trim(),
-            customerAddress: req.body.customerAddress.trim(),
-            password: req.body.password,
-            customerPhoneNumber: req.body.customerPhoneNumber.trim(),
-            facebookUrl:req.body.facebookUrl.trim(),
-            twitterUrl:req.body.twitterUrl.trim(),
-            linkedinUrl:req.body.linkedinUrl.trim()
-
-        });
-    console.log(customerContent.customerFirstName,customerContent.customerLastName )
-    Customer.findOneAndUpdate({customerFirstName:customerContent.customerFirstName,customerLastName:customerContent.customerLastName},{$push: {password:customerContent.password,customerBio:customerContent.customerBio}},function (err, customer) {
-    if (err) console.log(234);
-     //push object to the Restaurant collection in the database
-    else res.redirect("/" + customerContent.customerFirstName + "/" + customerContent.customerLastName + "/customerProfile");
+    Customer.findOneAndUpdate({customerLastName:"Augustine"},{customerFirstName: req.body.customerFirstName.trim(),customerLastName: req.body.customerLastName.trim(),customerBio: req.body.customerBio.trim(),customerAddress: req.body.customerAddress.trim(),password: req.body.password,customerPhoneNumber: req.body.customerPhoneNumber.trim(),facebookUrl:req.body.facebookUrl.trim(),twitterUrl:req.body.twitterUrl.trim(),linkedinUrl:req.body.linkedinUrl.trim()
+},function (err, customer) {
+    if (err) console.log(err);
+    else res.redirect("/" + req.body.customerFirstName + "/" +req.body.customerLastName + "/customerProfile");
      });
  });
 
