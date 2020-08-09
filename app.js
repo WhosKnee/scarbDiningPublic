@@ -60,35 +60,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log("Database running");
-
-    // add story to db
-    app.patch('/api/restaurants/stories/', upload.single('picture'), function (req, res, next) {
-        let newStory = {
-            text: req.body.storyText,
-            mediaLink: req.file.path
-        };
-
-        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {stories: newStory}}, function (err, result) {
-            if (err) return res.json(err);
-            return res.json(result);
-        });
-    });
-
-    // upload food item
-    app.patch('/api/restaurants/fooditems', upload.single('picture'), function (req, res, next) {
-        let newFoodItem = {
-            name: req.body.name,
-            price: req.body.price,
-            description: req.body.description,
-            imageLink: req.file.path
-        };
-
-        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {foodItems: newFoodItem}}, function (err, result) {
-            if (err) return res.json(err);
-            return res.json(result);
-        });
-    });
-
+    
     // run app locally on server
     app.listen(3000, 'localhost', function () {
         console.log("The Notepad server has started on port 3000");

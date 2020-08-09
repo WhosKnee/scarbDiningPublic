@@ -2,7 +2,7 @@ $(document).ready(function () {
     const DUMMY_USER = "5f1b2c758ccd610017ad85db";
     let userRating;
     let url = window.location.pathname;
-    let restaurantId = url.substring(url.indexOf('/restaurants/') + '/restaurants/'.length, url.indexOf('/reviews'));
+    let restaurantId = url.substring(url.indexOf('/') + 1, url.indexOf('/reviews'));
 
     function send(method, url, data, callback) {
         let xhr = new XMLHttpRequest();
@@ -30,12 +30,10 @@ $(document).ready(function () {
     $('#review-text-submit-btn').click(() => {
        let reviewComment = $('#review-text').val();
 
-       console.log('hello');
-
        if (userRating) {
            console.log(restaurantId);
 
-           send("PATCH", `/restaurants/${restaurantId}/reviews/`, {
+           send("POST", `/${restaurantId}/reviews/`, {
                user_id: DUMMY_USER,
                comment: reviewComment,
                rating: userRating

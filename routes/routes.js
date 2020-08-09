@@ -61,7 +61,7 @@ router.get("/:restaurantId/menu", function(req, res){
 })
 
 // go to a restarant's review page
-router.get("/restaurants/:restaurantId/reviews", function (req, res) {
+router.get("/:restaurantId/reviews", function (req, res) {
     var restaurantId = req.params.restaurantId;
 
     Customer
@@ -245,7 +245,7 @@ router.post("/makeCustomer/", function(req,res){
 })
 
 // upload review
-router.patch('/restaurants/:restaurantId/reviews/', function (req, res, next) {
+router.post('/:restaurantId/reviews/', function (req, res, next) {
     let newReview = {
         user_id: req.body.user_id,
         comment: req.body.comment,
