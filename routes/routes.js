@@ -107,7 +107,7 @@ router.post("/searchRestaurants/", function(req,res){
             } else {
                 param = "Relevance"
             }
-            res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param});
+            res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param, paramVal: sortParam});
         }
     })
 

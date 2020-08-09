@@ -10,8 +10,8 @@
 
     <body>
             <%- include('./partials/navbar.ejs') %>
-            <br>
-            <h3 style="margin-left: 2%;">Search Results for: "<%= search %>" <span style="font-size: large; color: #636363">by <%= param %></span></h3>
+            <br><br>
+            <h2 style="margin-left: 2%; font-weight: 500;">Search Results for: "<%= search %>" <span style="font-size: 0.7em; color: #636363">by <%= param %></span></h2>
             <br>
             <% for(i = 0; i < rests.length ; i++) { %>
                 <div style="float: left; width: 25%; margin: 2% 2% 2% 2%; border: #999999 solid 1px; border-radius: 5px;">
@@ -47,5 +47,10 @@
 
         <!-- CSS only for bootstrap--> 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <!--Fill serach bar after element has loaded-->
+        <script>
+            $("#searchBar").val("<%= search %>");
+            $("#sorting").val("<%= paramVal %>");
+        </script>
     </body>
 </html>

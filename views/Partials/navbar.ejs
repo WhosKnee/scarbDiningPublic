@@ -14,12 +14,12 @@
         </li>
       </ul>
       <form action="/searchRestaurants/" method="POST" style="width:50%; float: right;" class="form-inline my-2 my-lg-0">
-        <input name="searchContent" required="required" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="What Are You Craving?" aria-label="Search">
-        <select name="sortBy"  style="width: 30%; float: left;" class="form-control mr-sm-2">
-            <option value="rel" selected hidden>Sort By</option>
+        <input id="searchBar" name="searchContent" required="required" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="What Are You Craving?" aria-label="Search">
+        <select id="sorting" name="sortBy"  style="width: 30%; float: left;" class="form-control mr-sm-2">
+            <option value="rel" selected>Relevance</option>
+            <option value="rating">Rating</option>
             <option value="priceLH">$ (Low to High)</option>
             <option value="priceHL">$ (High to Low)</option>
-            <option value="rating">Rating</option>
         </select>
         <button style="width: 15%; float: left;" class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       </form>
