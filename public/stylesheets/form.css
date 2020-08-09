@@ -1,0 +1,20 @@
+#ui{
+    background-color: rgb(92, 92, 92);
+    padding:30px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+#ui label, h1, h3{
+    color: #fff;
+}
+
+.submitBtn{
+    background-color: rgb(212, 255, 195);
+    width: 50%;
+    margin-left: 25%;;
+}
+
+.subHeading{
+    color: white;
+}

@@ -7,16 +7,39 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/explore/">Explore <span class="sr-only">(current)</span></a>
         </li>
       </ul>
-      <form action="/searchRestaurants/" method="POST" style="width:50%; float: right;" class="form-inline my-2 my-lg-0">
-        <input name="searchContent" required="required" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="What Are You Craving?" aria-label="Search">
-        <select name="sortBy"  style="width: 30%; float: left;" class="form-control mr-sm-2">
-            <option value="rel" selected hidden>Sort By</option>
+      <ul class="navbar-nav mr-auto" style="float:right; margin-left: 22%;">
+        <li class="nav-item dropdown">
+          <a style="color: white" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Login
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="/customerSignup/">Customer</a>
+            <a class="dropdown-item" href="#">Restaurant Owner</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a style="color: white" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sign Up
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="/customerSignup/">Customer</a>
+            <a class="dropdown-item" href="/restaurantSignup/">Restaurant Owner</a>
+          </div>
+        </li>
+      </ul>
+      <form action="/searchRestaurants/" method="POST" style="width:43%; float: right;" class="form-inline my-2 my-lg-0">
+        <input id="searchBar" name="searchContent" required="required" style="width:50% ; float: left;" class="form-control mr-sm-2" type="search" placeholder="What Are You Craving?" aria-label="Search">
+        <select id="sorting" name="sortBy"  style="width: 30%; float: left;" class="form-control mr-sm-2">
+            <option value="rel" selected>Relevance</option>
+            <option value="rating">Rating</option>
             <option value="priceLH">$ (Low to High)</option>
             <option value="priceHL">$ (High to Low)</option>
-            <option value="rating">Rating</option>
         </select>
         <button style="width: 15%; float: left;" class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       </form>

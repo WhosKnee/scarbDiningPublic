@@ -115,6 +115,9 @@ router.post("/searchRestaurants/", function(req,res){
     // collect the search field and create object to pass into ejs
     var searchContent = req.body.searchContent.trim().replace(/\s/g, '');
     var searchTags = req.body.searchContent.trim().split(" ");
+    for(var i = 0; i < searchTags.length ; i++){
+        searchTags[i] = searchTags[i].charAt(0).toUpperCase() + searchTags[i].slice(1);
+    }
     var sortParam = req.body.sortBy;
     var collectedRests = []
     var collectedRestNames = []
@@ -153,7 +156,7 @@ router.post("/searchRestaurants/", function(req,res){
             } else {
                 param = "Relevance"
             }
-            res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param});
+            res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param, paramVal: sortParam});
         }
     })
 
@@ -164,6 +167,42 @@ router.get("/:customerId/customerProfile", function(req, res){
             if (err) return res.json(err);
             res.render("./customerProfile.ejs",{customerInfo:customer[0]});
         });
+})
+
+router.get("/explore", function(req, res){
+    // collect the search field and create object to pass into ejs
+    var collectedRestsRatings = []
+    var collectedRestsPriceLH = []
+    var collectedRestsPriceHL = []
+    Restaurant.find({})
+    .populate("stories")
+    .populate("foodItems")
+    .populate("reviews")
+    .exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // get highest rated restaurants 
+            sortedByRatings = bubbleSort(Restaurants, "rating")
+            for(var i = 0; i < Math.min(Restaurants.length, 10); i++){
+                collectedRestsRatings.push(sortedByRatings[i]);
+            }
+
+            // get lowest costing restaurants
+            sortedByPriceLH = bubbleSort(Restaurants, "priceLH")
+            for(var i = 0; i < Math.min(Restaurants.length, 10); i++){
+                collectedRestsPriceLH.push(sortedByPriceLH[i]);
+            }
+
+            // get highest costing restaurants
+            sortedByPriceHL = bubbleSort(Restaurants, "priceHL");
+            for(var i = 0; i < Math.min(Restaurants.length, 10); i++){
+                collectedRestsPriceHL.push(sortedByPriceHL[i]);
+            }
+            // get highest costing restaurants
+            res.render("explore.ejs", {restsRating: collectedRestsRatings, restsPriceLH: collectedRestsPriceLH, restsPriceHL: collectedRestsPriceHL});
+        }
+    })
 })
 
 

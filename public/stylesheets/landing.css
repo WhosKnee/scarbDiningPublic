@@ -1,7 +1,7 @@
-#customerBtns {
-    float: left;
+.indexBtnHolder{
+    margin-top: 5%;
 }
 
-#restaurantBtns {
-    float: right;
+.indexButtons{
+    width:49%;
 }
