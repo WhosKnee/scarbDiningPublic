@@ -27,13 +27,12 @@ router.get("/customerSignup/", function(req, res){
     res.render("./Customer_Form.ejs");
 })
 
-router.get("/:restaurant/storyUploader", function(req, res){
-    res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
+router.get("/:restaurantId/storyUploader", function(req, res){
+    res.render("./StoriesForm.ejs",{restaurant: req.params.restaurantId});
 })
 
-router.get("/:restaurant/restaurantProfile", function(req, res){
-    var restaurantName = req.param("restaurant").replace(/-/g, '');
-    Restaurant.find({name: restaurantName})
+router.get("/:restaurantId/restaurantProfile", function(req, res){
+    Restaurant.find({_id: req.params.restaurantId})
     .populate("stories")
     .populate("foodItems")
     .populate("reviews")
@@ -49,9 +48,8 @@ router.get("/:restaurant/restaurantProfile", function(req, res){
 })
 
 // go to a restarant's homepage
-router.get("/:restaurant/menu", function(req, res){
-    var restaurantName = req.param("restaurant").replace(/-/g, '');
-    Restaurant.find({name: restaurantName})
+router.get("/:restaurantId/menu", function(req, res){
+    Restaurant.find({_id: req.params.restaurantId})
     .populate("foodItems")
     .exec(function(err, Restaurants){
         if(err){
@@ -61,6 +59,54 @@ router.get("/:restaurant/menu", function(req, res){
             currRestaurant = Restaurants[0];
             res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
+    })
+})
+
+// get request to analytical dashboard
+router.get("/:restaurantId/analytics", function(req, res){
+    var restaurantId = req.params.restaurantId
+    Restaurant.find({_id: restaurantId}).exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // the query returns a list so we need the first item which is our restaurant
+            res.render("./analytics.ejs", {restaurant: Restaurants[0]});
+        }
+    })
+})
+
+// go to a restarant's review page
+router.get("/:restaurantId/reviews", function (req, res) {
+    var restaurantId = req.params.restaurantId;
+
+    Customer
+        .find({})
+        .exec(function (err, customers) {
+            var customerMap = {};
+
+            customers.forEach(function (customer) {
+                customerMap[customer._id] = customer.customerFirstName + ' ' + customer.customerLastName;
+            });
+
+            Restaurant.find({
+                    _id: restaurantId
+                })
+                .exec(function (err, Restaurants) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        if (!req.query.p) {
+                            req.query.p = 1;
+                        }
+                        // the query returns a list so we need the first item which is our restaurant
+                        currRestaurant = Restaurants[0];
+                        res.render("./reviews.ejs", {
+                            restaurant: currRestaurant,
+                            page: req.query.p,
+                            customerMap: JSON.stringify(customerMap)
+                        });
+                    }
+        })
     })
 })
 
@@ -112,23 +158,9 @@ router.post("/searchRestaurants/", function(req,res){
     })
 
 })
-
-// get request to analytical dashboard
-router.get("/:restaurant/analytics", function(req, res){
-    var restaurantName = req.param("restaurantName").replace(/-/g, '');
-    Restaurant.find({name: restaurantName}).exec(function(err, Restaurants){
-        if(err){
-            console.log(err)
-        } else {
-            // the query returns a list so we need the first item which is our restaurant
-            res.render("./analytics.ejs", {restaurant: Restaurants[0]});
-        }
-    })
-})
-
 // go to a customer homepage
-router.get("/:customerFirstName/:customerLastName/customerProfile", function(req, res){
-    Customer.find({customerFirstName:req.params.customerFirstName,customerLastName:req.params.customerLastName}, (err, customer) => {
+router.get("/:customerId/customerProfile", function(req, res){
+    Customer.find({_id:req.params.customerId}, (err, customer) => {
             if (err) return res.json(err);
             res.render("./customerProfile.ejs",{customerInfo:customer[0]});
         });
@@ -185,32 +217,6 @@ module.exports = router;
 router.post("/makeRestaurant", function(req,res){
     // create object to hold new restaurant's info
     // trim whitespace from fields and format correctly
-    var d = new Date()
-    var month = (d.getMonth() + 1).toString();
-    if(month.toString().length < 2){
-        month = "0".concat(month)
-    }
-    var socialInteractionArr = [{
-        monthYear: month.concat(d.getFullYear().toString()), 
-        monthTotal: 0
-    }],
-    profileClicksArr = [{
-        monthYear: month.concat(d.getFullYear().toString()), 
-        monthTotal: 0
-    }],
-    ordersArr = [{
-        monthYear: month.concat(d.getFullYear().toString()), 
-        monthTotal: 0
-    }],
-    salesArr = [{
-        monthYear: month.concat(d.getFullYear().toString()), 
-        monthTotal: 0
-    }],
-    ratingsArr = [{
-        monthYear: month.concat(d.getFullYear().toString()), 
-        monthTotal: 0
-    }]
-
     var restaurantContent= new Restaurant({
         name: req.body.name.trim().replace(/\s/g, ''),
         nameSpaced: req.body.name.trim(),
@@ -228,14 +234,7 @@ router.post("/makeRestaurant", function(req,res){
         stories: [],
         tags: req.body.tags.trim().replace(/\s/g, '').split(","),
         foodItems: [],
-        reviews: [],
-        analytics: {
-            socialInteraction: socialInteractionArr,
-            profileClicks: profileClicksArr,
-            orders: ordersArr,
-            sales: salesArr,
-            ratings: ratingsArr
-        }
+        reviews: []
     });
 
     // push object to the Restaurant collection in the database
@@ -246,7 +245,7 @@ router.post("/makeRestaurant", function(req,res){
         else{
             newRestaurant.save();
             // redirect the owner to the public restaurant page
-            res.redirect( "/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile/");
+            res.redirect("/" + newRestaurant._id + "/restaurantProfile");
         }
     })
 })
@@ -279,3 +278,33 @@ router.post("/makeCustomer/", function(req,res){
         }
     })
 })
+
+// upload review
+router.post('/:restaurantId/reviews/', function (req, res, next) {
+    let newReview = {
+        user_id: req.body.user_id,
+        comment: req.body.comment,
+        rating: req.body.rating
+    };
+
+    Restaurant.findOneAndUpdate({_id: req.params.restaurantId}, {$push: {reviews: newReview}}, function (err, result) {
+        if (err) return res.json(err);
+        return res.json(newReview);
+    });
+});
+
+// Post request to create restaurant
+router.post("/uploadStory/", function(req,res){
+    var newStory = {
+        text: req.body.storyText,
+        mediaLink: "N/A"
+    };
+
+    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
+        if (err) return res.json(err);
+        // redirect the owner to the public restaurant page
+        res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
+    });
+});
+
+module.exports = router;
