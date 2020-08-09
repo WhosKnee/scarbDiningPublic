@@ -41,41 +41,24 @@ var restaurantSchema = mongoose.Schema({
 
     // analyticalData
     analytics: {
-        mostPopularFoodItems: {
-            foodItem: String,
-            amountOfOrders: String
-        },
         socialInteraction: [{
             monthYear: String,
-            week1: Number,
-            week2: Number,
-            week3: Number,
-            week4: Number,
             monthTotal: Number
         }],
-        top3SearchHits: Number,
         profileClicks: [{
             monthYear: String,
-            week1: Number,
-            week2: Number,
-            week3: Number,
-            week4: Number,
             monthTotal: Number
         }],
         orders: [{
             monthYear: String,
-            week1: Number,
-            week2: Number,
-            week3: Number,
-            week4: Number,
             monthTotal: Number
         }],
         sales: [{
             monthYear: String,
-            week1: Number,
-            week2: Number,
-            week3: Number,
-            week4: Number,
+            monthTotal: Number
+        }],
+        ratings: [{
+            monthYear: String,
             monthTotal: Number
         }]
     }

@@ -185,6 +185,32 @@ module.exports = router;
 router.post("/makeRestaurant", function(req,res){
     // create object to hold new restaurant's info
     // trim whitespace from fields and format correctly
+    var d = new Date()
+    var month = (d.getMonth() + 1).toString();
+    if(month.toString().length < 2){
+        month = "0".concat(month)
+    }
+    var socialInteractionArr = [{
+        monthYear: month.concat(d.getFullYear().toString()), 
+        monthTotal: 0
+    }],
+    profileClicksArr = [{
+        monthYear: month.concat(d.getFullYear().toString()), 
+        monthTotal: 0
+    }],
+    ordersArr = [{
+        monthYear: month.concat(d.getFullYear().toString()), 
+        monthTotal: 0
+    }],
+    salesArr = [{
+        monthYear: month.concat(d.getFullYear().toString()), 
+        monthTotal: 0
+    }],
+    ratingsArr = [{
+        monthYear: month.concat(d.getFullYear().toString()), 
+        monthTotal: 0
+    }]
+
     var restaurantContent= new Restaurant({
         name: req.body.name.trim().replace(/\s/g, ''),
         nameSpaced: req.body.name.trim(),
@@ -202,7 +228,14 @@ router.post("/makeRestaurant", function(req,res){
         stories: [],
         tags: req.body.tags.trim().replace(/\s/g, '').split(","),
         foodItems: [],
-        reviews: []
+        reviews: [],
+        analytics: {
+            socialInteraction: socialInteractionArr,
+            profileClicks: profileClicksArr,
+            orders: ordersArr,
+            sales: salesArr,
+            ratings: ratingsArr
+        }
     });
 
     // push object to the Restaurant collection in the database

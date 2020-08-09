@@ -8,6 +8,17 @@
 .card {
     margin: 1%;
     height: 20%;
+    border: 2px solid black;
+}
+
+.card:hover {
+    background-color: #343a40;
+    color: white;
+}
+
+#socialInteraction:hover{
+    background-color: white;
+    color: black;
 }
 
 .numberText {
@@ -17,6 +28,7 @@
 
 .resultsMeaning {
     font-size: 1.2em;
+    font-weight: 350;
 }
 
 .event {
@@ -29,6 +41,7 @@
 
 .event:hover {
     background-color: rgb(172, 245, 255);
+    color: black;
 }
 
 .name {

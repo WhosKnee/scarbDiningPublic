@@ -13,40 +13,74 @@
 
     <body>
     <%- include('./partials/navbar.ejs') %>
+    
+    <% var d = new Date(); var month = d.getMonth() + 1;%>
+    <%  if(month.toString().length < 2){ %>
+        <% month="0".concat(month) %>
+    <% } %>
+    <% var monthYear = month.concat(d.getFullYear().toString())%>
+    <% var orders = restaurant.analytics.orders %>
+    <% var sales = restaurant.analytics.sales %>
+    <% var profileClicks = restaurant.analytics.profileClicks %>
+    <% var socialInteraction = restaurant.analytics.socialInteraction %>
+    <% var ratings = restaurant.analytics.ratings %>
+
+    <% function parseDataForAnalytics(items) { %>
+        <p class="card-text numberText">
+            <% if(items.length == 0) {%>
+                No Data
+            <% } else { %>
+                <%= items[items.length - 1].monthTotal %>
+            <% } %>
+        </p>
+        <p class="card-text resultsMeaning">
+            <% if(items.length > 1) { %>
+                <% var growth = (((items[items.length - 1].monthTotal - items[items.length - 2].monthTotal)/ items[items.length - 2].monthTotal)*100) %>
+                <% if(growth >= 0) { %>
+                    <% growth = growth.toString().slice(0,4) %>
+                    <%= growth %>% increase from the previous month (<%= items[items.length - 2].monthTotal%> -> <%= items[items.length - 1].monthTotal %>) <i class='fas fa-angle-double-up' style="color: #2ece49"></i>
+                <% } else { %>
+                    <% growth = growth.toString().slice(1,5) %>
+                    <%= growth %>% decrease from the previous month (<%= items[items.length - 2].monthTotal%> -> <%= items[items.length - 1].monthTotal %>) <i class='fas fa-angle-double-down' style='color:red'></i>
+                <% } %>
+            <% } else { %>
+                No data from previous Month
+            <% } %> 
+        </p>
+    <% } %>
+
+
     <h1 class="display-10 text-center" style="margin: 1%;"> <%= restaurant.nameSpaced %> Analytics</h1>
 
     <div class="card-group" style="width: 90%; margin-left: 5%; margin-right: 5%;">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Orders (This Month)</h5>
-            <p class="card-text numberText">56</p>
-            <p class="card-text resultsMeaning">30% Increase from previous month <i class='fas fa-angle-double-up' style="color: #46e260"></i></p>
+                <% parseDataForAnalytics(orders) %>
+            </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Revenue in $ (This Month)</h5>
+                <% parseDataForAnalytics(sales) %>
           </div>
         </div>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Profile Clicks (This Month)</h5>
-            <p class="card-text numberText">270</p>
-            <p class="card-text resultsMeaning">15% Increase from previous month <i class='fas fa-angle-double-up' style="color: #46e260"></i></p>
+                <% parseDataForAnalytics(profileClicks) %>
+
           </div>
         </div>
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Last 5 Review Average</h5>
-            <p class="card-text numberText">3.6</p>
-            <p class="card-text resultsMeaning">20% less than previous average <i class='fas fa-angle-double-down' style='color:red'></i></p>
-          </div>
-        </div>
-      </div>
-      <div class="card-group" style="width: 90%; margin-left: 5%; margin-right: 5%;">
+    </div>
+    <div class="card-group" style="width: 90%; margin-left: 5%; margin-right: 5%;">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Social Interactions (This Month)</h5>
-            <p class="card-text numberText">270</p>
-            <p class="card-text resultsMeaning">15% Increase from previous month <i class='fas fa-angle-double-up' style="color: #46e260"></i></p>
+            <% parseDataForAnalytics(socialInteraction) %>
           </div>
         </div>
-        <div class="card">
+        <div id="socialInteraction" class="card">
             <div class="card-body" style="overflow: hidden; height: 15em">
                 <h5 class="card-title">Latest Social Interactions</h5>
                 <div class="scrollable">
@@ -63,10 +97,11 @@
         </div>
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Top 5 Food Items</h5>
+            <h5 class="card-title">Rating (This Month)</h5>
+                <% parseDataForAnalytics(ratings) %>
           </div>
         </div>
-      </div>
+    </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- CSS only for bootstrap-->
 
