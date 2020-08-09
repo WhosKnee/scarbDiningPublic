@@ -1,0 +1,40 @@
+.banner{
+    height:12%; 
+    width:100%; 
+    object-fit: cover; 
+    opacity: 0.4;
+}
+
+.title{
+    font-weight: 400;
+}
+
+.restCard{
+    display: inline-block; 
+    width: 29%; 
+    margin: 0.5% 2% 0.5% 2%; 
+    border: #999999 solid 0.5px; 
+    border-radius: 5px;
+}
+
+.restCardImg{
+    height: 30%; 
+    width: 100%; 
+    object-fit: cover; 
+    margin-bottom: 2%;
+}
+
+.restCardText {
+    padding: 1% 2% 1% 2%;
+    color: #636363
+}
+
+.scrollable {
+    width: 90%; 
+    height:45%; 
+    overflow-x: scroll; 
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    white-space: nowrap; 
+    margin: 2% 5% 0 5%
+}

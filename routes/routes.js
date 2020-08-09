@@ -120,6 +120,42 @@ router.get("/:customerFirstName/:customerLastName/customerProfile", function(req
         });
 })
 
+router.get("/explore", function(req, res){
+    // collect the search field and create object to pass into ejs
+    var collectedRestsRatings = []
+    var collectedRestsPriceLH = []
+    var collectedRestsPriceHL = []
+    Restaurant.find({})
+    .populate("stories")
+    .populate("foodItems")
+    .populate("reviews")
+    .exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // get highest rated restaurants 
+            sortedByRatings = bubbleSort(Restaurants, "rating")
+            for(var i = 0; i < Math.min(Restaurants.length, 10); i++){
+                collectedRestsRatings.push(sortedByRatings[i]);
+            }
+
+            // get lowest costing restaurants
+            sortedByPriceLH = bubbleSort(Restaurants, "priceLH")
+            for(var i = 0; i < Math.min(Restaurants.length, 10); i++){
+                collectedRestsPriceLH.push(sortedByPriceLH[i]);
+            }
+
+            // get highest costing restaurants
+            sortedByPriceHL = bubbleSort(Restaurants, "priceHL");
+            for(var i = 0; i < Math.min(Restaurants.length, 10); i++){
+                collectedRestsPriceHL.push(sortedByPriceHL[i]);
+            }
+            // get highest costing restaurants
+            res.render("explore.ejs", {restsRating: collectedRestsRatings, restsPriceLH: collectedRestsPriceLH, restsPriceHL: collectedRestsPriceHL});
+        }
+    })
+})
+
 
 // simple bubblesort algo to sort search query based on specified param
 function bubbleSort(list, param){

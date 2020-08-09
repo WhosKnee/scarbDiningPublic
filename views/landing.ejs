@@ -8,22 +8,53 @@
         <link rel="stylesheet" href="/stylesheets/landing.css">
     </head>
 
-    <body>
-        <%- include('/partials/navbar') %>
-        <div class="jumbotron">
-            <h1 class="display-4">Scarborough Dining</h1>
-            <p class="lead">Connecting Torontonians to local food stops in Scarborough</p>
-            <hr class="my-4">
-            <p>New or Returning user?</p>
-            <span id="customerBtns">
-                <a class="btn btn-primary" href="/customerSignup/"  role="button">Customer Sign Up</a>
-                <a class="btn btn-success" href="/:customerFirstName/:customerLastName/customerProfile"role="button">Customer Login In</a>
-            </span>
-            <span id="restaurantBtns">
-                <a class="btn btn-primary" href="/restaurantSignup/" role="button">Restaurant Sign Up</a>
-                <a class="btn btn-success" href="/:restaurant/restuarantProfile" role="button">Restaurant Login In</a>
-            </span>
+    <body style="overflow-x:hidden">
+        <%- include('./partials/navbar') %>
+        <div>
+            <div style="float:left; width: 50%; height: 73%; padding: 8% 2% 2% 2%">
+                    <h1 class="display-4" style="text-align: center;">Scarborough Dining</h1>
+                    <p class="lead" style="text-align: center;">Connecting Torontonians to local food stops in Scarborough</p>
+                    <hr class="my-4">
+                    <div >
+                        <div style="float: left; width: 50%; height: 30%; padding: 2% 2% 2% 2%; align-items: center;">
+                            <h5 style="text-align:  center;">Customer</h5>
+                            <!--Icon made by monkik from www.flaticon.com-->
+                            <img src="/uploads/landingPage/car.png" style="height: 80%; display: block; margin-left: auto; margin-right: auto;">
+                            <div class="indexBtnHolder" style="align-items: center;">
+                                <a class="btn btn-primary indexButtons" href="/customerSignup/" style="background-color: #469cff;"  role="button">Sign Up</a>
+                                <a class="btn btn-success indexButtons" href="/:customerFirstName/:customerLastName/customerProfile" style="background-color: #13b739;" role="button">Login</a>
+                            </div>
+                        </div>
+                        <div style="float: left; width: 50%; height: 30%; padding: 2% 2% 2% 2%; align-items: center;">
+                            <!--Icon made by Freepik from www.flaticon.com-->
+                            <h5 style="text-align:  center;">Restaurant Owner</h5>
+                            <img src="/uploads/landingPage/chef.png" style="height: 75%; display: block; margin-left: auto; margin-right: auto;">
+                            <div class="indexBtnHolder" style="align-items: center;">
+                                <a class="btn btn-primary indexButtons" href="/restaurantSignup/" style="background-color: #469cff;" role="button">Sign Up</a>
+                                <a class="btn btn-success indexButtons" href="/:restaurant/restuarantProfile" style="background-color: #13b739;"  role="button">Login</a>
+                            </div>  
+                        </div>
+                    </div>
+            </div>
+            <div style="float:left; width: 50%; height: 73%;">
+                <img src="/uploads/landingPage/topImage.jpg" style="height: 100%; object-fit: cover; object-position: 0% 0; opacity: 0.8">
+            </div>
+
+            <div style="float:left; width: 50%; height: 88%; padding: 0% 0% 9% 0%">
+                <img src="/uploads/landingPage/Image2.jpg" style="height: 100%; object-fit: cover; object-position: 0% 0; opacity: 0.8">
+            </div>
+            <div style="float:left; width: 50%; height: 73%; padding: 8% 1% 0 1%">
+                <h2 class="display-4" style="text-align: center;">Who are we?</h2>
+                <p class="lead" style="text-align: center; font-weight: 500;">We are more than just a 'food ordering' app</p>
+                <p class="lead" style="text-align: center; font-weight: 350;">Our vision is to connect customers and restaurant owners to each other.
+                By means such as stories from restaurants and the social interaction of customers, we believe cuisine in Scarborough
+                will grow and gain the reputation of other areas in Toronto.</p>
+                <div >
+
+                </div>
+            </div>
         </div>
+
 
         <!-- CSS only for bootstrap--> 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
