@@ -24,6 +24,9 @@ router.get("/restaurantSignup/", function(req, res){
 router.get("/customerSignup/", function(req, res){
     res.render("./Customer_Form.ejs");
 })
+router.get("/customerUpdate/", function(req, res){
+    res.render("./Customer_Form_Update.ejs");
+})
 
 router.get("/:restaurant/storyUploader", function(req, res){
     res.render("./StoriesForm.ejs",{restaurant: req.param("restaurant")});
@@ -210,6 +213,29 @@ router.post("/makeCustomer/", function(req,res){
         }
     })
 })
+router.post("/updateCustomer/", function(req,res){
+    // create object to hold new restaurant's info
+    // trim whitespace from fields
+    console.log(2);
+    var customerContent= new Customer({
+            customerFirstName: req.body.customerFirstName.trim(),
+            customerLastName: req.body.customerLastName.trim(),
+            customerBio: req.body.customerBio.trim(),
+            customerAddress: req.body.customerAddress.trim(),
+            password: req.body.password,
+            customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+            facebookUrl:req.body.facebookUrl.trim(),
+            twitterUrl:req.body.twitterUrl.trim(),
+            linkedinUrl:req.body.linkedinUrl.trim()
+
+        });
+    console.log(customerContent.customerFirstName,customerContent.customerLastName )
+    Customer.findOneAndUpdate({customerFirstName:customerContent.customerFirstName,customerLastName:customerContent.customerLastName},{$push: {password:customerContent.password,customerBio:customerContent.customerBio}},function (err, customer) {
+    if (err) console.log(234);
+     //push object to the Restaurant collection in the database
+    else res.redirect("/" + customerContent.customerFirstName + "/" + customerContent.customerLastName + "/customerProfile");
+     });
+ });
 
 // Post request to create restaurant
 router.post("/uploadStory/", function(req,res){
