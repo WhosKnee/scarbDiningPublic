@@ -114,7 +114,7 @@ router.post("/searchRestaurants/", function(req,res){
 })
 
 // get request to analytical dashboard
-router.get("/:restaurantName/analytics", function(req, res){
+router.get("/:restaurant/analytics", function(req, res){
     var restaurantName = req.param("restaurantName").replace(/-/g, '');
     Restaurant.find({name: restaurantName}).exec(function(err, Restaurants){
         if(err){
