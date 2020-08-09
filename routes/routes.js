@@ -62,6 +62,19 @@ router.get("/:restaurantId/menu", function(req, res){
     })
 })
 
+// get request to analytical dashboard
+router.get("/:restaurantId/analytics", function(req, res){
+    var restaurantId = req.params.restaurantId
+    Restaurant.find({_id: restaurantId}).exec(function(err, Restaurants){
+        if(err){
+            console.log(err)
+        } else {
+            // the query returns a list so we need the first item which is our restaurant
+            res.render("./analytics.ejs", {restaurant: Restaurants[0]});
+        }
+    })
+})
+
 // go to a restarant's review page
 router.get("/:restaurantId/reviews", function (req, res) {
     var restaurantId = req.params.restaurantId;
@@ -232,11 +245,7 @@ router.post("/makeRestaurant", function(req,res){
         else{
             newRestaurant.save();
             // redirect the owner to the public restaurant page
-<<<<<<< HEAD
-            res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
-=======
             res.redirect("/" + newRestaurant._id + "/restaurantProfile");
->>>>>>> 9b6a0ce7672ce76e7a75534d93c550d1ed511a33
         }
     })
 })
@@ -269,8 +278,6 @@ router.post("/makeCustomer/", function(req,res){
         }
     })
 })
-<<<<<<< HEAD
-=======
 
 // upload review
 router.post('/:restaurantId/reviews/', function (req, res, next) {
@@ -301,4 +308,3 @@ router.post("/uploadStory/", function(req,res){
 });
 
 module.exports = router;
->>>>>>> 9b6a0ce7672ce76e7a75534d93c550d1ed511a33

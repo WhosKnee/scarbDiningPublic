@@ -37,7 +37,31 @@ var restaurantSchema = mongoose.Schema({
         user_id: String,
         comment: String,
         rating: Number
-    }]
+    }],
+
+    // analyticalData
+    analytics: {
+        socialInteraction: [{
+            monthYear: String,
+            monthTotal: Number
+        }],
+        profileClicks: [{
+            monthYear: String,
+            monthTotal: Number
+        }],
+        orders: [{
+            monthYear: String,
+            monthTotal: Number
+        }],
+        sales: [{
+            monthYear: String,
+            monthTotal: Number
+        }],
+        ratings: [{
+            monthYear: String,
+            monthTotal: Number
+        }]
+    }
 })
 
 // create restaurant model to export
