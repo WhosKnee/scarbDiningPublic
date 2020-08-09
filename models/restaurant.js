@@ -33,7 +33,10 @@ var restaurantSchema = mongoose.Schema({
         name: String,
         price: Number,
         description: String,
-        imageLink: String
+        image: {
+            data: Buffer,
+            contentType: String
+        }
     }],
     
     // each review will be an array of strings: user_id, comment, rating

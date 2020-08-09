@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<title>Menu Item Upload</title>
+		<!-- JS, Popper.js, and jQuery (Bootstrap files) -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="/stylesheets/storiesForm.css">
+	</head>
+
+	<body>
+		<%- include('./partials/navbar.ejs') %>
+		<div class="container" id="ui">
+			<div class="row mb-2">
+				<h1 class="col text-center">Add a new Menu Item</h1>
+			</div>
+			<form action="/addMenuItem" method="POST" enctype="multipart/form-data" class="form-group">
+				<input type="hidden" name="restaurantName" value=<%=restaurant%>>
+					<div class="row justify-content-between mb-4">
+						<div class="col-8">
+							<label>Food item:</label>
+							<input type="text" id="name" name="name" class="form-control mb-2" placeholder="Enter food item's name">
+							<label>Price:</label>
+							<input type="text" id="price" name="price" class="form-control mb-2" placeholder="Enter food item's price">
+							<label>Description:</label>
+							<input type="text" id="description" name="description" class="form-control mb-2" placeholder="Enter food item's description">
+						</div>
+						<div class="col-4 align-self-end">
+							<h6 class="text-center">Upload a picture of your food item.</h6>
+							<img class="mb-2" style="border: 2px solid black; margin: 0 auto; display: block;" id="postImage" src="" alt="No Image Uploaded" onerror="this.onerror=null; this.src='/uploads/no_image.png'">
+							<input style="color:white;" type="file" name="imageLink" id="imageLink" onchange="readURL(this);">
+						</div>
+					</div>
+				<input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block btn-lg">
+			</form>
+		</div>
+
+		<!-- CSS only for bootstrap--> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<script>
+		// this allows image to be previewed before submission
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#postImage')
+						.attr('src', e.target.result)
+						.width(200)
+						.height(200);
+				};
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	</script>
+	</body>
+</html>

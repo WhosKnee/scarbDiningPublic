@@ -29,9 +29,9 @@
             </div>
             <ul class="list-unstyled">
                 <% for(var i=0; i < 10; i++) { var food = restaurant.foodItems[10 * (page-1) + i];%>
-                    <% if (food != undefined) { %>
+                    <% if (food && food.image.data) { %>
                         <li class="media mt-1 food-item">
-                            <img class="mr-3" src=<%=food.imageLink%> alt="Tmp Img" height="80em" width="60em">
+                            <img class="mr-3" src="data:image/<%=food.image.contentType%>;base64, <%=food.image.data.toString('base64')%>" alt="Tmp Img" height="80em" width="60em">
                             <div class="media-body">
                                 <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>
                                 <%=food.description%>
