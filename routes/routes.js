@@ -7,7 +7,22 @@ var router = express.Router({mergeParams: true});
 // fetch models 
 var Restaurant = require("../models/restaurant.js");
 var Customer= require("../models/customer.js");
-const e = require("express");
+const fs = require('fs');
+const multer = require("multer");
+
+// multer for image upload
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+})
+
+const upload = multer({
+    storage: storage
+});
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
 
@@ -156,16 +171,22 @@ function bubbleSort(list, param){
 }
 
 // Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
+router.post("/uploadStory", upload.single('imageLink'), function(req,res){
+    console.log(req.file)
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
     var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
+        text: req.body.bodyText,
+        image: finalImage
     };
 
     Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
         if (err) return res.json(err);
         // redirect the owner to the public restaurant page
-        res.redirect("/restaurantProfile/" + req.body.restaurantName);
+        res.redirect("/" + req.body.restaurantName + "/restaurantProfile");
     });
 })
 

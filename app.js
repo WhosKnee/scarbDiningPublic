@@ -3,8 +3,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const multer = require("multer");
-const fs = require('fs')
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
@@ -26,34 +24,12 @@ mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))
 
-// create folder for multer to use
-// check if directory exists
-if (!fs.existsSync('./uploads/')) {
-    // if not create directory
-    fs.mkdirSync('./uploads/');
-}
-
-// multer for image upload
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-
-const upload = multer({
-    storage: storage
-});
-
 // include uploads directory in project, subsitute for multer destination atm
 app.use(express.static(__dirname + "/uploads"))
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
 var Customer= require("./models/customer.js")
-
 
 // configure passport
 app.use(require("express-session")({
@@ -97,55 +73,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     console.log("('we're in)");
 
-    // add restaurant to db
-    app.post('/api/restaurants/', function (req, res, next) {
-        let newRestaurant = new Restaurant({
-            _id: mongoose.Types.ObjectId(),
-            name: req.body.name,
-            phone: req.body.phoneNumber,
-            address: req.body.address,
-            ownerFirstName: req.body.ownerFirstName,
-            ownerLastName: req.body.ownerLastName,
-            ownerTitle: req.body.ownerTitle,
-            ownerEmail: req.body.ownerEmail,
-            ownerPhone: req.body.ownerPhoneNumber
-        });
-
-        newRestaurant.save(function (err, result) {
-            if (err) console.log('error');
-            return res.json('Success');
-        });
-    });
-
-    // add story to db
-    app.patch('/api/restaurants/stories/', upload.single('picture'), function (req, res, next) {
-        let newStory = {
-            text: req.body.storyText,
-            mediaLink: req.file.path
-        };
-
-        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {stories: newStory}}, function (err, result) {
-            if (err) return res.json(err);
-            return res.json(result);
-        });
-    });
-
-    // upload food item
-    app.patch('/api/restaurants/fooditems', upload.single('picture'), function (req, res, next) {
-        let newFoodItem = {
-            name: req.body.name,
-            price: req.body.price,
-            description: req.body.description,
-            imageLink: req.file.path
-        };
-
-        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {foodItems: newFoodItem}}, function (err, result) {
-            if (err) return res.json(err);
-            return res.json(result);
-        });
-    });
-
-    // run app locally on server
+    // // run app locally on server
     app.listen(3000, 'localhost', function () {
         console.log("The Notepad server has started on port 3000");
     })

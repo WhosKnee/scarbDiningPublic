@@ -20,7 +20,10 @@ var restaurantSchema = mongoose.Schema({
     // each story will be an object of strings: text, link to media
     stories: [{
         text: String,
-        mediaLink: String
+        image: {
+            data: Buffer,
+            contentType: String
+        }
     }],
 
     tags: [String],
