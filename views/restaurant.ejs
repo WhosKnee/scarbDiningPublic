@@ -21,14 +21,10 @@
                 <% } else { %> 
                     Rating: <%= restaurant.rating %>/5 (<%= restaurant.numOfRatings %>) &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <% } %>
-<<<<<<< HEAD
-                <a class="btn btn-outline-primary" href="/<%=restaurant._id%>/menu?p=1" role="button">Order Now</a>
-=======
                 <a class="btn btn-outline-primary" href="/<%=restaurant.nameSpaced.replace(/ /g, "-")%>/menu?p=1" role="button">Order Now</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp; 
                 <a class="btn btn-primary" href="/<%=restaurant._id%>/analytics" role="button">Analytical Dashboard</a>
                 
->>>>>>> Story35Task1
             </h4>
             <div class =" d-flex flex-row align-items-start justify-content-around ">
                     <div class="card" style="width: 18rem;">
