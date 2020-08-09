@@ -69,6 +69,9 @@ router.post("/searchRestaurants/", function(req,res){
     // collect the search field and create object to pass into ejs
     var searchContent = req.body.searchContent.trim().replace(/\s/g, '');
     var searchTags = req.body.searchContent.trim().split(" ");
+    for(var i = 0; i < searchTags.length ; i++){
+        searchTags[i] = searchTags[i].charAt(0).toUpperCase() + searchTags[i].slice(1);
+    }
     var sortParam = req.body.sortBy;
     var collectedRests = []
     var collectedRestNames = []

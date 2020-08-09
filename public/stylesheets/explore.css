@@ -38,3 +38,15 @@
     white-space: nowrap; 
     margin: 2% 5% 2% 5%
 }
+
+.scrollable::-webkit-scrollbar {
+    width: 12px;               /* width of the entire scrollbar */
+  }
+  .scrollable::-webkit-scrollbar-track {
+    background: #e3e8eb;        /* color of the tracking area */
+  }
+  .scrollable::-webkit-scrollbar-thumb {
+    background-color: rgb(168, 170, 179);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid #e3e8eb;  /* creates padding around scroll thumb */
+  }
