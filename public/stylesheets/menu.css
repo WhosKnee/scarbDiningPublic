@@ -1,9 +1,32 @@
 .food-item{
     border: 2px solid black;
     padding: 1px 1px 1px 1px;
+    position:relative;
 }
 
 .food-item:hover{
-    opacity:0.75;
+    cursor: pointer;
+    opacity: 0.75;
     background-color: rgba(200, 200, 200, 0.25);
+}
+
+.food-item-wrapper{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+}
+
+.food-item-wrapper:hover{
+    opacity: 1;
+}
+
+.food-item-text{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
