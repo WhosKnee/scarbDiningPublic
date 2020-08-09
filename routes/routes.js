@@ -246,7 +246,7 @@ router.post("/makeRestaurant", function(req,res){
         else{
             newRestaurant.save();
             // redirect the owner to the public restaurant page
-            res.redirect("/restaurantProfile/" + newRestaurant.name.replace(/ /g, "-"));
+            res.redirect( "/" + newRestaurant.name.replace(/ /g, "-") + "/restaurantProfile/");
         }
     })
 })
