@@ -1,14 +1,15 @@
 var express = require("express");
 var mongoose = require("mongoose");
 const passport = require("passport");
+const fs = require('fs');
+const multer = require("multer");
 // we load up the routes to a router which we export to the app.js file
 var router = express.Router({mergeParams: true});
 
 // fetch models 
 var Restaurant = require("../models/restaurant.js");
 var Customer= require("../models/customer.js");
-const fs = require('fs');
-const multer = require("multer");
+var Cart = require("../models/cart.js");
 
 // multer for image upload
 const storage = multer.diskStorage({
@@ -23,6 +24,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage
 });
+
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
 
@@ -84,6 +86,69 @@ router.get("/:restaurant/menu", function(req, res){
             res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
     })
+})
+
+// update shopping cart by adding or removing items, and/or replacing one restaurant's cart for another's
+router.post("/updateCart", function(req, res){
+    if (req.body.replace == "true" || !req.session.cart){
+        req.session.cart = new Cart({
+            restaurant: req.body.restaurant,
+            cartItems:[]
+        })
+    }
+    if (req.body.action == "add"){
+        for(i = 0; i < req.session.cart.cartItems.length; i++){
+            cartItem = req.session.cart.cartItems[i]
+            if (cartItem.foodItemId == req.body.food_id){
+                cartItem.quantity++
+                return res.redirect(req.headers.referer)
+            }
+        }
+        req.session.cart.cartItems.push({
+            foodItemId:req.body.food_id,
+            quantity:1
+        })
+        return res.redirect(req.headers.referer);
+    } else if (req.body.action == "remove"){
+        for(i = 0; i < req.session.cart.cartItems.length; i++){
+            cartItem = req.session.cart.cartItems[i]
+            if (cartItem.foodItemId == req.body.food_id){
+                cartItem.quantity--
+                if (cartItem.quantity <= 0){
+                    req.session.cart.cartItems.splice(i, 1)
+                }
+                if (req.session.cart.cartItems.length <= 0){
+                    req.session.cart = undefined;
+                    return res.redirect("/")
+                }
+                return res.redirect(req.headers.referer)
+            }
+        }
+        console.log("Nothing to remove")
+        return res.redirect(req.headers.referer)
+    }
+    console.log("Bad Action")
+    return res.redirect(req.headers.referer)
+})
+
+// go to cart page
+router.get("/myCart", function(req, res){
+    if (req.session.cart){
+        Restaurant.find({name: req.session.cart.restaurant})
+        .populate("foodItems")
+        .exec(function(err, Restaurants){
+            if(err){
+                console.log(err)
+            } else {
+                // the query returns a list so we need the first item which is our restaurant
+                currRestaurant = Restaurants[0];
+                res.render("./cart.ejs", {restaurant: currRestaurant});
+            }
+        })
+    }else{
+        // should not be able to go to cart page with an empty cart
+        res.redirect("/")
+    }
 })
 
 // Post to query search results
@@ -268,3 +333,10 @@ router.post("/makeCustomer/", function(req,res){
 router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
     res.redirect("/"+req.user.customerFirstName+"/"+req.user.customerLastName+"/customerProfile");
 });
+
+// go to under construction page
+router.get("/construction", function(req, res){
+    res.render("./construction.ejs");
+})
+
+module.exports = router;

@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
+const cookieSession = require('cookie-session')
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -26,6 +27,15 @@ app.use(express.static(__dirname + "/public"))
 
 // include uploads directory in project, subsitute for multer destination atm
 app.use(express.static(__dirname + "/uploads"))
+
+// configure user session
+// TODO: need to use encryption library to sign/verify cookies
+app.use(cookieSession({secret:"temp", maxAge:60*60*1000}))
+app.use(function(req, res, next){
+     // make cart variable accessible to all ejs templates
+    res.locals.cart = req.session.cart;
+    next();
+})
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
