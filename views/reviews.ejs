@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title> <%= restaurant.name %> Reviews</title>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/stylesheets/reviews.css">
+</head>
+
+<body>
+    <%- include('./partials/navbar.ejs') %>
+    <a id="back-btn" class="btn btn-outline-secondary btn-md float-right m-2" href="/<%=restaurant._id%>/restaurantProfile" role="button">Back to profile page</a>
+    
+    <div class="container">
+        <h1 class="display-4 mt-2 mb-5 text-center">Reviews for <b><%= restaurant.name %></b></h1>
+
+
+        <div id="leave-review-div" class="p-3 m-4 border-bottom mb-5">
+            <form id="review-form" class="text-center">
+                <h5>Leave a review for <%= restaurant.name %>!</h5>
+                <div class="rating">
+                    <span>
+                        <input class="h3 rating-star" type="radio" name="rating" id="star5" value="5"/><label for="star5"></label>
+                        <img src='/images/star-solid.svg'>
+                    </span>
+                    <span>
+                        <input class="h3 rating-star" type="radio" name="rating" id="star4" value="4"/><label for="star4"></label>
+                        <img src='/images/star-solid.svg'>
+                    </span>
+                    <span>
+                        <input class="h3 rating-star" type="radio" name="rating" id="star3" value="3"/><label for="star3"></label>
+                        <img src='/images/star-solid.svg'>
+                    </span>
+                    <span>
+                        <input class="h3 rating-star" type="radio" name="rating" id="star2" value="2"/><label for="star2"></label>
+                        <img src='/images/star-solid.svg'>
+                    </span>
+                    <span>
+                        <input class="h3 rating-star" type="radio" name="rating" id="star1" value="1"/><label for="star1"></label>
+                        <img src='/images/star-solid.svg'>
+                    </span>
+                </div>
+
+                <div id="review-comment-div" class="text-center">
+                    <textarea id="review-text" class="text-left p-2" required></textarea>
+                    <div class="text-right" id="review-text-submit-div"><a id="review-text-submit-btn" class="btn btn-outline-primary btn-md" role="button">Submit Review</a></div>
+                </div>
+            </form>
+        </div>
+
+        <ul class="list-unstyled m-3">
+            <% for(var i=0; i < 10; i++) { var review = restaurant.reviews[10 * (page-1) + i];%>
+            <% if (review != undefined) { %>
+            <li class="media mt-3 review border">
+                <div class="media-body m-4">
+                    <% for(var j=0; j < review.rating; j++) { %>
+                    <span class="fa fa-star checked"></span>
+                    <% }; %>
+
+                    <% for(var k=0; k < 5 - review.rating; k++) { %>
+                    <span class="fa fa-star"></span>
+                    <% }; %>
+
+                    <p class="mt-0 h5"><%=JSON.parse(customerMap)[review.user_id]%></p>
+
+                    <div class="font-italic"> <%=review.comment%> </div>
+                </div>
+            </li>
+            <% }}; %>
+        </ul>
+        <div class="row justify-content-end">
+            <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>"
+                href="/<%=restaurant._id%>/reviews?p=<%=Number(page)-1%>">Last Page</a>
+            <%=page%> of <%=Math.ceil(restaurant.reviews.length / 10)%>
+            <a role="button"
+                class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.reviews.length / 10)) {%> disabled <% }; %>"
+                href="/<%=restaurant._id%>/reviews?p=<%=Number(page)+1%>">Next Page</a>
+        </div>
+    </div>
+    
+    <script src="/scripts/reviews.js"></script>
+</body>
+
+</html>
