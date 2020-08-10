@@ -28,16 +28,8 @@
     content: url('/images/star-solid-checked.svg');
 }
 
-#review-comment-div {
-    width: 80vw;
-}
-
 #review-text {
-    width: 80%;
+    width: 100%;
     height: 10em;
     text-align: center;
-}
-
-#review-text-submit-div {
-    width: 90%;
 }

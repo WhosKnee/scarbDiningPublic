@@ -13,7 +13,7 @@
 
     <body>
     <%- include('./partials/navbar.ejs') %>
-    
+
     <% var d = new Date(); var month = d.getMonth() + 1;%>
     <%  if(month.toString().length < 2){ %>
         <% month="0".concat(month) %>
@@ -102,6 +102,7 @@
           </div>
         </div>
     </div>
+    <a id="back-btn" class="btn btn-outline-secondary btn-md float-right m-2" href="/<%=restaurant._id%>/restaurantProfile" role="button">Back to profile page</a>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- CSS only for bootstrap-->
 

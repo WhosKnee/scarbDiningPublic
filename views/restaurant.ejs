@@ -17,18 +17,23 @@
             <h1 class="display-10 text-center" style="margin-bottom: 1%;"> <%= restaurant.nameSpaced %> </h1>
             <h4 class="display-10 text-center" style="margin-bottom: 3%; font-weight: 350;"> 
                 <% if (restaurant.rating == 0) { %>
-                    No Ratings Yet (0) &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4 &nbsp;&nbsp;|&nbsp;&nbsp; 
+                    No Ratings Yet
                 <% } else { %> 
-                    Rating: <%= restaurant.rating %>/5 (<%= restaurant.numOfRatings %>) &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4 &nbsp;&nbsp;|&nbsp;&nbsp;
+                    Rating: <%= restaurant.rating %>/5 (<%= restaurant.numOfRatings %> Reviews)
                 <% } %>
+                &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4
                 <% if (!user) { %>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
                 <a class="btn btn-outline-primary disabled" href="/<%=restaurant._id%>/menu?p=1" role="button">Order Now</a>
-                <% } else { %>
-                <a class="btn btn-outline-primary" href="/<%=restaurant._id%>/menu?p=1" role="button"><%=user.customerEmail?"Order Now":"Edit Menu"%></a>
-                <% } %>
+                <% } else if(user.customerEmail) { %>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="btn btn-outline-primary" href="/<%=restaurant._id%>/menu?p=1" role="button">Order Now></a>
+                <% } else if(user._id == restaurant._id) { %>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="btn btn-outline-primary" href="/<%=restaurant._id%>/menu?p=1" role="button">Edit Menu</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp; 
                 <a class="btn btn-primary" href="/<%=restaurant._id%>/analytics" role="button">Analytical Dashboard</a>
-                
+                <% } %>
             </h4>
             <div class =" d-flex flex-row align-items-start justify-content-around ">
                 <div class="card" style="width: 18rem;">
@@ -41,7 +46,9 @@
                         <div class="restaurantInfo restaurantInfoTitle"> Restaurant Owner </div>
                         <div class="restaurantInfo" class="card-text restaurantInfo"><%= restaurant.title %> <%= restaurant.ownerFirstName %> <%= restaurant.ownerLastName %></div>
                         <br>
+                        <% if(user._id == restaurant._id) { %>
                         <a class="btn btn-outline-primary btn-sm" href="/restaurantSignup/" role="button">Edit Profile</a>
+                        <% } %>
                         <a class="btn btn-outline-primary btn-sm" href="/<%=restaurant._id%>/reviews?p=1" role="button">Reviews</a>
                     </div>
                 </div>

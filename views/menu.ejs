@@ -22,8 +22,13 @@
 
     <body>
         <%- include('./partials/navbar.ejs') %>
+        
         <div class="container">
+            <% if (user.customerEmail) { %>
             <h1 class="display-4 mt-2 mb-5">You are ordering from: <a href="/<%=restaurant._id%>/restaurantProfile" style="color:black; text-decoration:none;"><b><%= restaurant.name %></b></a></h1>
+            <% } else { %>
+            <h1 class="display-10 text-center" style="margin: 1%;"> <%= restaurant.nameSpaced %> Menu</h1>
+            <% } %>
             <div class="row justify-content-end">
                 <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/<%=restaurant._id%>/menu?p=<%=Number(page)-1%>">Last Page</a>
                 <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
@@ -78,6 +83,7 @@
                 <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/<%=restaurant._id%>/menu?p=<%=Number(page)+1%>">Next Page</a>
             </div>
             <% if (user.ownerEmail) { %>
+            <a role="button" class="btn btn-md btn-outline-secondary float-left mt-3" href="/<%=restaurant._id%>/restaurantProfile">Back to profile page</a>
             <a role="button" class="btn btn-lg btn-success float-right mt-3" href="/<%=restaurant._id%>/menuItemUploader">New Item</a>
             <% } %>
         </div>

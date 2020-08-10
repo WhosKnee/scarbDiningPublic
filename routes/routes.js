@@ -81,7 +81,7 @@ router.get("/:restaurantId/restaurantProfile", function(req, res){
 
 // go to a restaurant's menu
 router.get("/:restaurantId/menu", function(req, res){
-    if (!req.user){
+    if (!req.user || (req.user.ownerEmail && req.user._id != req.params.restaurantId)){
         return res.redirect("/customerLogin");
     }
     Restaurant.find({_id: req.params.restaurantId})
@@ -451,10 +451,6 @@ router.post("/makeCustomer/", upload.single("customerImageLink"), function(req,r
 
 router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
     res.redirect("/"+req.user._id+"/customerProfile");
-});
-
-router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
-    res.redirect("/"+req.user.customerFirstName+"/"+req.user.customerLastName+"/customerProfile");
 });
 
 // go to under construction page
