@@ -33,7 +33,7 @@
 				<div id="ui">
 					<h1 class="text-center">REGISTRATION FORM</h1>
 					<br>
-					<form action="/makeRestaurant" method="POST" class="form-group">
+					<form action="/makeRestaurant" method="POST" enctype="multipart/form-data" class="form-group">
 
 						<div class="row">
 							<div class="col-lg-6">
@@ -57,6 +57,9 @@
 						<br>
 						<label>Restaurant Tags (e.g "Burgers", "Chinese", etc. ). Separate tags using a comma:</label>
 						<input type="text" name="tags" class="form-control">
+						<br>
+						<label>Restaurant Profile Picture:</label>
+						<input style="color:white;" type="file" name="restaurantImageLink">
 						<br>
 						<h2 style="color: white;">Owner Information</h2>
 						<br>

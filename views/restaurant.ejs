@@ -32,7 +32,7 @@
             </h4>
             <div class =" d-flex flex-row align-items-start justify-content-around ">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="https://www.w3schools.com/images/picture.jpg" alt="Card image cap" style="height:8em; object-fit: cover;">
+                    <img class="card-img-top" src="data:image/<%=restaurant.image.contentType%>;base64, <%=restaurant.image.data.toString('base64')%>" alt="Card image cap" style="height:8em; object-fit: cover;">
                     <div class="card-body">
                         <div class="restaurantInfo restaurantInfoTitle">Phone Number</div>
                         <div class="restaurantInfo" class="card-text restaurantInfo"><%= restaurant.phoneNumber %></div>

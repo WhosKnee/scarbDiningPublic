@@ -363,7 +363,13 @@ router.post("/deleteMenuItem", function(req,res){
 // AUTH ROUTES
 // ===================
 // Post request to create restaurant
-router.post("/makeRestaurant", function(req,res){
+router.post("/makeRestaurant", upload.single('restaurantImageLink'), function(req,res){
+    // create image buffer
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
     // create object to hold new restaurant's info
     // trim whitespace from fields and format correctly
     var restaurantContent= new Restaurant({
@@ -383,7 +389,8 @@ router.post("/makeRestaurant", function(req,res){
         stories: [],
         tags: req.body.tags.trim().replace(/\s/g, '').split(","),
         foodItems: [],
-        reviews: []
+        reviews: [],
+        image: finalImage
     });
 
     // register restaurant to the Restaurant collection in the database
@@ -393,6 +400,8 @@ router.post("/makeRestaurant", function(req,res){
             res.redirect("/restaurantSignup/");
         } else {
             console.log("Successful registration.");
+            // delete image from local disk after upload
+            fs.unlink(req.file.path)
             res.redirect("/loginRestaurant");
         }
     });
@@ -402,7 +411,13 @@ router.post('/loginRestaurant', passport.authenticate('ownerLocal', {failureRedi
     res.redirect("/"+req.user._id+"/restaurantProfile");
 });
 
-router.post("/makeCustomer/", function(req,res){
+router.post("/makeCustomer/", upload.single("customerImageLink"), function(req,res){
+    // create image buffer
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
     // create object to hold new customer's info
     // trim whitespace from fields
     var customerContent= new Customer({
@@ -414,10 +429,10 @@ router.post("/makeCustomer/", function(req,res){
         password: req.body.password,
         customerEmail: req.body.customerEmail.trim(),
         customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+        image: finalImage,
         facebookUrl:req.body.facebookUrl.trim(),
         twitterUrl:req.body.twitterUrl.trim(),
         linkedinUrl:req.body.linkedinUrl.trim()
-
     });
 
     // register customer to the Customer collection in the database
@@ -427,6 +442,8 @@ router.post("/makeCustomer/", function(req,res){
             res.redirect("/customerSignup/");
         } else {
             console.log("Successful registration.");
+            // delete image from local disk after upload
+            fs.unlink(req.file.path)
             res.redirect("/loginCustomer");
         }
     });

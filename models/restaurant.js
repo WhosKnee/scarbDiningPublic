@@ -16,6 +16,10 @@ var restaurantSchema = mongoose.Schema({
     ownerTitle: String,
     ownerEmail: String,
     ownerPhoneNumber: String,
+    image: {
+        data: Buffer,
+        contentType: String
+    },
 
     // each story will be an object of strings: text, link to media
     stories: [{

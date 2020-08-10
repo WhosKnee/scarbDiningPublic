@@ -10,6 +10,10 @@ var customerSchema = mongoose.Schema({
     customerAddress: String,
     customerBio: String,
     customerPhoneNumber: String,
+    image: {
+        data: Buffer,
+        contentType: String
+    },
     facebookUrl: {
         type : String,
         required: false
