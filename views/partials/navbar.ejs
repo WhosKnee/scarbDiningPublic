@@ -5,9 +5,9 @@
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul style="width: 30%" class="navbar-nav mr-auto">
+      <ul style="width: 30%" class="nav navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="<%=user?"/"+user._id+(user.ownerEmail?"/restaurantProfile":"/customerProfile"):""%>">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/explore/">Explore <span class="sr-only">(current)</span></a>
@@ -16,7 +16,7 @@
           <a class="nav-link <%=cart?"":"disabled"%>" href="/myCart"><%=cart?cart.cartItems.length:0%> item(s) in Cart <%=cart?"["+cart.restaurant+"]":""%><span class="sr-only">(current)</span></a>
         </li>
       </ul>
-      <ul class="navbar-nav" style="float:right; margin-left: 9%;">
+      <ul class="nav navbar-nav navbar-right">
         <% if (!user) { %>
         <li class="nav-item dropdown">
           <a style="color: white" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -37,8 +37,13 @@
           </div>
         </li>
         <% } else { %>
-        <li class="nav-item active">
-          <a class="nav-link" href="/logout">Sign Out</a>
+        <li class="nav-item active dropdown">
+            <a style="color: white" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Signed in as <%=user.nameSpaced?user.nameSpaced+" (Restaurant)":user.customerFirstName+" "+user.customerLastName+" (Customer)"%>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="/logout">Sign Out</a>
+            </div>
         </li>
         <% } %>
       </ul>
