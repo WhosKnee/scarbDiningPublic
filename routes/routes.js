@@ -4,12 +4,12 @@ const passport = require("passport");
 // we load up the routes to a router which we export to the app.js file
 var router = express.Router({mergeParams: true});
 
-// fetch models 
+// fetch models
 var Restaurant = require("../models/restaurant.js");
 var Customer = require("../models/customer.js");
 var Cart = require("../models/cart.js");
 const e = require("express");
-const { Passport } = require("passport");
+var{ Passport } = require("passport");
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
 
@@ -276,10 +276,10 @@ router.post("/uploadStory/", function(req,res){
 // AUTH ROUTES
 // ===================
 // Post request to create restaurant
-router.post("/makeRestaurant", function(req,res){
+router.post("/makeRestaurant", function(req, res) {
     // create object to hold new restaurant's info
     // trim whitespace from fields and format correctly
-    var restaurantContent= new Restaurant({
+    var restaurantContent = new Restaurant({
         name: req.body.name.trim().replace(/\s/g, ''),
         nameSpaced: req.body.name.trim(),
         username: req.body.ownerEmail.trim(),
@@ -297,49 +297,95 @@ router.post("/makeRestaurant", function(req,res){
         tags: req.body.tags.trim().replace(/\s/g, '').split(","),
         foodItems: [],
         reviews: []
-    });
+         });
+    if (req.body.name == "check") {
+        console.log("ere8");
+        Restaurant.findOneAndUpdate({
+            name: req.body.name.trim().replace(/\s/g, '')
+        }, {
+            name: req.body.name.trim().replace(/\s/g, ''),
+            nameSpaced: req.body.name.trim(),
+            password: req.body.password,
+            phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
+            rating: 0,
+            pricing: req.body.pricing,
+            address: req.body.address.trim(),
+            ownerFirstName: req.body.ownerFirstName.trim(),
+            ownerLastName: req.body.ownerLastName.trim(),
+            ownerTitle: req.body.ownerTitle.trim(),
+            ownerEmail: req.body.ownerEmail.trim(),
+            ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),
+            stories: [],
+            tags: req.body.tags.trim().replace(/\s/g, '').split(","),
+            foodItems: [],
+            reviews: []
+        }, function(err, restaurant) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.redirect("/" + restaurant._id + "/restaurantProfile");
+            }
+        });
+    } else {
+        // push object to the Restaurant collection in the database
+        Restaurant.create(restaurantContent, function(err, newRestaurant) {
+            if (err) {
+                console.log(err);
+            } else {
+                newRestaurant.save();
+                // redirect the owner to the public restaurant page
+                res.redirect("/" + newRestaurant._id + "/restaurantProfile");
+            }
+        })
+    }
+});
+router.post("/makeCustomer/", function(req, res) {
+// create object to hold new restaurant's info
+// trim whitespace from fields
+var customerContent = new Customer({
+customerFirstName: req.body.customerFirstName.trim(),
+customerLastName: req.body.customerLastName.trim(),
+customerBio: req.body.customerBio.trim(),
+customerAddress: req.body.customerAddress.trim(),
+password: req.body.password,
+customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+facebookUrl: req.body.facebookUrl.trim(),
+twitterUrl: req.body.twitterUrl.trim(),
+linkedinUrl: req.body.linkedinUrl.trim()
 
-    // push object to the Restaurant collection in the database
-    Restaurant.create(restaurantContent, function(err, newRestaurant){
-        if(err){
-            console.log(err);
-        }
-        else{
-            newRestaurant.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newRestaurant._id + "/restaurantProfile");
-        }
-    })
 });
 
-router.post("/makeCustomer/", function(req,res){
-    // create object to hold new restaurant's info
-    // trim whitespace from fields
-    var customerContent= new Customer({
-        customerFirstName: req.body.customerFirstName.trim(),
-        customerLastName: req.body.customerLastName.trim(),
-        customerBio: req.body.customerBio.trim(),
-        customerAddress: req.body.customerAddress.trim(),
-        password: req.body.password,
-        customerPhoneNumber: req.body.customerPhoneNumber.trim(),
-        facebookUrl:req.body.facebookUrl.trim(),
-        twitterUrl:req.body.twitterUrl.trim(),
-        linkedinUrl:req.body.linkedinUrl.trim()
-
-    });
-     //push object to the Restaurant collection in the database
-    Customer.create(customerContent, function(err, newCustomer){
-        if(err){
-            console.log(err);
-        }
-        else{
-            newCustomer.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName + "/customerProfile");
-
-        }
-    })
+if (req.body.customerFirstName == "check") {
+    Customer.findOneAndUpdate({customerLastName: req.body.customerLastName.trim()},
+    {
+    customerFirstName: req.body.customerFirstName.trim(),
+    customerLastName: req.body.customerLastName.trim(),
+    customerBio: req.body.customerBio.trim(),
+    customerAddress: req.body.customerAddress.trim(),
+    password: req.body.password,
+    customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+    facebookUrl: req.body.facebookUrl.trim(),
+    twitterUrl: req.body.twitterUrl.trim(),
+    linkedinUrl: req.body.linkedinUrl.trim()
+}, function(err, customer) {
+    if (err) {
+        console.log(err);
+    } else {
+        res.redirect("/" + customer._id + "/customerProfile");
+    }
 });
+} else {
+Customer.create(customerContent, function(err2, newCustomer) {
+    if (err2) {
+        console.log(err);
+    } else {
+        newCustomer.save();
+        res.redirect("/" + newCustomer._id + "/customerProfile");
+    }
+})
+}
+});
+
 
 // upload review
 router.post('/:restaurantId/reviews/', function (req, res, next) {
