@@ -8,6 +8,7 @@ At the moment, the website contains content pertaining to:
 * Deliverable 2 [June 15th, 2020]
 * Deliverable 3 [June 29th, 2020]
 * Deliverable 4 [July 20th, 2020]
+* Deliverable 5 [August 10, 2020]
 
 Snapshots of the burndown chart and taskboard are avilable in the folder called ProgressSnapshots.
 These have been committed on the following dates:
