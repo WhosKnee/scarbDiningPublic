@@ -1,0 +1,5 @@
+.food-item{
+    border: 2px solid black;
+    padding: 1px 1px 1px 1px;
+    position:relative;
+}

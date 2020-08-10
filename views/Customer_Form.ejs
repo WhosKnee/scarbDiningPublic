@@ -37,49 +37,49 @@
                      <div class="row">
                         <div class="col-lg-6">
                            <label>First name:</label>
-                           <input type="text" name="customerFirstName" class="form-control" placeholder="Enter your first name">
+                           <input required="required"  type="text" name="customerFirstName" class="form-control" placeholder="Enter your first name">
                         </div>
                         <div class="col-lg-6">
                            <label>Last name:</label>
-                           <input type="text" name="customerLastName" class="form-control" placeholder="Enter your last name">
-                        </div>
-                        <div class="col-lg-6 pt-3">
-                            <label class = " mb-3">Bio:</label>
-                             <textarea  class="form_element" style="margin: 0px; width: 541px; height: 113px" name="customerBio" placeholder="Enter your bio"></textarea>
+                           <input required="required"  type="text" name="customerLastName" class="form-control" placeholder="Enter your last name">
                         </div>
                         <div class="col-lg-6">
-                                                   <label>Adress:</label>
-                                                   <input type="text" name="customerAddress" class="form-control" placeholder="Enter your last name">
+                            <label>Bio:</label>
+                             <textarea required="required"  class="form-control" name="customerBio" placeholder="Enter your bio"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                                                   <label>Address:</label>
+                                                   <input required="required"  type="text" name="customerAddress" class="form-control" placeholder="Enter your last name">
                                                 </div>
                        </div>
                      <br>
                      <div class="row">
                         <div class="col-lg-6">
                            <label>Facebook (optional):</label>
-                           <input type="text" name="facebookUrl" class="form-control" placeholder="Enter your title">
+                           <input type="url" name="facebookUrl" class="form-control" placeholder="Enter your Facebook Url">
                         </div>
                          <div class="col-lg-6">
                             <label> Twitter (optional) :</label>
-                           <input type="text" name="twitterUrl" class="form-control" placeholder="Enter your Facebook Url">
+                           <input type="url" name="twitterUrl" class="form-control" placeholder="Enter your Twitter Url">
                          </div>
                          <div class="col-lg-6">
                                                      <label> Linkedin (optional) :</label>
-                                                    <input type="text" name="linkedinUrl" class="form-control" placeholder="Enter your LinkedinUrl">
+                                                    <input type="url" name="linkedinUrl" class="form-control" placeholder="Enter your LinkedinUrl">
                                                   </div>
                         <div class="col-lg-6">
                            <label>E-mail:</label>
-                           <input type="text" name="ownerEmail" class="form-control" placeholder="Enter your Twitter Url">
+                           <input type="email" name="ownerEmail" class="form-control" placeholder="Enter your email">
                         </div>
                      </div>
                      <br>
                      <div class="row">
                         <div class="col-lg-6">
                            <label>Phone number:</label>
-                           <input type="text" name="customerPhoneNumber" class="form-control" placeholder="Enter your phone number">
+                           <input required="required"  id="phonenum" type="tel" pattern="^\d{3}-\d{3}-\d{4}$" title="Example: 403-321-1230" name="customerPhoneNumber" class="form-control" placeholder="Enter your phone number">
                         </div>
                         <div class="col-lg-6">
                            <label>Password:</label>
-                           <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                           <input required="required"  type="password" name="password" class="form-control" placeholder="Enter your password">
                         </div>
                      </div>
                      <br>

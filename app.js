@@ -50,6 +50,15 @@ const upload = multer({
 // include uploads directory in project, subsitute for multer destination atm
 app.use(express.static(__dirname + "/uploads"))
 
+// configure user session
+// TODO: need to use encryption library to sign/verify cookies
+app.use(cookieSession({secret:"temp", maxAge:60*60*1000}))
+app.use(function(req, res, next){
+     // make cart variable accessible to all ejs templates
+    res.locals.cart = req.session.cart;
+    next();
+})
+
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
 var Customer= require("./models/customer.js")
@@ -95,56 +104,8 @@ app.use(routes);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-    console.log("('we're in)");
-
-    // add restaurant to db
-    app.post('/api/restaurants/', function (req, res, next) {
-        let newRestaurant = new Restaurant({
-            _id: mongoose.Types.ObjectId(),
-            name: req.body.name,
-            phone: req.body.phoneNumber,
-            address: req.body.address,
-            ownerFirstName: req.body.ownerFirstName,
-            ownerLastName: req.body.ownerLastName,
-            ownerTitle: req.body.ownerTitle,
-            ownerEmail: req.body.ownerEmail,
-            ownerPhone: req.body.ownerPhoneNumber
-        });
-
-        newRestaurant.save(function (err, result) {
-            if (err) console.log('error');
-            return res.json('Success');
-        });
-    });
-
-    // add story to db
-    app.patch('/api/restaurants/stories/', upload.single('picture'), function (req, res, next) {
-        let newStory = {
-            text: req.body.storyText,
-            mediaLink: req.file.path
-        };
-
-        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {stories: newStory}}, function (err, result) {
-            if (err) return res.json(err);
-            return res.json(result);
-        });
-    });
-
-    // upload food item
-    app.patch('/api/restaurants/fooditems', upload.single('picture'), function (req, res, next) {
-        let newFoodItem = {
-            name: req.body.name,
-            price: req.body.price,
-            description: req.body.description,
-            imageLink: req.file.path
-        };
-
-        Restaurant.findOneAndUpdate({_id: new ObjectId(req.body._id)}, {$push: {foodItems: newFoodItem}}, function (err, result) {
-            if (err) return res.json(err);
-            return res.json(result);
-        });
-    });
-
+    console.log("Database running");
+    
     // run app locally on server
     app.listen(3000, 'localhost', function () {
         console.log("The Notepad server has started on port 3000");
