@@ -9,8 +9,6 @@ const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
 const expressSession = require('express-session')
 
-const PORT = process.env.PORT || 3000;
-
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
 var Customer= require("./models/customer.js")
@@ -85,9 +83,7 @@ db.once('open', function () {
     console.log("Database running");
     
     // run app locally on server
-    app.listen(PORT, 'localhost', function () {
-        console.log("The Notepad server has started on port 3000");
-    })
+    app.listen(process.env.PORT || 3000);
 });
 
 // to start the server, run 'node app.js' and go to localhost:3000 on
