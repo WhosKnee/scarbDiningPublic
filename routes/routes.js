@@ -498,6 +498,11 @@ router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRed
     res.redirect("/"+req.user._id+"/customerProfile");
 });
 
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect("/");
+});
+
 // go to under construction page
 router.get("/construction", function(req, res){
     res.render("./construction.ejs");
