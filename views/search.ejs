@@ -21,7 +21,9 @@
             <% for(i = 0; i < rests.length ; i++) { %>
                 <div class="restCard">
                     <a href="/<%=rests[i]._id%>/restaurantProfile">
-                    <img src="data:image/<%=rests[i].image.contentType%>;base64, <%=rests[i].image.data?rests[i].image.data.toString('base64'):""%>" style="height: 20%; width: 100%; object-fit: cover; margin-bottom: 2%;">
+                    <object style="width: 100%" data="/uploads/default/restaurantPhoto<%= rests[i].pricing%>.png" type="image/png">
+                        <img class="card-img-top" src="data:image/<%=rests[i].image.contentType%>;base64, <%=rests[i].image.data?rests[i].image.data.toString('base64'):""%>" alt="Card image cap" style="height:8em; object-fit: cover;">
+                    </object>
                     <div style="padding: 1% 2% 1% 2%; color: #636363">
                         <h5 class="card-title"><%= rests[i].nameSpaced %></h5>
                         
