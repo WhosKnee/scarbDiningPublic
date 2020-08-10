@@ -21,9 +21,14 @@
 				<div id="ui">
 					<h1 class="text-center">Restaurant Owner Sign Up</h1>
 					<br>
+<<<<<<< HEAD
 					<form action="/makeRestaurant" method="POST" class="form-group">
 						<h2 class="subHeading">Restaurant Information</h2>
 						<br>
+=======
+					<form action="/makeRestaurant" method="POST" enctype="multipart/form-data" class="form-group">
+
+>>>>>>> 312c6496b283ce0043bc7f4dd98f2180bfad264a
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Restaurant:</label>
@@ -32,7 +37,7 @@
 
 							<div class="col-lg-6">
 								<label>Business phone:</label>
-								<input required="required" type="text" name="phoneNumber" class="form-control" placeholder="Enter your business phone">
+								<input required="required" type="text" pattern="^\d{3}-\d{3}-\d{4}$" title="Example: 403-321-1230" name="phoneNumber" class="form-control" placeholder="Enter your business phone">
 							</div>
 							
 						</div>
@@ -47,7 +52,14 @@
 						<label>Restaurant Tags (e.g "Burgers", "Chinese", etc. ). Separate tags using a comma:</label>
 						<input type="text" name="tags" class="form-control">
 						<br>
+<<<<<<< HEAD
 						<h2 class="subHeading">Owner Information</h2>
+=======
+						<label>Restaurant Profile Picture:</label>
+						<input style="color:white;" type="file" name="restaurantImageLink">
+						<br>
+						<h2 style="color: white;">Owner Information</h2>
+>>>>>>> 312c6496b283ce0043bc7f4dd98f2180bfad264a
 						<br>
 
 						<div class="row">
@@ -66,6 +78,7 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Title:</label>
+
 								<input required="required" type="text" name="ownerTitle" class="form-control" placeholder="Enter your title">
 							</div>
 
@@ -80,7 +93,7 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<label>Phone number:</label>
-								<input required="required" type="text" name="ownerPhoneNumber" class="form-control" placeholder="Enter your phone number">
+								<input required="required" type="text" pattern="^\d{3}-\d{3}-\d{4}$" title="Example: 403-321-1230" name="ownerPhoneNumber" class="form-control" placeholder="Enter your phone number">
 							</div>
 
 							<div class="col-lg-6">

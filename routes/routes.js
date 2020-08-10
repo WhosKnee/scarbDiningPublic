@@ -1,21 +1,39 @@
 var express = require("express");
 var mongoose = require("mongoose");
 const passport = require("passport");
+const fs = require('fs');
+const multer = require("multer");
 // we load up the routes to a router which we export to the app.js file
 var router = express.Router({mergeParams: true});
 
-// fetch models 
+// fetch models
 var Restaurant = require("../models/restaurant.js");
-var Customer = require("../models/customer.js");
+var Customer= require("../models/customer.js");
 var Cart = require("../models/cart.js");
-const e = require("express");
-const { Passport } = require("passport");
+
+// multer for image upload
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+})
+
+const upload = multer({
+    storage: storage
+});
 
 // note that index/ is mapped as the root for ejs files BY DEFAULT
 
 // landing page (get request)
 router.get("/", function(req, res){
     res.render("./landing.ejs");
+});
+
+router.get("/loginRestaurant", function(req, res){
+    res.render("./temp.ejs");
 });
 
 // go to restaurant signup
@@ -29,9 +47,22 @@ router.get("/customerSignup/", function(req, res){
 });
 
 router.get("/:restaurantId/storyUploader", function(req, res){
-    res.render("./StoriesForm.ejs",{restaurant: req.params.restaurantId});
+    // Prevent unauthorized user from accessing this page
+    if(!req.user || req.user._id != req.params.restaurantId){
+        return res.redirect("/");
+    }
+    res.render("./StoriesForm.ejs",{restaurantId: req.params.restaurantId});
 });
 
+router.get("/:restaurantId/menuItemUploader", function(req, res){
+    // Prevent unauthorized user from accessing this page
+    if(!req.user || req.user._id != req.params.restaurantId){
+        return res.redirect("/");
+    }
+    res.render("./MenuItemForm.ejs",{restaurantId: req.params.restaurantId});
+});
+
+// go to a restarant's homepage
 router.get("/:restaurantId/restaurantProfile", function(req, res){
     Restaurant.find({_id: req.params.restaurantId})
     .populate("stories")
@@ -48,8 +79,11 @@ router.get("/:restaurantId/restaurantProfile", function(req, res){
     })
 });
 
-// go to a restarant's homepage
+// go to a restaurant's menu
 router.get("/:restaurantId/menu", function(req, res){
+    if (!req.user){
+        return res.redirect("/customerLogin");
+    }
     Restaurant.find({_id: req.params.restaurantId})
     .populate("foodItems")
     .exec(function(err, Restaurants){
@@ -172,7 +206,7 @@ router.get("/:restaurantId/reviews", function (req, res) {
                     }
         })
     })
-})
+});
 
 // Post to query search results
 router.post("/searchRestaurants/", function(req,res){
@@ -295,89 +329,27 @@ function bubbleSort(list, param){
         n--;
     }while(swap)
     return list;
-}
+};
 
-// Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
+// Post request to upload story/post
+router.post("/uploadStory", upload.single('postImageLink'), function(req,res){
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
     var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
+        text: req.body.bodyText,
+        image: finalImage
     };
 
-    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
+    Restaurant.findOneAndUpdate({_id: req.body.restaurantId}, {$push: {stories: newStory}}, function (err, result) {
         if (err) return res.json(err);
+        // delete image from local disk after upload
+        fs.unlink(req.file.path)
         // redirect the owner to the public restaurant page
-        res.redirect("/restaurantProfile/" + req.body.restaurantName);
+        res.redirect("/" + req.body.restaurantId + "/restaurantProfile");
     });
-});
-
-// ===================
-// AUTH ROUTES
-// ===================
-// Post request to create restaurant
-router.post("/makeRestaurant", function(req,res){
-    // create object to hold new restaurant's info
-    // trim whitespace from fields and format correctly
-    var restaurantContent= new Restaurant({
-        name: req.body.name.trim().replace(/\s/g, ''),
-        nameSpaced: req.body.name.trim(),
-        username: req.body.ownerEmail.trim(),
-        password: req.body.password,
-        phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
-        rating: 0,
-        pricing: req.body.pricing,
-        address: req.body.address.trim(),
-        ownerFirstName: req.body.ownerFirstName.trim(),
-        ownerLastName: req.body.ownerLastName.trim(),
-        ownerTitle: req.body.ownerTitle.trim(),
-        ownerEmail: req.body.ownerEmail.trim(),
-        ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),
-        stories: [],
-        tags: req.body.tags.trim().replace(/\s/g, '').split(","),
-        foodItems: [],
-        reviews: []
-    });
-
-    // push object to the Restaurant collection in the database
-    Restaurant.create(restaurantContent, function(err, newRestaurant){
-        if(err){
-            console.log(err);
-        }
-        else{
-            newRestaurant.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newRestaurant._id + "/restaurantProfile");
-        }
-    })
-});
-
-router.post("/makeCustomer/", function(req,res){
-    // create object to hold new restaurant's info
-    // trim whitespace from fields
-    var customerContent= new Customer({
-        customerFirstName: req.body.customerFirstName.trim(),
-        customerLastName: req.body.customerLastName.trim(),
-        customerBio: req.body.customerBio.trim(),
-        customerAddress: req.body.customerAddress.trim(),
-        password: req.body.password,
-        customerPhoneNumber: req.body.customerPhoneNumber.trim(),
-        facebookUrl:req.body.facebookUrl.trim(),
-        twitterUrl:req.body.twitterUrl.trim(),
-        linkedinUrl:req.body.linkedinUrl.trim()
-
-    });
-     //push object to the Restaurant collection in the database
-    Customer.create(customerContent, function(err, newCustomer){
-        if(err){
-            console.log(err);
-        }
-        else{
-            newCustomer.save();
-            // redirect the owner to the public restaurant page
-            res.redirect("/" + newCustomer.customerFirstName + "/" + newCustomer.customerLastName + "/customerProfile");
-
-        }
-    })
 });
 
 // upload review
@@ -394,18 +366,134 @@ router.post('/:restaurantId/reviews/', function (req, res, next) {
     });
 });
 
-// Post request to create restaurant
-router.post("/uploadStory/", function(req,res){
-    var newStory = {
-        text: req.body.storyText,
-        mediaLink: "N/A"
+// Post request to add menu item
+router.post("/addMenuItem", upload.single('foodImageLink'), function(req,res){
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
+    var newFoodItem = {
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description,
+        image: finalImage
     };
 
-    Restaurant.findOneAndUpdate({name: req.body.restaurantName.replace(/-/g, '')}, {$push: {stories: newStory}}, function (err, result) {
+    Restaurant.findOneAndUpdate({_id: req.body.restaurantId}, {$push: {foodItems: newFoodItem}}, function (err, result) {
         if (err) return res.json(err);
-        // redirect the owner to the public restaurant page
-        res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
+        // delete image from local disk after upload
+        fs.unlink(req.file.path)
+        // redirect the owner to the edit menu page
+        res.redirect("/" + req.body.restaurantId + "/menu?p=1");
     });
+});
+
+// Post request to delete menu item
+router.post("/deleteMenuItem", function(req,res){
+    Restaurant.findOneAndUpdate({_id: req.body.restaurantId}, {$pull: {foodItems: {_id: req.body.foodId}}}, function (err, result) {
+        if (err) return res.json(err);
+        // redirect the owner to the edit menu page
+        res.redirect("/" + req.body.restaurantId + "/menu?p=1");
+    });
+});
+
+// ===================
+// AUTH ROUTES
+// ===================
+// Post request to create restaurant
+router.post("/makeRestaurant", upload.single('restaurantImageLink'), function(req,res){
+    // create image buffer
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
+    // create object to hold new restaurant's info
+    // trim whitespace from fields and format correctly
+    var restaurantContent = new Restaurant({
+        name: req.body.name.trim().replace(/\s/g, ''),
+        nameSpaced: req.body.name.trim(),
+        username: req.body.ownerEmail.trim(),
+        password: req.body.password,
+        phoneNumber: req.body.phoneNumber.trim().replace(/\s/g, '').replace(/-/g, '').replace(/[(]/g, '').replace(/[)]/g, ''),
+        rating: 0,
+        pricing: req.body.pricing,
+        address: req.body.address.trim(),
+        ownerFirstName: req.body.ownerFirstName.trim(),
+        ownerLastName: req.body.ownerLastName.trim(),
+        ownerTitle: req.body.ownerTitle.trim(),
+        ownerEmail: req.body.ownerEmail.trim(),
+        ownerPhoneNumber: req.body.ownerPhoneNumber.trim().replace(/[(]/g, '').replace(/[)]/g, ''),
+        stories: [],
+        tags: req.body.tags.trim().replace(/\s/g, '').split(","),
+        foodItems: [],
+        reviews: [],
+        image: finalImage
+    });
+
+    // register restaurant to the Restaurant collection in the database
+    Restaurant.register(restaurantContent, req.body.password, function(err, restaurant){
+        if(err){
+            console.log(err)
+            res.redirect("/restaurantSignup/");
+        } else {
+            console.log("Successful registration.");
+            // delete image from local disk after upload
+            fs.unlink(req.file.path)
+            res.redirect("/loginRestaurant");
+        }
+    });
+});
+
+router.post('/loginRestaurant', passport.authenticate('ownerLocal', {failureRedirect: '/loginRestaurant', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user._id+"/restaurantProfile");
+});
+
+router.post("/makeCustomer/", upload.single("customerImageLink"), function(req,res){
+    // create image buffer
+    var encodedImage = fs.readFileSync(req.file.path).toString('base64');
+    var finalImage = {
+        data: new Buffer(encodedImage, "base64"),
+        contentType: req.file.mimetype
+    };
+    // create object to hold new customer's info
+    // trim whitespace from fields
+    var customerContent= new Customer({
+        customerFirstName: req.body.customerFirstName.trim(),
+        customerLastName: req.body.customerLastName.trim(),
+        customerBio: req.body.customerBio.trim(),
+        customerAddress: req.body.customerAddress.trim(),
+        username: req.body.customerEmail.trim(),
+        password: req.body.password,
+        customerEmail: req.body.customerEmail.trim(),
+        customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+        image: finalImage,
+        facebookUrl:req.body.facebookUrl.trim(),
+        twitterUrl:req.body.twitterUrl.trim(),
+        linkedinUrl:req.body.linkedinUrl.trim()
+    });
+
+    // register customer to the Customer collection in the database
+    Customer.register(customerContent, req.body.password, function(err, customer){
+        if(err){
+            console.log(err)
+            res.redirect("/customerSignup/");
+        } else {
+            console.log("Successful registration.");
+            // delete image from local disk after upload
+            fs.unlink(req.file.path)
+            res.redirect("/loginCustomer");
+        }
+    });
+});
+
+router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user._id+"/customerProfile");
+});
+
+router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user.customerFirstName+"/"+req.user.customerLastName+"/customerProfile");
 });
 
 // go to under construction page

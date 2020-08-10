@@ -21,16 +21,17 @@
                <div id="ui">
                   <h1 class="text-center">Customer Sign Up</h1>
                   <br>
-                  <form action="/makeCustomer/" method = "post" sclass="form-group">
+                  <form action="/makeCustomer/" method = "post" enctype="multipart/form-data" class="form-group">
+                     <h3 class="text-center">Customer Information</h3>
                      <br>
                      <div class="row">
                         <div class="col-lg-6">
                            <label>First name:</label>
-                           <input type="text" name="customerFirstName" class="form-control" placeholder="Enter your first name">
+                           <input required="required"  type="text" name="customerFirstName" class="form-control" placeholder="Enter your first name">
                         </div>
                         <div class="col-lg-6">
                            <label>Last name:</label>
-                           <input type="text" name="customerLastName" class="form-control" placeholder="Enter your last name">
+                           <input required="required"  type="text" name="customerLastName" class="form-control" placeholder="Enter your last name">
                         </div>
                         <div class="col-lg-6 pt-3">
                             <label class = " mb-3">Bio:</label>
@@ -41,22 +42,30 @@
                               <input type="text" name="customerAddress" class="form-control" placeholder="Enter your Address">
                            </div>
                        </div>
+                       <br>
+                       <div class="row">
+                           <div class="col-lg-6">
+                              <label>Profile Picture:</label>
+                              <input style="color:white;" type="file" name="customerImageLink">
+                           </div>
+                        </div>
                      <br>
                      <div class="row">
                         <div class="col-lg-6">
                            <label>Facebook (optional):</label>
-                           <input type="text" name="facebookUrl" class="form-control" placeholder="Enter your Title">
+                           <input type="url" name="facebookUrl" class="form-control" placeholder="Enter your Facebook Url">
                         </div>
                          <div class="col-lg-6">
                             <label> Twitter (optional) :</label>
-                           <input type="text" name="twitterUrl" class="form-control" placeholder="Enter your Facebook Url">
+                           <input type="url" name="twitterUrl" class="form-control" placeholder="Enter your Twitter Url">
                          </div>
-                     </div>
-                     <br>
-                     <div class="row">
+                         <div class="col-lg-6">
+                                                     <label> Linkedin (optional) :</label>
+                                                    <input type="url" name="linkedinUrl" class="form-control" placeholder="Enter your LinkedinUrl">
+                                                  </div>
                         <div class="col-lg-6">
-                           <label> Linkedin (optional) :</label>
-                           <input type="text" name="linkedinUrl" class="form-control" placeholder="Enter your LinkedinUrl">
+                           <label>E-mail:</label>
+                           <input type="email" name="customerEmail" class="form-control" placeholder="Enter your email">
                         </div>
                      <div class="col-lg-6">
                         <label>E-mail:</label>
@@ -67,11 +76,11 @@
                      <div class="row">
                         <div class="col-lg-6">
                            <label>Phone number:</label>
-                           <input type="text" name="customerPhoneNumber" class="form-control" placeholder="Enter your Phone Number">
+                           <input required="required"  id="phonenum" type="tel" pattern="^\d{3}-\d{3}-\d{4}$" title="Example: 403-321-1230" name="customerPhoneNumber" class="form-control" placeholder="Enter your phone number">
                         </div>
                         <div class="col-lg-6">
                            <label>Password:</label>
-                           <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                           <input required="required"  type="password" name="password" class="form-control" placeholder="Enter your password">
                         </div>
                      </div>
                      <br>
