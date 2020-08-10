@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    const DUMMY_USER = "5f1b2c758ccd610017ad85db";
     let userRating;
     let url = window.location.pathname;
     let restaurantId = url.substring(url.indexOf('/') + 1, url.indexOf('/reviews'));
@@ -28,13 +27,12 @@ $(document).ready(function () {
     });
 
     $('#review-text-submit-btn').click(() => {
+       let username = $("#user-id").val();
        let reviewComment = $('#review-text').val();
 
        if (userRating) {
-           console.log(restaurantId);
-
            send("POST", `/${restaurantId}/reviews/`, {
-               user_id: DUMMY_USER,
+               user_id: username,
                comment: reviewComment,
                rating: userRating
            }, function (err, res) {
