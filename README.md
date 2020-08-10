@@ -10,8 +10,4 @@ At the moment, the website contains content pertaining to:
 * Deliverable 4 [July 20th, 2020]
 * Deliverable 5 [August 10, 2020]
 
-Snapshots of the burndown chart and taskboard are avilable in the folder called ProgressSnapshots.
-These have been committed on the following dates:
-* June 25th
-* June 28th
-* June 29th
+The link to the deployed website can be found here: https://dry-temple-14903.herokuapp.com/
