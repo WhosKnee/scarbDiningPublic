@@ -13,7 +13,7 @@
           <a class="nav-link" href="/explore/">Explore <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item <%=cart?"active btn-secondary":""%>">
-          <a class="nav-link <%=cart?"":"disabled"%></a>" href="/myCart"><%=cart?cart.cartItems.length:0%> item(s) in Cart <%=cart?"["+cart.restaurant+"]":""%><span class="sr-only">(current)</span></a>
+          <a class="nav-link <%=cart?"":"disabled"%>" href="/myCart"><%=cart?cart.cartItems.length:0%> item(s) in Cart <%=cart?"["+cart.restaurant+"]":""%><span class="sr-only">(current)</span></a>
         </li>
       </ul>
       <ul class="navbar-nav mr-auto" style="float:right; margin-left: 9%;">
@@ -22,8 +22,8 @@
           Login
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="/customerSignup/">Customer</a>
-            <a class="dropdown-item" href="#">Restaurant Owner</a>
+            <a class="dropdown-item" href="/loginCustomer">Customer</a>
+            <a class="dropdown-item" href="/loginRestaurant">Restaurant Owner</a>
           </div>
         </li>
         <li class="nav-item dropdown">

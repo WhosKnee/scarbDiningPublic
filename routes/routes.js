@@ -33,7 +33,6 @@ router.get("/", function(req, res){
 });
 
 router.get("/loginRestaurant", function(req, res){
-    console.log("wy");
     res.render("./loginR.ejs");
 });
 router.get("/loginCustomer", function(req, res){
