@@ -38,7 +38,7 @@
                 <% for(var i=0; i < 10; i++) { var food = restaurant.foodItems[10 * (page-1) + i];%>
                     <% if (food && food.image.data) { %>
                         <li class="media mt-1 <%=user.customerEmail?"food-item-order":"food-item-edit"%> container justify-content-start" style="height:6em;">
-                            <img class="mr-3 row align-self-start h-100" src="data:image/<%=food.image.contentType%>;base64, <%=food.image.data.toString('base64')%>" alt="Tmp Img" width="70em">
+                            <img class="mr-3 row align-self-start h-100" src="data:image/<%=food.image.contentType%>;base64, <%=food.image.data?food.image.data.toString('base64'):""%>" alt="Tmp Img" width="70em">
                             <% if(user.ownerEmail) { %>
                                 <div class="media-body row justify-content-between align-items-center h-100 no-gutters">
                             <% } else if(cart && cart.restaurant != restaurant.name){ %>

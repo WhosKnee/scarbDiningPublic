@@ -15,7 +15,7 @@
       <div class = "container d-flex flex-column justify-content-start">
          <div class = "container d-flex flex-column justify-content-start">
             <div class="d-flex align-self-start">
-               <img src="data:image/<%=customerInfo.image.contentType%>;base64, <%=customerInfo.image.data.toString('base64')%>" alt="W3Schools.com" style=height:300%>
+               <img src="data:image/<%=customerInfo.image.contentType%>;base64, <%=customerInfo.image.data?customerInfo.image.data.toString('base64'):""%>" alt="W3Schools.com" style=height:300%>
             </div>
          </div>
       </div>
