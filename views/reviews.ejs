@@ -29,12 +29,11 @@
 
 <body>
     <%- include('./partials/navbar.ejs') %>
-    <a id="back-btn" class="btn btn-outline-secondary btn-md float-right m-2" href="/<%=restaurant._id%>/restaurantProfile" role="button">Back to profile page</a>
     
     <div class="container">
-        <h1 class="display-4 mt-2 mb-5 text-center">Reviews for <b><%= restaurant.name %></b></h1>
+        <h1 class="display-4 mt-2 mb-5 text-center">Reviews for <a href="/<%=restaurant._id%>/restaurantProfile" style="color:black; text-decoration:none;"><b><%= restaurant.name %></b></a></h1>
 
-
+        <% if (user && user.customerEmail) { %>
         <div id="leave-review-div" class="p-3 m-4 border-bottom mb-5">
             <form id="review-form" class="text-center">
                 <h5>Leave a review for <%= restaurant.name %>!</h5>
@@ -67,7 +66,12 @@
                 </div>
             </form>
         </div>
-
+        <% } else { %>
+        <h3>You must be logged in as a customer to leave a review.</h3>
+        <% } %>
+        
+        <br>
+        <h3>Other Customers' Reviews:</h3>
         <ul class="list-unstyled m-3">
             <% for(var i=0; i < 10; i++) { var review = restaurant.reviews[10 * (page-1) + i];%>
             <% if (review != undefined) { %>
@@ -91,7 +95,7 @@
         <div class="row justify-content-end">
             <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>"
                 href="/<%=restaurant._id%>/reviews?p=<%=Number(page)-1%>">Last Page</a>
-            <%=page%> of <%=Math.ceil(restaurant.reviews.length / 10)%>
+                <%=restaurant.reviews.length>0?page:0%> of <%=Math.ceil(restaurant.reviews.length / 10)%>
             <a role="button"
                 class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.reviews.length / 10)) {%> disabled <% }; %>"
                 href="/<%=restaurant._id%>/reviews?p=<%=Number(page)+1%>">Next Page</a>

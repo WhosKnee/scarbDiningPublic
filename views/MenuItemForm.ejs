@@ -19,16 +19,16 @@
 					<div class="row justify-content-between mb-4">
 						<div class="col-8">
 							<label>Food item:</label>
-							<input type="text" name="name" class="form-control mb-2" placeholder="Enter food item's name">
+							<input required="required" type="text" name="name" class="form-control mb-2" placeholder="Enter food item's name">
 							<label>Price:</label>
-							<input type="text" name="price" class="form-control mb-2" placeholder="Enter food item's price">
+							<input required="required" type="number" min="0" step="0.01" name="price" class="form-control mb-2" placeholder="Enter food item's price">
 							<label>Description:</label>
-							<input type="text" name="description" class="form-control mb-2" placeholder="Enter food item's description">
+							<input required="required" type="text" name="description" class="form-control mb-2" placeholder="Enter food item's description">
 						</div>
 						<div class="col-4 align-self-end">
 							<h6 class="text-center">Upload a picture of your food item.</h6>
 							<img class="mb-2" style="border: 2px solid black; margin: 0 auto; display: block;" id="postImage" src="" alt="No Image Uploaded" onerror="this.onerror=null; this.src='/uploads/no_image.png'">
-							<input style="color:white;" type="file" name="foodImageLink" onchange="readURL(this);">
+							<input style="color:white;" required="required" type="file" name="foodImageLink" onchange="readURL(this);">
 						</div>
 					</div>
 				<input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block btn-lg">

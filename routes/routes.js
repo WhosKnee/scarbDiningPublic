@@ -33,7 +33,11 @@ router.get("/", function(req, res){
 });
 
 router.get("/loginRestaurant", function(req, res){
-    res.render("./temp.ejs");
+    console.log("wy");
+    res.render("./loginR.ejs");
+});
+router.get("/loginCustomer", function(req, res){
+    res.render("./loginC.ejs");
 });
 
 // go to restaurant signup
@@ -81,7 +85,7 @@ router.get("/:restaurantId/restaurantProfile", function(req, res){
 
 // go to a restaurant's menu
 router.get("/:restaurantId/menu", function(req, res){
-    if (!req.user){
+    if (!req.user || (req.user.ownerEmail && req.user._id != req.params.restaurantId)){
         return res.redirect("/customerLogin");
     }
     Restaurant.find({_id: req.params.restaurantId})
@@ -92,6 +96,9 @@ router.get("/:restaurantId/menu", function(req, res){
         } else {
             // the query returns a list so we need the first item which is our restaurant
             currRestaurant = Restaurants[0];
+            if (!req.query.p) {
+                req.query.p = 1;
+            }
             res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
     })
@@ -490,10 +497,6 @@ router.post("/makeCustomer/", upload.single("customerImageLink"), function(req,r
 
 router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
     res.redirect("/"+req.user._id+"/customerProfile");
-});
-
-router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
-    res.redirect("/"+req.user.customerFirstName+"/"+req.user.customerLastName+"/customerProfile");
 });
 
 // go to under construction page
