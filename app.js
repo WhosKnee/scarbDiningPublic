@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
-const expressSession = require('express-session')
+const expressSession = require('express-session');
+const path = require('path'); 
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
