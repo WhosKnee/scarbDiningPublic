@@ -84,14 +84,10 @@ db.once('open', function () {
     console.log("Database running");
     
     // run app locally on server
-<<<<<<< HEAD
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         console.log(`Our app is running on port ${ PORT }`);
     });
-=======
-    app.listen(process.env.PORT || 3000);
->>>>>>> 8bc4f94eabd1e90e6d369574b3c75e943e8800d2
 });
 
 // to start the server, run 'node app.js' and go to localhost:3000 on
