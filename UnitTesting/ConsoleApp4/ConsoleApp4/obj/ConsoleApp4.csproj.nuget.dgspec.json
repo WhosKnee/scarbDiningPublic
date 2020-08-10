@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/jessefrancispillai/Projects/ConsoleApp4/ConsoleApp4/ConsoleApp4.csproj": {}
+  },
+  "projects": {
+    "/Users/jessefrancispillai/Projects/ConsoleApp4/ConsoleApp4/ConsoleApp4.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jessefrancispillai/Projects/ConsoleApp4/ConsoleApp4/ConsoleApp4.csproj",
+        "projectName": "ConsoleApp4",
+        "projectPath": "/Users/jessefrancispillai/Projects/ConsoleApp4/ConsoleApp4/ConsoleApp4.csproj",
+        "packagesPath": "/Users/jessefrancispillai/.nuget/packages/",
+        "outputPath": "/Users/jessefrancispillai/Projects/ConsoleApp4/ConsoleApp4/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jessefrancispillai/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[15.9.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.17.0, )"
+            },
+            "Selenium.WebDriver": {
+              "target": "Package",
+              "version": "[3.141.0, )"
+            },
+            "Selenium.WebDriver.ChromeDriver": {
+              "target": "Package",
+              "version": "[84.0.4147.3001, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.302/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
