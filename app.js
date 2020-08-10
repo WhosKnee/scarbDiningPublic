@@ -5,7 +5,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require('fs')
-const cookieSession = require('cookie-session')
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const flash = require("connect-flash");
 
 // set ejs as the view engine
 app.set("view engine", "ejs");
@@ -59,6 +61,39 @@ app.use(function(req, res, next){
 
 // fetch models 
 var Restaurant = require("./models/restaurant.js");
+var Customer= require("./models/customer.js")
+
+
+// configure passport
+app.use(require("express-session")({
+    secret: "can be anything",
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use('customerLocal', new LocalStrategy(Customer.authenticate()));
+passport.use('ownerLocal', new LocalStrategy(Restaurant.authenticate()));
+
+passport.serializeUser(function(user, done) { 
+    done(null, user);
+  });
+
+passport.deserializeUser(function(user, done) {
+    if(user!=null)
+      done(null,user);
+  });
+
+app.use(flash());
+
+app.use(function(req, res, next){
+    // make flash messages accessible from ejs
+    res.locals.message = req.flash();
+    // make authenticated user accessible from ejs
+    res.locals.user = req.user;
+    next();
+})
 
 // fetch routes
 var routes = require("./routes/routes.js");

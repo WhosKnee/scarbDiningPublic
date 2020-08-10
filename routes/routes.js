@@ -29,9 +29,14 @@ router.get("/customerSignup/", function(req, res){
 });
 
 router.get("/:restaurantId/storyUploader", function(req, res){
+    // Prevent unauthorized user from accessing this page
+    if(!req.user || req.user.name != req.param("restaurant").replace(/-/g, '')){
+        return res.redirect("/");
+    }
     res.render("./StoriesForm.ejs",{restaurant: req.params.restaurantId});
 });
 
+// go to a restarant's homepage
 router.get("/:restaurantId/restaurantProfile", function(req, res){
     Restaurant.find({_id: req.params.restaurantId})
     .populate("stories")
@@ -48,8 +53,11 @@ router.get("/:restaurantId/restaurantProfile", function(req, res){
     })
 });
 
-// go to a restarant's homepage
+// go to a restaurant's menu
 router.get("/:restaurantId/menu", function(req, res){
+    if (!req.user || req.usedStrategy != "customerLocal"){
+        return res.redirect("/customerLogin");
+    }
     Restaurant.find({_id: req.params.restaurantId})
     .populate("foodItems")
     .exec(function(err, Restaurants){
@@ -339,53 +347,40 @@ router.post("/makeRestaurant", function(req, res) {
         })
     }
 });
-router.post("/makeCustomer/", function(req, res) {
-// create object to hold new restaurant's info
-// trim whitespace from fields
-var customerContent = new Customer({
-customerFirstName: req.body.customerFirstName.trim(),
-customerLastName: req.body.customerLastName.trim(),
-customerBio: req.body.customerBio.trim(),
-customerAddress: req.body.customerAddress.trim(),
-password: req.body.password,
-customerPhoneNumber: req.body.customerPhoneNumber.trim(),
-facebookUrl: req.body.facebookUrl.trim(),
-twitterUrl: req.body.twitterUrl.trim(),
-linkedinUrl: req.body.linkedinUrl.trim()
 
+router.post('/loginRestaurant', passport.authenticate('ownerLocal', {failureRedirect: '/loginRestaurant', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user.nameSpaced.replace(/ /g, "-")+"/restaurantProfile");
 });
 
-if (req.body.customerFirstName == "check") {
-    Customer.findOneAndUpdate({customerLastName: req.body.customerLastName.trim()},
-    {
-    customerFirstName: req.body.customerFirstName.trim(),
-    customerLastName: req.body.customerLastName.trim(),
-    customerBio: req.body.customerBio.trim(),
-    customerAddress: req.body.customerAddress.trim(),
-    password: req.body.password,
-    customerPhoneNumber: req.body.customerPhoneNumber.trim(),
-    facebookUrl: req.body.facebookUrl.trim(),
-    twitterUrl: req.body.twitterUrl.trim(),
-    linkedinUrl: req.body.linkedinUrl.trim()
-}, function(err, customer) {
-    if (err) {
-        console.log(err);
-    } else {
-        res.redirect("/" + customer._id + "/customerProfile");
-    }
-});
-} else {
-Customer.create(customerContent, function(err2, newCustomer) {
-    if (err2) {
-        console.log(err);
-    } else {
-        newCustomer.save();
-        res.redirect("/" + newCustomer._id + "/customerProfile");
-    }
-})
-}
-});
+router.post("/makeCustomer/", function(req,res){
+    // create object to hold new customer's info
+    // trim whitespace from fields
+    var customerContent= new Customer({
+        customerFirstName: req.body.customerFirstName.trim(),
+        customerLastName: req.body.customerLastName.trim(),
+        customerBio: req.body.customerBio.trim(),
+        customerAddress: req.body.customerAddress.trim(),
+        username: req.body.customerEmail.trim(),
+        password: req.body.password,
+        customerEmail: req.body.customerEmail.trim(),
+        customerPhoneNumber: req.body.customerPhoneNumber.trim(),
+        facebookUrl:req.body.facebookUrl.trim(),
+        twitterUrl:req.body.twitterUrl.trim(),
+        linkedinUrl:req.body.linkedinUrl.trim()
 
+    });
+
+    // register customer to the Customer collection in the database
+    Customer.register(customerContent, req.body.password, function(err, customer){
+        if(err){
+            console.log(err)
+            res.redirect("/customerSignup/");
+        } else {
+            console.log("Successful registration.");
+            res.redirect("/loginCustomer");
+        }
+    })
+});
 
 // upload review
 router.post('/:restaurantId/reviews/', function (req, res, next) {
@@ -413,6 +408,10 @@ router.post("/uploadStory/", function(req,res){
         // redirect the owner to the public restaurant page
         res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
     });
+});
+
+router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
+    res.redirect("/"+req.user.customerFirstName+"/"+req.user.customerLastName+"/customerProfile");
 });
 
 // go to under construction page
