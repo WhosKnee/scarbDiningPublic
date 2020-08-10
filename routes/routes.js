@@ -33,7 +33,6 @@ router.get("/", function(req, res){
 });
 
 router.get("/loginRestaurant", function(req, res){
-    console.log("wy");
     res.render("./loginR.ejs");
 });
 router.get("/loginCustomer", function(req, res){
@@ -497,6 +496,11 @@ router.post("/makeCustomer/", upload.single("customerImageLink"), function(req,r
 
 router.post('/loginCustomer', passport.authenticate('customerLocal', {failureRedirect: '/loginCustomer', failureFlash: true}), function(req, res){
     res.redirect("/"+req.user._id+"/customerProfile");
+});
+
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect("/");
 });
 
 // go to under construction page
