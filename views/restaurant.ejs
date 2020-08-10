@@ -16,10 +16,10 @@
             <br><br>
             <h1 class="display-10 text-center" style="margin-bottom: 1%;"> <%= restaurant.nameSpaced %> </h1>
             <h4 class="display-10 text-center" style="margin-bottom: 3%; font-weight: 350;"> 
-                <% if (restaurant.rating == 0) { %>
+                <% if (restaurant.reviews.length === 0) { %>
                     No Ratings Yet
                 <% } else { %> 
-                    Rating: <%= restaurant.rating %>/5 (<%= restaurant.numOfRatings %> Reviews)
+                    Rating: <%= restaurant.rating %>/5 (<%= restaurant.reviews.length %> Reviews)
                 <% } %>
                 &nbsp;&nbsp;|&nbsp;&nbsp;  Pricing: <%= restaurant.pricing %>/4
                 <% if (!user) { %>

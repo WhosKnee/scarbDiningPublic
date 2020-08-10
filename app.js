@@ -29,6 +29,7 @@ mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd
 
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))
+app.set('views', path.join(__dirname, 'views'));
 
 // configure session
 app.use(expressSession({
@@ -83,7 +84,10 @@ db.once('open', function () {
     console.log("Database running");
     
     // run app locally on server
-    app.listen(process.env.PORT || 3000);
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Our app is running on port ${ PORT }`);
+    });
 });
 
 // to start the server, run 'node app.js' and go to localhost:3000 on
