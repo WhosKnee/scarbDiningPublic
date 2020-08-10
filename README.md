@@ -10,4 +10,4 @@ At the moment, the website contains content pertaining to:
 * Deliverable 4 [July 20th, 2020]
 * Deliverable 5 [August 10, 2020]
 
-
+The link to the deployed website can be found here: https://dry-temple-14903.herokuapp.com/
