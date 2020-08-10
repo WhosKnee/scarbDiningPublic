@@ -83,9 +83,10 @@ db.once('open', function () {
     console.log("Database running");
     
     // run app locally on server
-    app.listen(3000, 'localhost', function () {
-        console.log("The Notepad server has started on port 3000");
-    })
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Our app is running on port ${ PORT }`);
+    });
 });
 
 // to start the server, run 'node app.js' and go to localhost:3000 on
