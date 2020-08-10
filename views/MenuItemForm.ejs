@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Personal Stories</title>
+		<title>Menu Item Upload</title>
 		<!-- JS, Popper.js, and jQuery (Bootstrap files) -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -12,19 +12,23 @@
 		<%- include('./partials/navbar.ejs') %>
 		<div class="container" id="ui">
 			<div class="row mb-2">
-				<h1 class="col text-center">Create a New Post</h1>
+				<h1 class="col text-center">Add a new Menu Item</h1>
 			</div>
-			<form action="/uploadStory" method="POST" enctype="multipart/form-data" class="form-group">
+			<form action="/addMenuItem" method="POST" enctype="multipart/form-data" class="form-group">
 				<input type="hidden" name="restaurantId" value=<%=restaurantId%>>
 					<div class="row justify-content-between mb-4">
 						<div class="col-8">
-							<h6 class="text-center">Write the body of your post here.</h6>
-							<textarea style="width:100%; height:16em;" name="bodyText"></textarea>
+							<label>Food item:</label>
+							<input type="text" name="name" class="form-control mb-2" placeholder="Enter food item's name">
+							<label>Price:</label>
+							<input type="text" name="price" class="form-control mb-2" placeholder="Enter food item's price">
+							<label>Description:</label>
+							<input type="text" name="description" class="form-control mb-2" placeholder="Enter food item's description">
 						</div>
 						<div class="col-4 align-self-end">
-							<h6 class="text-center">[Optional] Upload an image to go along with your post.</h6>
+							<h6 class="text-center">Upload a picture of your food item.</h6>
 							<img class="mb-2" style="border: 2px solid black; margin: 0 auto; display: block;" id="postImage" src="" alt="No Image Uploaded" onerror="this.onerror=null; this.src='/uploads/no_image.png'">
-							<input style="color:white;" type="file" name="postImageLink" id="imageLink" onchange="readURL(this);">
+							<input style="color:white;" type="file" name="foodImageLink" onchange="readURL(this);">
 						</div>
 					</div>
 				<input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block btn-lg">

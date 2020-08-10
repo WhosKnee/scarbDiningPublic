@@ -1,10 +1,10 @@
-.food-item{
+.food-item-order, .food-item-edit{
     border: 2px solid black;
     padding: 1px 1px 1px 1px;
     position:relative;
 }
 
-.food-item:hover{
+.food-item-order:hover{
     cursor: pointer;
     opacity: 0.75;
     background-color: rgba(200, 200, 200, 0.25);

@@ -31,7 +31,7 @@
                <div id="ui">
                   <h1 class="text-center">REGISTRATION FORM</h1>
                   <br>
-                  <form action="/makeCustomer/" method = "post" sclass="form-group">
+                  <form action="/makeCustomer/" method = "post" enctype="multipart/form-data" class="form-group">
                      <h3 class="text-center">Customer Information</h3>
                      <br>
                      <div class="row">
@@ -52,6 +52,13 @@
                                                    <input required="required"  type="text" name="customerAddress" class="form-control" placeholder="Enter your last name">
                                                 </div>
                        </div>
+                       <br>
+                       <div class="row">
+                           <div class="col-lg-6">
+                              <label>Profile Picture:</label>
+                              <input style="color:white;" type="file" name="customerImageLink">
+                           </div>
+                        </div>
                      <br>
                      <div class="row">
                         <div class="col-lg-6">
