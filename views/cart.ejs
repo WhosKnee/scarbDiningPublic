@@ -21,7 +21,7 @@
     <body>
         <%- include('./partials/navbar.ejs') %>
         <div class="container">
-            <h1 class="display-4 mt-2 mb-5">You are ordering from: <a href="/<%=restaurant.name%>/restaurantProfile" style="color:black; text-decoration:none;"><b><%= cart.restaurant %></b></a></h1>
+            <h1 class="display-4 mt-2 mb-5">You are ordering from: <a href="/<%=restaurant._id%>/restaurantProfile" style="color:black; text-decoration:none;"><b><%= cart.restaurant %></b></a></h1>
             <h3> Your cart contains the following items:</h3>
             <ul class="list-unstyled">
                 <% for(var i=0; i < cart.cartItems.length; i++) { %>
@@ -29,7 +29,7 @@
                         <% if(restaurant.foodItems[j]._id == cart.cartItems[i].foodItemId){ %>
                             <% var food = restaurant.foodItems[j]; %>
                             <li class="media mt-1 food-item container justify-content-start" style="height:6em;">
-                                <img class="mr-3 row align-self-start h-100" src=<%=food.imageLink%> alt="Tmp Img" width="70em">
+                                <img class="mr-3 row align-self-start h-100" src="data:image/<%=food.image.contentType%>;base64, <%=food.image.data.toString('base64')%>" alt="Tmp Img" width="70em">
                                 <div class="media-body row justify-content-between align-items-center h-100 no-gutters">
                                     <div class="col-9">
                                         <h3 class="mt-0"><%=food.name%> | $<%=food.price.toFixed(2)%> </h3>

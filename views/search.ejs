@@ -15,7 +15,8 @@
             <br>
             <% for(i = 0; i < rests.length ; i++) { %>
                 <div style="float: left; width: 25%; margin: 2% 2% 2% 2%; border: #999999 solid 1px; border-radius: 5px;">
-                    <a href="/<%= rests[i].nameSpaced.replace(/\s/g, '-')%>/restaurantProfile">
+                    <a href="/<%= rests[i]._id%>/restaurantProfile">
+                    <a href="/<%=rests[i]._id%>/restaurantProfile">
                     <img src="https://www.w3schools.com/images/picture.jpg" style="height: 20%; width: 100%; object-fit: cover; margin-bottom: 2%;">
                     <div style="padding: 1% 2% 1% 2%; color: #636363">
                         <h5 class="card-title"><%= rests[i].nameSpaced %></h5>

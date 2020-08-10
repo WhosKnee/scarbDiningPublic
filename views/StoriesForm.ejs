@@ -15,7 +15,7 @@
 				<h1 class="col text-center">Create a New Post</h1>
 			</div>
 			<form action="/uploadStory" method="POST" enctype="multipart/form-data" class="form-group">
-				<input type="hidden" name="restaurantName" value=<%=restaurant%>>
+				<input type="hidden" name="restaurantId" value=<%=restaurantId%>>
 					<div class="row justify-content-between mb-4">
 						<div class="col-8">
 							<h6 class="text-center">Write the body of your post here.</h6>
@@ -24,7 +24,7 @@
 						<div class="col-4 align-self-end">
 							<h6 class="text-center">[Optional] Upload an image to go along with your post.</h6>
 							<img class="mb-2" style="border: 2px solid black; margin: 0 auto; display: block;" id="postImage" src="" alt="No Image Uploaded" onerror="this.onerror=null; this.src='/uploads/no_image.png'">
-							<input style="color:white;" type="file" name="imageLink" id="imageLink" onchange="readURL(this);">
+							<input style="color:white;" type="file" name="postImageLink" id="imageLink" onchange="readURL(this);">
 						</div>
 					</div>
 				<input type="submit" name="submit" value="Submit" class="btn btn-primary btn-block btn-lg">

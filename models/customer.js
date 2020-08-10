@@ -6,6 +6,7 @@ var customerSchema = mongoose.Schema({
     customerFirstName: String,
     customerLastName: String,
     password: String,
+    customerEmail: String,
     customerAddress: String,
     customerBio: String,
     customerPhoneNumber: String,
