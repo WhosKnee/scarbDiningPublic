@@ -6,7 +6,8 @@ var router = express.Router({mergeParams: true});
 
 // fetch models 
 var Restaurant = require("../models/restaurant.js");
-var Customer= require("../models/customer.js");
+var Customer = require("../models/customer.js");
+var Cart = require("../models/cart.js");
 const e = require("express");
 const { Passport } = require("passport");
 
@@ -15,21 +16,21 @@ const { Passport } = require("passport");
 // landing page (get request)
 router.get("/", function(req, res){
     res.render("./landing.ejs");
-})
+});
 
 // go to restaurant signup
 router.get("/restaurantSignup/", function(req, res){
     res.render("./Registration_Form.ejs");
-})
+});
 
 // go to customer signup
 router.get("/customerSignup/", function(req, res){
     res.render("./Customer_Form.ejs");
-})
+});
 
 router.get("/:restaurantId/storyUploader", function(req, res){
     res.render("./StoriesForm.ejs",{restaurant: req.params.restaurantId});
-})
+});
 
 router.get("/:restaurantId/restaurantProfile", function(req, res){
     Restaurant.find({_id: req.params.restaurantId})
@@ -45,7 +46,7 @@ router.get("/:restaurantId/restaurantProfile", function(req, res){
             res.render("./restaurant.ejs", {restaurant: currRestaurant});
         }
     })
-})
+});
 
 // go to a restarant's homepage
 router.get("/:restaurantId/menu", function(req, res){
@@ -60,7 +61,70 @@ router.get("/:restaurantId/menu", function(req, res){
             res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
     })
-})
+});
+
+// update shopping cart by adding or removing items, and/or replacing one restaurant's cart for another's
+router.post("/updateCart", function(req, res){
+    if (req.body.replace == "true" || !req.session.cart){
+        req.session.cart = new Cart({
+            restaurant: req.body.restaurant,
+            cartItems:[]
+        })
+    }
+    if (req.body.action == "add"){
+        for(i = 0; i < req.session.cart.cartItems.length; i++){
+            cartItem = req.session.cart.cartItems[i]
+            if (cartItem.foodItemId == req.body.food_id){
+                cartItem.quantity++
+                return res.redirect(req.headers.referer)
+            }
+        }
+        req.session.cart.cartItems.push({
+            foodItemId:req.body.food_id,
+            quantity:1
+        })
+        return res.redirect(req.headers.referer);
+    } else if (req.body.action == "remove"){
+        for(i = 0; i < req.session.cart.cartItems.length; i++){
+            cartItem = req.session.cart.cartItems[i]
+            if (cartItem.foodItemId == req.body.food_id){
+                cartItem.quantity--
+                if (cartItem.quantity <= 0){
+                    req.session.cart.cartItems.splice(i, 1)
+                }
+                if (req.session.cart.cartItems.length <= 0){
+                    req.session.cart = undefined;
+                    return res.redirect("/")
+                }
+                return res.redirect(req.headers.referer)
+            }
+        }
+        console.log("Nothing to remove")
+        return res.redirect(req.headers.referer)
+    }
+    console.log("Bad Action")
+    return res.redirect(req.headers.referer)
+});
+
+// go to cart page
+router.get("/myCart", function(req, res){
+    if (req.session.cart){
+        Restaurant.find({name: req.session.cart.restaurant})
+        .populate("foodItems")
+        .exec(function(err, Restaurants){
+            if(err){
+                console.log(err)
+            } else {
+                // the query returns a list so we need the first item which is our restaurant
+                currRestaurant = Restaurants[0];
+                res.render("./cart.ejs", {restaurant: currRestaurant});
+            }
+        })
+    }else{
+        // should not be able to go to cart page with an empty cart
+        res.redirect("/")
+    }
+});
 
 // get request to analytical dashboard
 router.get("/:restaurantId/analytics", function(req, res){
@@ -73,7 +137,7 @@ router.get("/:restaurantId/analytics", function(req, res){
             res.render("./analytics.ejs", {restaurant: Restaurants[0]});
         }
     })
-})
+});
 
 // go to a restarant's review page
 router.get("/:restaurantId/reviews", function (req, res) {
@@ -159,15 +223,15 @@ router.post("/searchRestaurants/", function(req,res){
             res.render("search.ejs", {rests: collectedRests, search: req.body.searchContent.trim(), param: param, paramVal: sortParam});
         }
     })
+});
 
-})
 // go to a customer homepage
 router.get("/:customerId/customerProfile", function(req, res){
     Customer.find({_id:req.params.customerId}, (err, customer) => {
             if (err) return res.json(err);
             res.render("./customerProfile.ejs",{customerInfo:customer[0]});
         });
-})
+});
 
 router.get("/explore", function(req, res){
     // collect the search field and create object to pass into ejs
@@ -245,9 +309,7 @@ router.post("/uploadStory/", function(req,res){
         // redirect the owner to the public restaurant page
         res.redirect("/restaurantProfile/" + req.body.restaurantName);
     });
-})
-
-module.exports = router;
+});
 
 // ===================
 // AUTH ROUTES
@@ -287,7 +349,7 @@ router.post("/makeRestaurant", function(req,res){
             res.redirect("/" + newRestaurant._id + "/restaurantProfile");
         }
     })
-})
+});
 
 router.post("/makeCustomer/", function(req,res){
     // create object to hold new restaurant's info
@@ -316,7 +378,7 @@ router.post("/makeCustomer/", function(req,res){
 
         }
     })
-})
+});
 
 // upload review
 router.post('/:restaurantId/reviews/', function (req, res, next) {
@@ -344,6 +406,11 @@ router.post("/uploadStory/", function(req,res){
         // redirect the owner to the public restaurant page
         res.redirect("/" +  req.body.restaurantName + "/restaurantProfile");
     });
+});
+
+// go to under construction page
+router.get("/construction", function(req, res){
+    res.render("./construction.ejs");
 });
 
 module.exports = router;
