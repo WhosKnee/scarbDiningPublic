@@ -33,7 +33,11 @@ router.get("/", function(req, res){
 });
 
 router.get("/loginRestaurant", function(req, res){
-    res.render("./temp.ejs");
+    console.log("wy");
+    res.render("./loginR.ejs");
+});
+router.get("/loginCustomer", function(req, res){
+    res.render("./loginC.ejs");
 });
 
 // go to restaurant signup
