@@ -29,6 +29,7 @@ mongoose.connect('mongodb+srv://projectflashcards:cscc01@scarboroughdining.vujjd
 
 // get stylesheets, where __dirname is the root
 app.use(express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/views"))
 
 // configure session
 app.use(expressSession({
