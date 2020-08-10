@@ -31,7 +31,7 @@
             <% } %>
             <div class="row justify-content-end">
                 <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/<%=restaurant._id%>/menu?p=<%=Number(page)-1%>">Last Page</a>
-                <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
+                <%=restaurant.foodItems.length>0?page:0%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
                 <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/<%=restaurant._id%>/menu?p=<%=Number(page)+1%>">Next Page</a>
             </div>
             <ul class="list-unstyled">
@@ -79,7 +79,7 @@
             </ul>
             <div class="row justify-content-end">
                 <a role="button" class="btn btn-outline-dark btn-sm mr-1 <% if (page <= 1) {%> disabled <% }; %>" href="/<%=restaurant._id%>/menu?p=<%=Number(page)-1%>">Last Page</a>
-                <%=page%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
+                <%=restaurant.foodItems.length>0?page:0%> of <%=Math.ceil(restaurant.foodItems.length / 10)%>
                 <a role="button" class="btn btn-outline-dark btn-sm ml-1 <% if (page >= Math.ceil(restaurant.foodItems.length / 10)) {%> disabled <% }; %>" href="/<%=restaurant._id%>/menu?p=<%=Number(page)+1%>">Next Page</a>
             </div>
             <% if (user.ownerEmail) { %>

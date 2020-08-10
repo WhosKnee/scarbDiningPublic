@@ -92,6 +92,9 @@ router.get("/:restaurantId/menu", function(req, res){
         } else {
             // the query returns a list so we need the first item which is our restaurant
             currRestaurant = Restaurants[0];
+            if (!req.query.p) {
+                req.query.p = 1;
+            }
             res.render("./menu.ejs", {restaurant: currRestaurant, page: req.query.p});
         }
     })
