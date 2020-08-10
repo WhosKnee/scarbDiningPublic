@@ -14,7 +14,7 @@
             <% for(i = 0; i < rests.length ; i++) { %>
                 <div class="restCard">
                     <a href="/<%=rests[i]._id%>/restaurantProfile">
-                    <img class="restCardImg" src="https://www.w3schools.com/images/picture.jpg">
+                    <img class="restCardImg" src="data:image/<%=rests[i].image.contentType%>;base64, <%=rests[i].image.data?rests[i].image.data.toString('base64'):""%>">
                         <div class="restCardText">
                             <h5 class="card-title"><%= rests[i].nameSpaced %></h5>
                             
