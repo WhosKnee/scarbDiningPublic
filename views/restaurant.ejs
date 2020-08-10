@@ -28,11 +28,14 @@
                 <% } %>
                 &nbsp;&nbsp;|&nbsp;&nbsp; 
                 <a class="btn btn-primary" href="/<%=restaurant._id%>/analytics" role="button">Analytical Dashboard</a>
+                <hr>
                 
             </h4>
             <div class =" d-flex flex-row align-items-start justify-content-around ">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="data:image/<%=restaurant.image.contentType%>;base64, <%=restaurant.image.data?restaurant.image.data.toString('base64'):""%>" alt="Card image cap" style="height:8em; object-fit: cover;">
+                    <object style="width: 100%" data="/uploads/default/restaurantPhoto<%= restaurant.pricing%>.png" type="image/png">
+                        <img class="card-img-top" src="data:image/<%=restaurant.image.contentType%>;base64, <%=restaurant.image.data?restaurant.image.data.toString('base64'):""%>" alt="Card image cap" style="height:8em; object-fit: cover;">
+                    </object>
                     <div class="card-body">
                         <div class="restaurantInfo restaurantInfoTitle">Phone Number</div>
                         <div class="restaurantInfo" class="card-text restaurantInfo"><%= restaurant.phoneNumber %></div>
@@ -46,13 +49,22 @@
                     </div>
                 </div>
                 <div class = "d-flex flex-column" style="width: 70%;">
-                    <div class = "d-flex flex-row align-items-center justify-content-between" style=" padding: 2% 0 2% 0; border-bottom: black solid 1px;">
+                    <div class = "d-flex flex-row align-items-center justify-content-between" style=" padding: 0% 0 1% 0; border-bottom: black solid 0.5px;">
                         <h3> Posts </h3>
                         <a class="btn btn-outline-success <%=user&&user._id==restaurant._id?"":"d-none"%>" href="/<%=restaurant._id%>/storyUploader" role="button">Add New </a>
                     </div>
-                    <% restaurant.stories.forEach(story => {%>
-                        <p><%=story.text%></p>
-                    <% }); %>
+                    <div class="scrollable">
+                        <% for(i = 0; i < restaurant.stories.length/2 ; i++) { %>
+                            <div class="restCard">
+                                    <object style="width: 100%" data="/uploads/default/restaurantPhoto1.png" type="image/png">
+                                        <img class="card-img-top" src="data:image/<%=restaurant.stories[i].image.contentType%>;base64, <%=restaurant.stories[i].image.data?restaurant.stories[i].image.data.toString('base64'):""%>" alt="Card image cap" style="height:8em; object-fit: cover;">
+                                    </object>
+                                    <div class="restCardText">
+                                        <p class="card-text"><%=restaurant.stories[i].text%></p>
+                                    </div> 
+                            </div>   
+                        <% } %>
+                        </div>
                 </div>
             </div>
         </div>
