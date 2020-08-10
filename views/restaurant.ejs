@@ -58,7 +58,7 @@
                         <a class="btn btn-outline-success <%=user&&user._id==restaurant._id?"":"d-none"%>" href="/<%=restaurant._id%>/storyUploader" role="button">Add New </a>
                     </div>
                     <div class="scrollable">
-                        <% for(i = 0; i < restaurant.stories.length/2 ; i++) { %>
+                        <% for(i = 0; i < restaurant.stories.length; i++) { %>
                             <div class="restCard">
                                     <img class="card-img-top" src="data:image/<%=restaurant.stories[i].image.contentType%>;base64, <%=restaurant.stories[i].image.data?restaurant.stories[i].image.data.toString('base64'):""%>" alt="Card image cap" style="height:8em; object-fit: cover;">
                                     <div class="restCardText">
